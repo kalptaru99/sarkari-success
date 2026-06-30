@@ -1,4 +1,35 @@
 export default function Home() {
+  const jobs = [
+    {
+      title: "SSC CGL 2026",
+      org: "Staff Selection Commission",
+      vacancies: "17,727",
+      lastDate: "31 July 2026",
+      isNew: true,
+    },
+    {
+      title: "RRB NTPC 2026",
+      org: "Railway Recruitment Board",
+      vacancies: "11,558",
+      lastDate: "15 August 2026",
+      isNew: true,
+    },
+    {
+      title: "IBPS PO 2026",
+      org: "Institute of Banking Personnel Selection",
+      vacancies: "6,432",
+      lastDate: "10 August 2026",
+      isNew: false,
+    },
+    {
+      title: "UPSC Civil Services 2026",
+      org: "Union Public Service Commission",
+      vacancies: "1,056",
+      lastDate: "5 September 2026",
+      isNew: false,
+    },
+  ];
+
   return (
     <main style={{ minHeight: '100vh', backgroundColor: '#f4f6f9', fontFamily: 'Arial, sans-serif' }}>
       
@@ -23,19 +54,68 @@ export default function Home() {
           NEW
         </span>
         <span style={{ color: '#991b1b', fontWeight: '500' }}>
-          🚀 Sarkari Success is launching soon — AI-powered job alerts, results &amp; exam prep
+          🚀 New notifications added daily — powered by AI
         </span>
       </div>
 
-      {/* Main content */}
-      <div style={{ maxWidth: '900px', margin: '60px auto', padding: '0 20px', textAlign: 'center' }}>
-        <h2 style={{ fontSize: '28px', color: '#1e3a8a', marginBottom: '16px' }}>
-          Coming Soon 🇮🇳
+      {/* Job Listings */}
+      <div style={{ maxWidth: '900px', margin: '40px auto', padding: '0 20px' }}>
+        <h2 style={{ fontSize: '24px', color: '#1e3a8a', marginBottom: '20px' }}>
+          Latest Sarkari Jobs
         </h2>
-        <p style={{ fontSize: '16px', color: '#444', maxWidth: '600px', margin: '0 auto', lineHeight: '1.6' }}>
-          SSC, Railway, UPSC, Banking &amp; State exam updates — powered by AI.
-          Faster results. Smarter prep. Zero confusion.
-        </p>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+          {jobs.map((job, index) => (
+            <div
+              key={index}
+              style={{
+                backgroundColor: 'white',
+                border: '1px solid #ddd',
+                borderRadius: '8px',
+                padding: '18px',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '10px',
+              }}
+            >
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <h3 style={{ fontSize: '18px', color: '#1e3a8a', margin: 0 }}>
+                    {job.title}
+                  </h3>
+                  {job.isNew && (
+                    <span style={{ backgroundColor: '#dc2626', color: 'white', fontSize: '10px', padding: '2px 8px', borderRadius: '4px', fontWeight: 'bold' }}>
+                      NEW
+                    </span>
+                  )}
+                </div>
+                <p style={{ color: '#666', fontSize: '14px', margin: '4px 0' }}>
+                  {job.org}
+                </p>
+                <p style={{ color: '#444', fontSize: '13px', margin: 0 }}>
+                  Vacancies: <strong>{job.vacancies}</strong> &nbsp;|&nbsp; 
+                  Last Date: <strong>{job.lastDate}</strong>
+                </p>
+              </div>
+
+              <button style={{
+                backgroundColor: '#1e3a8a',
+                color: 'white',
+                border: 'none',
+                padding: '10px 18px',
+                borderRadius: '6px',
+                fontSize: '14px',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+              }}>
+                View Details
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Footer */}
