@@ -117,7 +117,58 @@ export default function Home() {
           ))}
         </div>
       </div>
+{/* Exam Calendar */}
+      <div style={{ maxWidth: '900px', margin: '40px auto', padding: '0 20px' }}>
+        <h2 style={{ fontSize: '24px', color: '#1e3a8a', marginBottom: '20px' }}>
+          Upcoming Exam Calendar
+        </h2>
 
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {[
+            { exam: "SSC CGL Tier 1", date: "20 July 2026", daysLeft: 19 },
+            { exam: "RRB NTPC CBT 1", date: "5 August 2026", daysLeft: 35 },
+            { exam: "IBPS PO Prelims", date: "12 August 2026", daysLeft: 42 },
+            { exam: "UPSC Prelims", date: "24 August 2026", daysLeft: 54 },
+          ].map((item, index) => (
+            <div
+              key={index}
+              style={{
+                backgroundColor: 'white',
+                border: '1px solid #ddd',
+                borderRadius: '8px',
+                padding: '16px 18px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '10px',
+              }}
+            >
+              <div>
+                <h3 style={{ fontSize: '16px', color: '#1e3a8a', margin: 0 }}>
+                  {item.exam}
+                </h3>
+                <p style={{ color: '#666', fontSize: '13px', margin: '4px 0 0 0' }}>
+                  Exam Date: {item.date}
+                </p>
+              </div>
+
+              <div style={{
+                backgroundColor: item.daysLeft <= 20 ? '#fee2e2' : '#dbeafe',
+                color: item.daysLeft <= 20 ? '#dc2626' : '#1e3a8a',
+                padding: '6px 14px',
+                borderRadius: '20px',
+                fontSize: '13px',
+                fontWeight: 'bold',
+              }}>
+                {item.daysLeft} days left
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Footer */}
       {/* Footer */}
       <footer style={{ backgroundColor: '#1e3a8a', color: 'white', textAlign: 'center', padding: '16px', fontSize: '13px', marginTop: '60px' }}>
         © 2026 Sarkari Success. All rights reserved.
