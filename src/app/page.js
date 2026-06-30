@@ -48,6 +48,24 @@ export default function Home() {
         </p>
       </header>
 
+      {/* Navigation */}
+      <nav style={{ backgroundColor: '#1e3a8a', padding: '10px 20px', display: 'flex', justifyContent: 'center', gap: '30px', flexWrap: 'wrap' }}>
+        {['Home', 'Jobs', 'Results', 'Admit Card', 'Syllabus', 'Exam Calendar'].map((item, index) => (
+          <a
+            key={index}
+            href="#"
+            style={{
+              color: 'white',
+              textDecoration: 'none',
+              fontSize: '14px',
+              fontWeight: '500',
+            }}
+          >
+            {item}
+          </a>
+        ))}
+      </nav>
+
       {/* Alert ticker */}
       <div style={{ backgroundColor: '#fee2e2', borderTop: '1px solid #dc2626', borderBottom: '1px solid #dc2626', padding: '12px 20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
         <span style={{ backgroundColor: '#dc2626', color: 'white', padding: '4px 10px', borderRadius: '4px', fontSize: '12px', fontWeight: 'bold' }}>
@@ -117,7 +135,8 @@ export default function Home() {
           ))}
         </div>
       </div>
-{/* Exam Calendar */}
+
+      {/* Exam Calendar */}
       <div style={{ maxWidth: '900px', margin: '40px auto', padding: '0 20px' }}>
         <h2 style={{ fontSize: '24px', color: '#1e3a8a', marginBottom: '20px' }}>
           Upcoming Exam Calendar
@@ -168,7 +187,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Footer */}
       {/* Footer */}
       <footer style={{ backgroundColor: '#1e3a8a', color: 'white', textAlign: 'center', padding: '16px', fontSize: '13px', marginTop: '60px' }}>
         © 2026 Sarkari Success. All rights reserved.
