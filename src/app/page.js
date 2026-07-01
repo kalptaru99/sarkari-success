@@ -1,4 +1,8 @@
+"use client";
+import { useState } from "react";
+
 export default function Home() {
+  const [searchQuery, setSearchQuery] = useState("");
   const jobs = [
     {
       title: "SSC CGL 2026",
@@ -75,7 +79,25 @@ export default function Home() {
           🚀 New notifications added daily — powered by AI
         </span>
       </div>
-
+{/* Search Bar */}
+      <div style={{ maxWidth: '900px', margin: '30px auto 0', padding: '0 20px' }}>
+        <input
+          type="text"
+          placeholder="Search jobs, results, exams... (e.g. SSC, Railway, UPSC)"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          style={{
+            width: '100%',
+            padding: '14px 20px',
+            fontSize: '15px',
+            border: '2px solid #1e3a8a',
+            borderRadius: '8px',
+            outline: 'none',
+            color: '#1a1a1a',
+            boxSizing: 'border-box',
+          }}
+        />
+      </div>
       {/* Job Listings */}
       <div style={{ maxWidth: '900px', margin: '40px auto', padding: '0 20px' }}>
         <h2 style={{ fontSize: '24px', color: '#1e3a8a', marginBottom: '20px' }}>
@@ -83,7 +105,10 @@ export default function Home() {
         </h2>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-          {jobs.map((job, index) => (
+          {jobs.filter(job => 
+            job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            job.org.toLowerCase().includes(searchQuery.toLowerCase())
+          ).map((job, index) => (
             <div
               key={index}
               style={{
