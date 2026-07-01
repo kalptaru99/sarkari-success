@@ -186,7 +186,73 @@ export default function Home() {
           ))}
         </div>
       </div>
+{/* Results Section */}
+      <div style={{ maxWidth: '900px', margin: '40px auto', padding: '0 20px' }}>
+        <h2 style={{ fontSize: '24px', color: '#1e3a8a', marginBottom: '20px' }}>
+          Latest Results
+        </h2>
 
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {[
+            { exam: "SSC CHSL 2025", org: "Staff Selection Commission", status: "Declared", date: "28 June 2026" },
+            { exam: "RRB Group D 2025", org: "Railway Recruitment Board", status: "Declared", date: "25 June 2026" },
+            { exam: "IBPS Clerk 2025", org: "Institute of Banking Personnel Selection", status: "Expected Soon", date: "July 2026" },
+            { exam: "UPSC NDA 2025", org: "Union Public Service Commission", status: "Declared", date: "20 June 2026" },
+          ].map((item, index) => (
+            <div
+              key={index}
+              style={{
+                backgroundColor: 'white',
+                border: '1px solid #ddd',
+                borderRadius: '8px',
+                padding: '16px 18px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '10px',
+              }}
+            >
+              <div>
+                <h3 style={{ fontSize: '16px', color: '#1e3a8a', margin: 0 }}>
+                  {item.exam}
+                </h3>
+                <p style={{ color: '#666', fontSize: '13px', margin: '4px 0 0 0' }}>
+                  {item.org}
+                </p>
+                <p style={{ color: '#444', fontSize: '13px', margin: '4px 0 0 0' }}>
+                  Result Date: <strong>{item.date}</strong>
+                </p>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{
+                  backgroundColor: item.status === 'Declared' ? '#dcfce7' : '#fef9c3',
+                  color: item.status === 'Declared' ? '#16a34a' : '#ca8a04',
+                  padding: '4px 12px',
+                  borderRadius: '20px',
+                  fontSize: '12px',
+                  fontWeight: 'bold',
+                }}>
+                  {item.status}
+                </span>
+                <button style={{
+                  backgroundColor: '#1e3a8a',
+                  color: 'white',
+                  border: 'none',
+                  padding: '8px 16px',
+                  borderRadius: '6px',
+                  fontSize: '13px',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                }}>
+                  Check Result
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
       {/* Footer */}
       <footer style={{ backgroundColor: '#1e3a8a', color: 'white', textAlign: 'center', padding: '16px', fontSize: '13px', marginTop: '60px' }}>
         © 2026 Sarkari Success. All rights reserved.
