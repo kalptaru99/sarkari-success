@@ -4,25 +4,23 @@ import { useState, useEffect } from "react";
 const examCalendar = [
   { exam: "SSC CGL Tier 1", date: "August 2026", daysLeft: 30 },
   { exam: "RRB NTPC CBT 1", date: "September 2026", daysLeft: 60 },
-  { exam: "IBPS PO Prelims", date: "October 2026", daysLeft: 90 },
-  { exam: "UPSC Prelims", date: "August 2026", daysLeft: 40 },
-];
-
-const results = [
-  { exam: "SSC CHSL 2025", org: "Staff Selection Commission", status: "Declared", date: "28 June 2026", link: "https://ssc.gov.in" },
-  { exam: "RRB Group D 2025", org: "Railway Recruitment Board", status: "Declared", date: "25 June 2026", link: "https://indianrailways.gov.in" },
-  { exam: "IBPS Clerk 2025", org: "IBPS", status: "Expected Soon", date: "July 2026", link: "https://ibps.in" },
-  { exam: "UPSC NDA 2025", org: "Union Public Service Commission", status: "Declared", date: "20 June 2026", link: "https://upsc.gov.in" },
+  { exam: "IBPS PO Prelims", date: "22 August 2026", daysLeft: 37 },
+  { exam: "UPSC Mains", date: "21 August 2026", daysLeft: 36 },
 ];
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [jobs, setJobs] = useState([]);
+  const [results, setResults] = useState([]);
 
   useEffect(() => {
     fetch('/api/jobs?limit=20')
       .then(res => res.json())
       .then(data => setJobs(data.jobs || []));
+
+    fetch('/api/results?limit=10')
+      .then(res => res.json())
+      .then(data => setResults(data.results || []));
   }, []);
 
   const filteredJobs = jobs.filter(job =>
@@ -70,7 +68,7 @@ export default function Home() {
 
       <div style={{ backgroundColor: '#fee2e2', borderBottom: '1px solid #dc2626', padding: '10px 20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
         <span style={{ backgroundColor: '#dc2626', color: 'white', padding: '3px 8px', borderRadius: '4px', fontSize: '11px', fontWeight: 'bold', flexShrink: 0 }}>LIVE</span>
-        <span style={{ color: '#991b1b', fontSize: '13px' }}>SSC CGL 2026 — 12,256 Vacancies | RRB NTPC 2026 | UPSC Civil Services 2026 | IBPS PO 2026</span>
+        <span style={{ color: '#991b1b', fontSize: '13px' }}>SSC CGL 2026 — 12,256 Vacancies | RRB NTPC 2026 — 8,868 Vacancies | UPSC Civil Services 2026 — 933 Vacancies | IBPS PO 2026 — 6,715 Vacancies</span>
       </div>
 
       <div style={{ backgroundColor: '#1e3a8a', padding: '40px 20px', textAlign: 'center' }}>
@@ -114,21 +112,16 @@ export default function Home() {
             <div style={{ fontSize: '12px', color: '#666' }}>{stat.label}</div>
           </div>
         ))}
-      </div>
-      <div style={{ maxWidth: '960px', margin: '0 auto', padding: '30px 20px' }}>
+      </div><div style={{ maxWidth: '960px', margin: '0 auto', padding: '30px 20px' }}>
 
         <div id="jobs" style={{ marginBottom: '40px' }}>
           <h2 style={{ fontSize: '22px', color: '#1e3a8a', margin: '0 0 16px 0' }}>Latest Sarkari Jobs</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {filteredJobs.length === 0 && searchQuery === '' && (
-              <div style={{ textAlign: 'center', padding: '40px', color: '#888', backgroundColor: 'white', borderRadius: '8px' }}>
-                Loading jobs...
-              </div>
+              <div style={{ textAlign: 'center', padding: '40px', color: '#888', backgroundColor: 'white', borderRadius: '8px' }}>Loading jobs...</div>
             )}
             {filteredJobs.length === 0 && searchQuery !== '' && (
-              <div style={{ textAlign: 'center', padding: '40px', color: '#888', backgroundColor: 'white', borderRadius: '8px' }}>
-                No jobs found for "{searchQuery}"
-              </div>
+              <div style={{ textAlign: 'center', padding: '40px', color: '#888', backgroundColor: 'white', borderRadius: '8px' }}>No jobs found for "{searchQuery}"</div>
             )}
             {filteredJobs.map((job, index) => (
               <div key={index} style={{ backgroundColor: 'white', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '16px 18px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
@@ -171,9 +164,7 @@ export default function Home() {
                   <span style={{ backgroundColor: item.daysLeft <= 10 ? '#fee2e2' : item.daysLeft <= 30 ? '#fef9c3' : '#dbeafe', color: item.daysLeft <= 10 ? '#dc2626' : item.daysLeft <= 30 ? '#ca8a04' : '#1e3a8a', padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: 'bold' }}>
                     {item.daysLeft} days left
                   </span>
-                  <a href="/mocktest" style={{ backgroundColor: '#1e3a8a', color: 'white', padding: '6px 14px', borderRadius: '6px', fontSize: '12px', fontWeight: 'bold', textDecoration: 'none' }}>
-                    Practice
-                  </a>
+                  <a href="/mocktest" style={{ backgroundColor: '#1e3a8a', color: 'white', padding: '6px 14px', borderRadius: '6px', fontSize: '12px', fontWeight: 'bold', textDecoration: 'none' }}>Practice</a>
                 </div>
               </div>
             ))}
@@ -183,18 +174,21 @@ export default function Home() {
         <div id="results" style={{ marginBottom: '40px' }}>
           <h2 style={{ fontSize: '22px', color: '#1e3a8a', margin: '0 0 16px 0' }}>Latest Results</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {results.length === 0 && (
+              <div style={{ textAlign: 'center', padding: '40px', color: '#888', backgroundColor: 'white', borderRadius: '8px' }}>Loading results...</div>
+            )}
             {results.map((item, index) => (
               <div key={index} style={{ backgroundColor: 'white', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '14px 18px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
                 <div>
                   <h3 style={{ fontSize: '15px', color: '#1e3a8a', margin: '0 0 4px 0' }}>{item.exam}</h3>
                   <p style={{ color: '#666', fontSize: '12px', margin: '0 0 2px 0' }}>{item.org}</p>
-                  <p style={{ color: '#444', fontSize: '12px', margin: 0 }}>Result Date: <strong>{item.date}</strong></p>
+                  <p style={{ color: '#444', fontSize: '12px', margin: 0 }}>Result Date: <strong>{item.result_date}</strong></p>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <span style={{ backgroundColor: item.status === 'Declared' ? '#dcfce7' : '#fef9c3', color: item.status === 'Declared' ? '#16a34a' : '#ca8a04', padding: '4px 10px', borderRadius: '20px', fontSize: '11px', fontWeight: 'bold' }}>
                     {item.status}
                   </span>
-                  <a href={item.link} target="_blank" rel="noopener noreferrer" style={{ backgroundColor: '#1e3a8a', color: 'white', padding: '6px 14px', borderRadius: '6px', fontSize: '12px', fontWeight: 'bold', textDecoration: 'none' }}>
+                  <a href={"/results/" + item.slug} style={{ backgroundColor: '#1e3a8a', color: 'white', padding: '6px 14px', borderRadius: '6px', fontSize: '12px', fontWeight: 'bold', textDecoration: 'none' }}>
                     Check Result
                   </a>
                 </div>

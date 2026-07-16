@@ -5,6 +5,14 @@ const categories = ["SSC", "Railway", "UPSC", "Banking", "Defence", "Police", "T
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState("addjob");
+  const [resultForm, setResultForm] = useState({
+    exam: "", org: "", result_date: "", status: "Declared",
+    result_link: "", scorecard_link: "", cutoff_link: "",
+    description: "", category: "SSC", slug: "",
+  });
+  const [resultMessage, setResultMessage] = useState("");
+  const [resultError, setResultError] = useState("");
+  const [resultLoading, setResultLoading] = useState(false);
   const [jobForm, setJobForm] = useState({
     title: "", org: "", vacancies: "", last_date: "",
     apply_link: "", notification_link: "", exam_date: "",
@@ -109,6 +117,7 @@ export default function AdminPage() {
       <div style={{ backgroundColor: 'white', borderBottom: '1px solid #e5e7eb', padding: '0 24px', display: 'flex', gap: '0' }}>
         {[
           { id: 'addjob', label: '➕ Add Job' },
+          { id: 'addresult', label: '📊 Add Result' },
           { id: 'questions', label: '📝 Generate Questions' },
         ].map((tab) => (
           <button
@@ -288,7 +297,145 @@ export default function AdminPage() {
             </button>
           </div>
         )}
+{/* Add Result Tab */}
+        {activeTab === 'addresult' && (
+          <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '28px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
+            <h2 style={{ color: '#1e3a8a', margin: '0 0 24px 0' }}>Add New Result</h2>
 
+            {resultMessage && <div style={{ backgroundColor: '#dcfce7', color: '#16a34a', padding: '12px', borderRadius: '8px', marginBottom: '16px', fontSize: '14px' }}>{resultMessage}</div>}
+            {resultError && <div style={{ backgroundColor: '#fee2e2', color: '#dc2626', padding: '12px', borderRadius: '8px', marginBottom: '16px', fontSize: '14px' }}>{resultError}</div>}
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+              <div style={{ gridColumn: '1 / -1' }}>
+                <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Exam Name *</label>
+                <input type="text" placeholder="e.g. SSC CHSL Tier 1 Result 2025-26"
+                  value={resultForm.exam}
+                  onChange={(e) => {
+                    const exam = e.target.value;
+                    setResultForm(prev => ({ ...prev, exam, slug: exam.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') }));
+                  }}
+                  style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box' }}
+                />
+              </div>
+
+              <div style={{ gridColumn: '1 / -1' }}>
+                <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Slug *</label>
+                <input type="text" placeholder="e.g. ssc-chsl-tier1-result-2025-26"
+                  value={resultForm.slug}
+                  onChange={(e) => setResultForm(prev => ({ ...prev, slug: e.target.value }))}
+                  style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box' }}
+                />
+                <p style={{ fontSize: '11px', color: '#888', margin: '4px 0 0 0' }}>Page will be at: sarkarisuccess.com/results/{resultForm.slug}</p>
+              </div>
+
+              <div>
+                <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Organization *</label>
+                <input type="text" placeholder="e.g. Staff Selection Commission"
+                  value={resultForm.org}
+                  onChange={(e) => setResultForm(prev => ({ ...prev, org: e.target.value }))}
+                  style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box' }}
+                />
+              </div>
+
+              <div>
+                <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Category</label>
+                <select value={resultForm.category}
+                  onChange={(e) => setResultForm(prev => ({ ...prev, category: e.target.value }))}
+                  style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a' }}>
+                  {categories.map((cat, i) => <option key={i} value={cat}>{cat}</option>)}
+                </select>
+              </div>
+
+              <div>
+                <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Result Date</label>
+                <input type="text" placeholder="e.g. 27 February 2026"
+                  value={resultForm.result_date}
+                  onChange={(e) => setResultForm(prev => ({ ...prev, result_date: e.target.value }))}
+                  style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box' }}
+                />
+              </div>
+
+              <div>
+                <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Status</label>
+                <select value={resultForm.status}
+                  onChange={(e) => setResultForm(prev => ({ ...prev, status: e.target.value }))}
+                  style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a' }}>
+                  {['Declared', 'Expected Soon', 'Awaited'].map((s, i) => <option key={i} value={s}>{s}</option>)}
+                </select>
+              </div>
+
+              <div style={{ gridColumn: '1 / -1' }}>
+                <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Result Link</label>
+                <input type="text" placeholder="e.g. https://ssc.gov.in/result"
+                  value={resultForm.result_link}
+                  onChange={(e) => setResultForm(prev => ({ ...prev, result_link: e.target.value }))}
+                  style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box' }}
+                />
+              </div>
+
+              <div>
+                <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Scorecard Link</label>
+                <input type="text" placeholder="https://ssc.gov.in/scorecard"
+                  value={resultForm.scorecard_link}
+                  onChange={(e) => setResultForm(prev => ({ ...prev, scorecard_link: e.target.value }))}
+                  style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box' }}
+                />
+              </div>
+
+              <div>
+                <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Cut Off Link</label>
+                <input type="text" placeholder="https://ssc.gov.in/cutoff"
+                  value={resultForm.cutoff_link}
+                  onChange={(e) => setResultForm(prev => ({ ...prev, cutoff_link: e.target.value }))}
+                  style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box' }}
+                />
+              </div>
+
+              <div style={{ gridColumn: '1 / -1' }}>
+                <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Description</label>
+                <textarea placeholder="Brief description of the result..."
+                  value={resultForm.description}
+                  onChange={(e) => setResultForm(prev => ({ ...prev, description: e.target.value }))}
+                  rows={3}
+                  style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box', resize: 'vertical' }}
+                />
+              </div>
+            </div>
+
+            <button
+              onClick={async () => {
+                if (!resultForm.exam || !resultForm.org || !resultForm.slug) {
+                  setResultError("Exam, organization and slug are required");
+                  return;
+                }
+                setResultLoading(true);
+                setResultError("");
+                setResultMessage("");
+                try {
+                  const response = await fetch("/api/results", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(resultForm),
+                  });
+                  const data = await response.json();
+                  if (data.error) {
+                    setResultError(data.error);
+                  } else {
+                    setResultMessage("Result added successfully!");
+                    setResultForm({ exam: "", org: "", result_date: "", status: "Declared", result_link: "", scorecard_link: "", cutoff_link: "", description: "", category: "SSC", slug: "" });
+                  }
+                } catch (error) {
+                  setResultError("Something went wrong.");
+                }
+                setResultLoading(false);
+              }}
+              disabled={resultLoading}
+              style={{ marginTop: '20px', width: '100%', padding: '14px', backgroundColor: '#1e3a8a', color: 'white', border: 'none', borderRadius: '8px', fontSize: '15px', fontWeight: 'bold', cursor: resultLoading ? 'not-allowed' : 'pointer', opacity: resultLoading ? 0.7 : 1 }}
+            >
+              {resultLoading ? 'Adding Result...' : '📊 Add Result'}
+            </button>
+          </div>
+        )}
         {/* Generate Questions Tab */}
         {activeTab === 'questions' && (
           <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '28px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
