@@ -137,15 +137,7 @@ export default function Home() {
             placeholder="Search SSC, Railway, UPSC, Banking jobs..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            style={{
-              flex: 1,
-              padding: '14px 20px',
-              borderRadius: '8px',
-              border: 'none',
-              fontSize: '14px',
-              outline: 'none',
-              color: '#1a1a1a',
-            }}
+            style={{ flex: 1, padding: '14px 20px', borderRadius: '8px', border: '2px solid white', fontSize: '14px', outline: 'none', color: '#1a1a1a', backgroundColor: 'white', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
           />
           <button style={{
             padding: '14px 24px',
