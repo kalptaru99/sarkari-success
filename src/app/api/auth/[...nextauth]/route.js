@@ -1,14 +1,10 @@
 import NextAuth from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs";
+import pool from '@/lib/db.js';
+import bcrypt from 'bcryptjs';
 
 const handler = NextAuth({
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    }),
     CredentialsProvider({
       name: "Email & Password",
       credentials: {
@@ -16,24 +12,24 @@ const handler = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        // Temporary test user — we'll replace with real DB in Week 3
-        const testUser = {
-          id: "1",
-          name: "Test User",
-          email: "test@sarkarisuccess.com",
-          password: await bcrypt.hash("password123", 10),
-        };
+        try {
+          const result = await pool.query(
+            'SELECT * FROM users WHERE email = $1',
+            [credentials.email]
+          );
 
-        if (credentials.email !== testUser.email) return null;
+          if (result.rows.length === 0) return null;
 
-        const passwordMatch = await bcrypt.compare(
-          credentials.password,
-          testUser.password
-        );
+          const user = result.rows[0];
+          const passwordMatch = await bcrypt.compare(credentials.password, user.password);
 
-        if (!passwordMatch) return null;
+          if (!passwordMatch) return null;
 
-        return { id: testUser.id, name: testUser.name, email: testUser.email };
+          return { id: user.id, name: user.name, email: user.email };
+        } catch (error) {
+          console.error('Auth error:', error);
+          return null;
+        }
       },
     }),
   ],
