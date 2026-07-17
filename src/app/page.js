@@ -55,6 +55,7 @@ export default function Home() {
           { label: 'Jobs', href: '#jobs' },
           { label: 'Results', href: '#results' },
           { label: 'Exam Calendar', href: '#calendar' },
+          { label: 'State Jobs', href: '/states' },
           { label: 'Mock Test', href: '/mocktest' },
           { label: 'Question Bank', href: '/questions' },
           { label: 'SarkariGPT', href: '/sarkarigpt' },
