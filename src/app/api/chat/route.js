@@ -1,4 +1,30 @@
 import Anthropic from "@anthropic-ai/sdk";
+const rateLimitMap = new Map();
+
+function rateLimit(ip) {
+  const now = Date.now();
+  const windowMs = 60 * 1000;
+  const maxRequests = 10;
+
+  if (!rateLimitMap.has(ip)) {
+    rateLimitMap.set(ip, { count: 1, start: now });
+    return true;
+  }
+
+  const data = rateLimitMap.get(ip);
+
+  if (now - data.start > windowMs) {
+    rateLimitMap.set(ip, { count: 1, start: now });
+    return true;
+  }
+
+  if (data.count >= maxRequests) {
+    return false;
+  }
+
+  data.count++;
+  return true;
+}
 
 const client = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -26,6 +52,10 @@ async function searchWeb(query) {
 
 export async function POST(request) {
   try {
+    const ip = request.headers.get('x-forwarded-for') || 'unknown';
+    if (!rateLimit(ip)) {
+      return Response.json({ error: 'Too many requests. Please wait a minute before trying again.' }, { status: 429 });
+    }
     const { message, history } = await request.json();
 
     const searchResults = await searchWeb(message);
