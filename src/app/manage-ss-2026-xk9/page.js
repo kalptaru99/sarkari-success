@@ -1,6 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 
+const ADMIN_PASSWORD = "RajShiv@1949";
+
 const categories = ["SSC", "Railway", "UPSC", "Banking", "Defence", "Police", "Teaching", "State PSC", "Others"];
 
 function EditStateJob() {
@@ -382,6 +384,26 @@ function StateJobForm() {
 }
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState("addjob");
+  const [authenticated, setAuthenticated] = useState(false);
+  const [passwordInput, setPasswordInput] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+
+  useEffect(() => {
+    const saved = sessionStorage.getItem("admin_auth");
+    if (saved === "true") setAuthenticated(true);
+  }, []);
+
+ const handleLogin = () => {
+    if (passwordInput === "RajShiv@1949") {
+      sessionStorage.setItem("admin_auth", "true");
+      setAuthenticated(true);
+    } else {
+      setPasswordError("Wrong password. Try again.");
+    }
+  };
+
+  
   const [resultForm, setResultForm] = useState({
     exam: "", org: "", result_date: "", status: "Declared",
     result_link: "", scorecard_link: "", cutoff_link: "",
@@ -415,7 +437,12 @@ export default function AdminPage() {
     "IBPS Clerk": ["Reasoning", "English Language", "Numerical Ability", "General Awareness"],
     "SBI PO": ["Reasoning", "English Language", "Data Analysis", "General Awareness"],
   };
+useEffect(() => {
+    const saved = sessionStorage.getItem("admin_auth");
+    if (saved === "true") setAuthenticated(true);
+  }, []);
 
+  
   const generateSlug = (title) => {
     return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
   };
@@ -478,7 +505,54 @@ export default function AdminPage() {
     }
     setGenLoading(false);
   };
-
+if (!authenticated) {
+if (!authenticated) {
+    return (
+      <main style={{ minHeight: '100vh', backgroundColor: '#f4f6f9', fontFamily: 'Arial, sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ backgroundColor: 'white', padding: '40px', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', width: '100%', maxWidth: '400px', textAlign: 'center' }}>
+          <h1 style={{ fontSize: '24px', fontWeight: 'bold', color: '#1e3a8a', margin: '0 0 8px 0' }}>
+            Sarkari <span style={{ color: '#dc2626' }}>Success</span>
+          </h1>
+          <p style={{ color: '#666', fontSize: '14px', marginBottom: '24px' }}>Admin Panel — Restricted Access</p>
+          <input
+            type="password"
+            placeholder="Enter admin password"
+            value={passwordInput}
+            onChange={(e) => setPasswordInput(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
+            style={{ width: '100%', padding: '12px', border: '2px solid #1e3a8a', borderRadius: '8px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box', marginBottom: '12px' }}
+          />
+          {passwordError && <p style={{ color: '#dc2626', fontSize: '13px', marginBottom: '12px' }}>{passwordError}</p>}
+          <button
+            onClick={handleLogin}
+            style={{ width: '100%', padding: '12px', backgroundColor: '#1e3a8a', color: 'white', border: 'none', borderRadius: '8px', fontSize: '15px', fontWeight: 'bold', cursor: 'pointer' }}
+          >
+            Login to Admin
+          </button>
+        </div>
+      </main>
+    );
+  }    return (
+      <main style={{ minHeight: '100vh', backgroundColor: '#f4f6f9', fontFamily: 'Arial, sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ backgroundColor: 'white', padding: '40px', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', width: '100%', maxWidth: '400px', textAlign: 'center' }}>
+          <h1 style={{ fontSize: '24px', fontWeight: 'bold', color: '#1e3a8a', margin: '0 0 8px 0' }}>
+            Sarkari <span style={{ color: '#dc2626' }}>Success</span>
+          </h1>
+          <p style={{ color: '#666', fontSize: '14px', marginBottom: '24px' }}>Admin Panel — Restricted Access</p>
+          <input type="password" placeholder="Enter admin password" value={passwordInput}
+            onChange={(e) => setPasswordInput(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
+            style={{ width: '100%', padding: '12px', border: '2px solid #1e3a8a', borderRadius: '8px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box', marginBottom: '12px' }}
+          />
+          {passwordError && <p style={{ color: '#dc2626', fontSize: '13px', marginBottom: '12px' }}>{passwordError}</p>}
+          <button onClick={handleLogin}
+            style={{ width: '100%', padding: '12px', backgroundColor: '#1e3a8a', color: 'white', border: 'none', borderRadius: '8px', fontSize: '15px', fontWeight: 'bold', cursor: 'pointer' }}>
+            Login to Admin
+          </button>
+        </div>
+      </main>
+    );
+  }
   return (
     <main style={{ minHeight: '100vh', backgroundColor: '#f4f6f9', fontFamily: 'Arial, sans-serif' }}>
 
