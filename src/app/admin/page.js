@@ -1,8 +1,170 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const categories = ["SSC", "Railway", "UPSC", "Banking", "Defence", "Police", "Teaching", "State PSC", "Others"];
 
+function EditStateJob() {
+  const [jobs, setJobs] = useState([]);
+  const [selectedJob, setSelectedJob] = useState(null);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetch('/api/state-jobs?limit=100')
+      .then(res => res.json())
+      .then(data => setJobs(data.jobs || []));
+  }, []);
+
+  const handleSelect = (job) => {
+    setSelectedJob({ ...job });
+    setMessage("");
+    setError("");
+  };
+
+  const handleUpdate = async () => {
+    setLoading(true);
+    setError("");
+    setMessage("");
+    try {
+      const response = await fetch('/api/state-jobs', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(selectedJob),
+      });
+      const data = await response.json();
+      if (data.error) {
+        setError(data.error);
+      } else {
+        setMessage('Job updated successfully!');
+        const updated = await fetch('/api/state-jobs?limit=100').then(r => r.json());
+        setJobs(updated.jobs || []);
+      }
+    } catch (error) {
+      setError('Something went wrong.');
+    }
+    setLoading(false);
+  };
+
+  return (
+    <div>
+      <h2 style={{ color: '#1e3a8a', margin: '0 0 20px 0' }}>Edit State Job</h2>
+
+      {!selectedJob ? (
+        <div>
+          <p style={{ color: '#666', fontSize: '14px', marginBottom: '16px' }}>Select a job to edit:</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '500px', overflowY: 'auto' }}>
+            {jobs.map((job, i) => (
+              <div key={i}
+                onClick={() => handleSelect(job)}
+                style={{ padding: '12px 16px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e5e7eb', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+              >
+                <div>
+                  <p style={{ margin: 0, fontWeight: 'bold', color: '#1e3a8a', fontSize: '14px' }}>{job.title}</p>
+                  <p style={{ margin: 0, color: '#666', fontSize: '12px' }}>{job.state} — {job.category}</p>
+                </div>
+                <span style={{ backgroundColor: '#1e3a8a', color: 'white', padding: '4px 12px', borderRadius: '6px', fontSize: '12px' }}>Edit</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div>
+          <button
+            onClick={() => setSelectedJob(null)}
+            style={{ backgroundColor: 'transparent', border: '2px solid #1e3a8a', color: '#1e3a8a', padding: '6px 14px', borderRadius: '6px', fontSize: '13px', cursor: 'pointer', marginBottom: '20px' }}
+          >
+            ← Back to List
+          </button>
+
+          {message && <div style={{ backgroundColor: '#dcfce7', color: '#16a34a', padding: '12px', borderRadius: '8px', marginBottom: '16px', fontSize: '14px' }}>{message}</div>}
+          {error && <div style={{ backgroundColor: '#fee2e2', color: '#dc2626', padding: '12px', borderRadius: '8px', marginBottom: '16px', fontSize: '14px' }}>{error}</div>}
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            {[
+              { label: 'Title (English)', key: 'title' },
+              { label: 'Title (Local)', key: 'title_local' },
+              { label: 'Organization', key: 'org' },
+              { label: 'Organization (Local)', key: 'org_local' },
+              { label: 'Vacancies', key: 'vacancies' },
+              { label: 'Last Date', key: 'last_date' },
+              { label: 'Exam Date', key: 'exam_date' },
+              { label: 'Salary', key: 'salary' },
+              { label: 'Apply Link', key: 'apply_link' },
+              { label: 'Notification Link', key: 'notification_link' },
+            ].map((field, i) => (
+              <div key={i}>
+                <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>{field.label}</label>
+                <input
+                  type="text"
+                  value={selectedJob[field.key] || ''}
+                  onChange={(e) => setSelectedJob(prev => ({ ...prev, [field.key]: e.target.value }))}
+                  style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box' }}
+                />
+              </div>
+            ))}
+
+            <div style={{ gridColumn: '1 / -1' }}>
+              <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Description (English)</label>
+              <textarea
+                value={selectedJob.description || ''}
+                onChange={(e) => setSelectedJob(prev => ({ ...prev, description: e.target.value }))}
+                rows={3}
+                style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box', resize: 'vertical' }}
+              />
+            </div>
+
+            <div style={{ gridColumn: '1 / -1' }}>
+              <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Description (Local Language)</label>
+              <textarea
+                value={selectedJob.description_local || ''}
+                onChange={(e) => setSelectedJob(prev => ({ ...prev, description_local: e.target.value }))}
+                rows={3}
+                style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box', resize: 'vertical' }}
+              />
+            </div>
+
+            <div style={{ gridColumn: '1 / -1' }}>
+              <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Eligibility</label>
+              <textarea
+                value={selectedJob.eligibility || ''}
+                onChange={(e) => setSelectedJob(prev => ({ ...prev, eligibility: e.target.value }))}
+                rows={2}
+                style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box', resize: 'vertical' }}
+              />
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <input
+                type="checkbox"
+                checked={selectedJob.is_new || false}
+                onChange={(e) => setSelectedJob(prev => ({ ...prev, is_new: e.target.checked }))}
+              />
+              <label style={{ fontSize: '14px', color: '#444' }}>Mark as NEW</label>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <input
+                type="checkbox"
+                checked={selectedJob.is_active || false}
+                onChange={(e) => setSelectedJob(prev => ({ ...prev, is_active: e.target.checked }))}
+              />
+              <label style={{ fontSize: '14px', color: '#444' }}>Active (visible on site)</label>
+            </div>
+          </div>
+
+          <button
+            onClick={handleUpdate}
+            disabled={loading}
+            style={{ marginTop: '20px', width: '100%', padding: '14px', backgroundColor: '#1e3a8a', color: 'white', border: 'none', borderRadius: '8px', fontSize: '15px', fontWeight: 'bold', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1 }}
+          >
+            {loading ? 'Updating...' : '✏️ Update Job'}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
 function StateJobForm() {
   const statesList = [
     { code: "BR", name: "Bihar", language: "Hindi" },
@@ -330,10 +492,11 @@ export default function AdminPage() {
 
       {/* Tabs */}
       <div style={{ backgroundColor: 'white', borderBottom: '1px solid #e5e7eb', padding: '0 24px', display: 'flex', gap: '0' }}>
-        {[
+       {[
           { id: 'addjob', label: '➕ Add Job' },
           { id: 'addresult', label: '📊 Add Result' },
           { id: 'addstatejob', label: '🗺️ Add State Job' },
+          { id: 'editstatejob', label: '✏️ Edit State Job' },
           { id: 'questions', label: '📝 Generate Questions' },
         ].map((tab) => (
           <button
@@ -659,6 +822,10 @@ export default function AdminPage() {
 
             <StateJobForm />
           </div>
+        )}
+        {/* Edit State Job Tab */}
+        {activeTab === 'editstatejob' && (
+          <EditStateJob />
         )}
         {/* Generate Questions Tab */}
         {activeTab === 'questions' && (

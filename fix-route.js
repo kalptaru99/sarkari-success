@@ -1,4 +1,5 @@
-import pool from "@/lib/db.js";
+const fs = require("fs");
+const code = `import pool from "@/lib/db.js";
 
 export async function GET(request) {
   try {
@@ -43,4 +44,6 @@ export async function PUT(request) {
   } catch (error) {
     return Response.json({ error: "Something went wrong" }, { status: 500 });
   }
-}
+}`;
+fs.writeFileSync("src/app/api/state-jobs/route.js", code);
+console.log("done");
