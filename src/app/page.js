@@ -251,6 +251,11 @@ export default function Home() {
           </div>
           <div style={{ borderTop: '1px solid rgba(255,255,255,0.2)', paddingTop: '16px', textAlign: 'center', fontSize: '12px', color: '#93c5fd' }}>
             2026 Sarkari Success. All rights reserved. sarkarisuccess.com
+            <div style={{ marginTop: '8px', display: 'flex', justifyContent: 'center', gap: '20px' }}>
+              <a href="/privacy" style={{ color: '#93c5fd', textDecoration: 'none' }}>Privacy Policy</a>
+              <a href="/terms" style={{ color: '#93c5fd', textDecoration: 'none' }}>Terms of Service</a>
+              <a href="/sarkarigpt" style={{ color: '#93c5fd', textDecoration: 'none' }}>SarkariGPT</a>
+            </div>
           </div>
         </div>
       </footer>
