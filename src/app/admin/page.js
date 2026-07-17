@@ -3,6 +3,221 @@ import { useState } from "react";
 
 const categories = ["SSC", "Railway", "UPSC", "Banking", "Defence", "Police", "Teaching", "State PSC", "Others"];
 
+function StateJobForm() {
+  const statesList = [
+    { code: "BR", name: "Bihar", language: "Hindi" },
+    { code: "UP", name: "Uttar Pradesh", language: "Hindi" },
+    { code: "RJ", name: "Rajasthan", language: "Hindi" },
+    { code: "MP", name: "Madhya Pradesh", language: "Hindi" },
+    { code: "JH", name: "Jharkhand", language: "Hindi" },
+    { code: "HR", name: "Haryana", language: "Hindi" },
+    { code: "UK", name: "Uttarakhand", language: "Hindi" },
+    { code: "HP", name: "Himachal Pradesh", language: "Hindi" },
+    { code: "CG", name: "Chhattisgarh", language: "Hindi" },
+    { code: "TN", name: "Tamil Nadu", language: "Tamil" },
+    { code: "AP", name: "Andhra Pradesh", language: "Telugu" },
+    { code: "TS", name: "Telangana", language: "Telugu" },
+    { code: "KL", name: "Kerala", language: "Malayalam" },
+    { code: "KA", name: "Karnataka", language: "Kannada" },
+    { code: "MH", name: "Maharashtra", language: "Marathi" },
+    { code: "WB", name: "West Bengal", language: "Bengali" },
+    { code: "GJ", name: "Gujarat", language: "Gujarati" },
+    { code: "OD", name: "Odisha", language: "Odia" },
+    { code: "PB", name: "Punjab", language: "Punjabi" },
+    { code: "AS", name: "Assam", language: "Assamese" },
+  ];
+
+  const [form, setForm] = useState({
+    title: "", title_local: "", org: "", org_local: "",
+    state: "Bihar", state_code: "BR", language: "Hindi",
+    vacancies: "", last_date: "", exam_date: "", salary: "",
+    eligibility: "", eligibility_local: "", description: "",
+    description_local: "", apply_link: "", notification_link: "",
+    category: "State PSC", slug: "",
+  });
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleStateChange = (e) => {
+    const selected = statesList.find(s => s.code === e.target.value);
+    setForm(prev => ({ ...prev, state: selected.name, state_code: selected.code, language: selected.language }));
+  };
+
+  const generateSlug = (title) => title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+  const handleSubmit = async () => {
+    if (!form.title || !form.org || !form.slug) {
+      setError("Title, org and slug are required");
+      return;
+    }
+    setLoading(true);
+    setError("");
+    setMessage("");
+    try {
+      const response = await fetch("/api/state-jobs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await response.json();
+      if (data.error) {
+        setError(data.error);
+      } else {
+        setMessage("State job added successfully!");
+        setForm({ title: "", title_local: "", org: "", org_local: "", state: "Bihar", state_code: "BR", language: "Hindi", vacancies: "", last_date: "", exam_date: "", salary: "", eligibility: "", eligibility_local: "", description: "", description_local: "", apply_link: "", notification_link: "", category: "State PSC", slug: "" });
+      }
+    } catch (error) {
+      setError("Something went wrong.");
+    }
+    setLoading(false);
+  };
+
+  return (
+    <div>
+      {message && <div style={{ backgroundColor: '#dcfce7', color: '#16a34a', padding: '12px', borderRadius: '8px', marginBottom: '16px', fontSize: '14px' }}>{message}</div>}
+      {error && <div style={{ backgroundColor: '#fee2e2', color: '#dc2626', padding: '12px', borderRadius: '8px', marginBottom: '16px', fontSize: '14px' }}>{error}</div>}
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+
+        <div>
+          <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>State *</label>
+          <select value={form.state_code} onChange={handleStateChange}
+            style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a' }}>
+            {statesList.map((s, i) => <option key={i} value={s.code}>{s.name} </option>)}
+          </select>
+        </div>
+
+        <div>
+          <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Category</label>
+          <select value={form.category} onChange={(e) => setForm(prev => ({ ...prev, category: e.target.value }))}
+            style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a' }}>
+            {["State PSC", "State Police", "State TET", "State SSC", "State Court", "Others"].map((c, i) => <option key={i} value={c}>{c}</option>)}
+          </select>
+        </div>
+
+        <div style={{ gridColumn: '1 / -1' }}>
+          <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Job Title (English) *</label>
+          <input type="text" placeholder="e.g. BPSC 72nd CCE 2026 Recruitment"
+            value={form.title}
+            onChange={(e) => setForm(prev => ({ ...prev, title: e.target.value, slug: generateSlug(e.target.value) }))}
+            style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box' }}
+          />
+        </div>
+
+        <div style={{ gridColumn: '1 / -1' }}>
+          <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Job Title (Local Language)</label>
+          <input type="text" placeholder="e.g. बीपीएससी 72वीं संयुक्त प्रतियोगिता परीक्षा 2026"
+            value={form.title_local}
+            onChange={(e) => setForm(prev => ({ ...prev, title_local: e.target.value }))}
+            style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box' }}
+          />
+        </div>
+
+        <div style={{ gridColumn: '1 / -1' }}>
+          <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Slug *</label>
+          <input type="text" value={form.slug}
+            onChange={(e) => setForm(prev => ({ ...prev, slug: e.target.value }))}
+            style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box' }}
+          />
+          <p style={{ fontSize: '11px', color: '#888', margin: '4px 0 0 0' }}>URL: sarkarisuccess.com/state-jobs/{form.slug}</p>
+        </div>
+
+        <div>
+          <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Organization (English)</label>
+          <input type="text" placeholder="e.g. Bihar Public Service Commission"
+            value={form.org}
+            onChange={(e) => setForm(prev => ({ ...prev, org: e.target.value }))}
+            style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box' }}
+          />
+        </div>
+
+        <div>
+          <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Organization (Local Language)</label>
+          <input type="text" placeholder="e.g. बिहार लोक सेवा आयोग"
+            value={form.org_local}
+            onChange={(e) => setForm(prev => ({ ...prev, org_local: e.target.value }))}
+            style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box' }}
+          />
+        </div>
+
+        <div>
+          <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Vacancies</label>
+          <input type="text" placeholder="e.g. 1186"
+            value={form.vacancies}
+            onChange={(e) => setForm(prev => ({ ...prev, vacancies: e.target.value }))}
+            style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box' }}
+          />
+        </div>
+
+        <div>
+          <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Last Date</label>
+          <input type="text" placeholder="e.g. 31 May 2026 (Closed)"
+            value={form.last_date}
+            onChange={(e) => setForm(prev => ({ ...prev, last_date: e.target.value }))}
+            style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box' }}
+          />
+        </div>
+
+        <div>
+          <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Exam Date</label>
+          <input type="text" placeholder="e.g. 26 July 2026"
+            value={form.exam_date}
+            onChange={(e) => setForm(prev => ({ ...prev, exam_date: e.target.value }))}
+            style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box' }}
+          />
+        </div>
+
+        <div>
+          <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Salary</label>
+          <input type="text" placeholder="e.g. Rs 56,100 - Rs 1,77,500"
+            value={form.salary}
+            onChange={(e) => setForm(prev => ({ ...prev, salary: e.target.value }))}
+            style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box' }}
+          />
+        </div>
+
+        <div style={{ gridColumn: '1 / -1' }}>
+          <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Apply Link</label>
+          <input type="text" placeholder="e.g. https://bpsc.bih.nic.in"
+            value={form.apply_link}
+            onChange={(e) => setForm(prev => ({ ...prev, apply_link: e.target.value }))}
+            style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box' }}
+          />
+        </div>
+
+        <div style={{ gridColumn: '1 / -1' }}>
+          <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Description (English)</label>
+          <textarea placeholder="Brief description in English..."
+            value={form.description}
+            onChange={(e) => setForm(prev => ({ ...prev, description: e.target.value }))}
+            rows={3}
+            style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box', resize: 'vertical' }}
+          />
+        </div>
+
+        <div style={{ gridColumn: '1 / -1' }}>
+          <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Description (Local Language)</label>
+          <textarea placeholder="Local language description e.g. बीपीएससी 72वीं CCE 2026 अधिसूचना जारी..."
+            value={form.description_local}
+            onChange={(e) => setForm(prev => ({ ...prev, description_local: e.target.value }))}
+            rows={3}
+            style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box', resize: 'vertical' }}
+          />
+        </div>
+
+      </div>
+
+      <button
+        onClick={handleSubmit}
+        disabled={loading}
+        style={{ marginTop: '20px', width: '100%', padding: '14px', backgroundColor: '#1e3a8a', color: 'white', border: 'none', borderRadius: '8px', fontSize: '15px', fontWeight: 'bold', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1 }}
+      >
+        {loading ? 'Adding...' : '🗺️ Add State Job'}
+      </button>
+    </div>
+  );
+}
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState("addjob");
   const [resultForm, setResultForm] = useState({
@@ -118,6 +333,7 @@ export default function AdminPage() {
         {[
           { id: 'addjob', label: '➕ Add Job' },
           { id: 'addresult', label: '📊 Add Result' },
+          { id: 'addstatejob', label: '🗺️ Add State Job' },
           { id: 'questions', label: '📝 Generate Questions' },
         ].map((tab) => (
           <button
@@ -434,6 +650,14 @@ export default function AdminPage() {
             >
               {resultLoading ? 'Adding Result...' : '📊 Add Result'}
             </button>
+          </div>
+        )}
+        {/* Add State Job Tab */}
+        {activeTab === 'addstatejob' && (
+          <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '28px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
+            <h2 style={{ color: '#1e3a8a', margin: '0 0 24px 0' }}>Add State Job Notification</h2>
+
+            <StateJobForm />
           </div>
         )}
         {/* Generate Questions Tab */}
