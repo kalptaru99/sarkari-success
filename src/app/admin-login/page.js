@@ -24,7 +24,7 @@ export default function AdminLogin() {
       if (data.success) {
         router.push("/manage-ss-2026-xk9");
       } else {
-        setError("Wrong password. Try again.");
+        setError(data.error || "Wrong password. Try again.");
       }
     } catch (error) {
       setError("Something went wrong. Try again.");
