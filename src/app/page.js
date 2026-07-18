@@ -252,12 +252,22 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div style={{ borderTop: '1px solid rgba(255,255,255,0.2)', paddingTop: '16px', textAlign: 'center', fontSize: '12px', color: '#93c5fd' }}>
-            2026 Sarkari Success. All rights reserved. sarkarisuccess.com
-            <div style={{ marginTop: '8px', display: 'flex', justifyContent: 'center', gap: '20px' }}>
-              <a href="/privacy" style={{ color: '#93c5fd', textDecoration: 'none' }}>Privacy Policy</a>
-              <a href="/terms" style={{ color: '#93c5fd', textDecoration: 'none' }}>Terms of Service</a>
-              <a href="/sarkarigpt" style={{ color: '#93c5fd', textDecoration: 'none' }}>SarkariGPT</a>
+          <div style={{ borderTop: '1px solid rgba(255,255,255,0.2)', paddingTop: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+            <div style={{ textAlign: 'center', flex: 1 }}>
+              <p style={{ color: '#93c5fd', fontSize: '12px', margin: '0 0 8px 0' }}>2026 Sarkari Success. All rights reserved. sarkarisuccess.com</p>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
+                <a href="/privacy" style={{ color: '#93c5fd', textDecoration: 'none', fontSize: '12px' }}>Privacy Policy</a>
+                <a href="/terms" style={{ color: '#93c5fd', textDecoration: 'none', fontSize: '12px' }}>Terms of Service</a>
+                <a href="/sarkarigpt" style={{ color: '#93c5fd', textDecoration: 'none', fontSize: '12px' }}>SarkariGPT</a>
+              </div>
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <p style={{ color: '#93c5fd', fontSize: '11px', margin: '0 0 8px 0' }}>Scan to open on mobile</p>
+              <img
+                src={"https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://sarkarisuccess.com&color=ffffff&bgcolor=1e3a8a"}
+                alt="Sarkari Success QR Code"
+                style={{ width: '100px', height: '100px', borderRadius: '8px', border: '2px solid rgba(255,255,255,0.3)' }}
+              />
             </div>
           </div>
         </div>
