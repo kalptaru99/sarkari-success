@@ -59,12 +59,12 @@ export default function Home() {
           { label: 'Mock Test', href: '/mocktest' },
           { label: 'Question Bank', href: '/questions' },
           { label: 'SarkariGPT', href: '/sarkarigpt' },
-          { label: 'AI Coach', href: '/coach' },
+          { label: 'AI Coach', href: '/coach', color: '#4ade80' },
           { label: 'Daily Mission', href: '/mission' },
           { label: 'My Profile', href: '/profile' },
           { label: 'Dashboard', href: '/dashboard' },
         ].map((item, index) => (
-          <a key={index} href={item.href} style={{ color: 'white', textDecoration: 'none', fontSize: '13px', fontWeight: '500' }}>
+          <a key={index} href={item.href} style={{ color: item.color || 'white', textDecoration: 'none', fontSize: '13px', fontWeight: '500' }}>
             {item.label}
           </a>
         ))}
