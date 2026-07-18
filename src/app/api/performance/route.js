@@ -76,7 +76,9 @@ export async function GET(request) {
       profile: profile.rows[0] || null,
     };
 
-    const aiAnalysis = await client.messages.create({
+    const langNote = profile.rows[0]?.preferred_language && profile.rows[0]?.preferred_language !== 'English'
+      ? 'Respond in ' + profile.rows[0].preferred_language + ' language.'
+      : 'Respond in Hindi or English.';
       model: 'claude-sonnet-4-6',
       max_tokens: 2000,
       messages: [{
@@ -119,7 +121,7 @@ THIS WEEK'S PRIORITY
 IMPROVEMENT PREDICTION
 [If student follows the plan, what score improvement can they expect and in how many days]
 
-Be specific, data-driven, and encouraging. Use the actual numbers from the data.`
+Be specific, data-driven, and encouraging. Use the actual numbers from the data. ` + langNote
       }]
     });
 
