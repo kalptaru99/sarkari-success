@@ -36,12 +36,17 @@ export default function SarkariGPT() {
     setMessages(newMessages);
 
     try {
+      const profileRes = await fetch("/api/student-profile");
+      const profileData = await profileRes.json();
+      const preferredLanguage = profileData?.profile?.preferred_language || "Hindi";
+
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message: userMessage,
           history: messages.map(m => ({ role: m.role, content: m.content })),
+          preferredLanguage,
         }),
       });
 
