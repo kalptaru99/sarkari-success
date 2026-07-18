@@ -85,9 +85,11 @@ export default function Dashboard() {
         {/* Quick Actions */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px' }}>
           {[
-            { label: '🤖 Ask SarkariGPT', href: '/sarkarigpt', bg: '#1e3a8a' },
+            { label: '🎯 AI Selection Coach', href: '/coach', bg: '#1e3a8a' },
+            { label: '🤖 Ask SarkariGPT', href: '/sarkarigpt', bg: '#7c3aed' },
             { label: '📝 Take Mock Test', href: '/mocktest', bg: '#dc2626' },
             { label: '📚 Practice Questions', href: '/questions', bg: '#16a34a' },
+            { label: '⚙️ My Profile', href: '/profile', bg: '#ca8a04' },
             { label: '🏠 Back to Home', href: '/', bg: '#6b7280' },
           ].map((action, i) => (
             <a key={i} href={action.href} style={{ backgroundColor: action.bg, color: 'white', padding: '16px', borderRadius: '10px', textDecoration: 'none', fontWeight: 'bold', fontSize: '14px', textAlign: 'center', display: 'block' }}>
