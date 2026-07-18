@@ -59,6 +59,7 @@ export default function Home() {
           { label: 'Mock Test', href: '/mocktest' },
           { label: 'Question Bank', href: '/questions' },
           { label: 'SarkariGPT', href: '/sarkarigpt' },
+          { label: 'AI Coach', href: '/coach' },
           { label: 'Dashboard', href: '/dashboard' },
         ].map((item, index) => (
           <a key={index} href={item.href} style={{ color: 'white', textDecoration: 'none', fontSize: '13px', fontWeight: '500' }}>

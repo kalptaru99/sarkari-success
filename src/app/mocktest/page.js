@@ -55,16 +55,16 @@ export default function MockTestPage() {
     return questions.filter((q, i) => selectedAnswers[i] === q.correct_answer).length;
   };
 
-  const saveScore = async (score) => {
+   const saveScore = async (score) => {
     if (!session?.user) return;
     try {
-      await fetch('/api/save-result', {
+      await fetch('/api/mock-attempt', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           exam: selectedExam,
-          score,
-          total: questions.length,
+          questions: questions,
+          selectedAnswers: selectedAnswers,
           timeTaken: TOTAL_TIME - timeLeft,
         }),
       });
