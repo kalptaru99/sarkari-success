@@ -86,6 +86,7 @@ export default function Dashboard() {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px' }}>
           {[
             { label: '🎯 AI Selection Coach', href: '/coach', bg: '#1e3a8a' },
+            { label: '📅 Daily Mission', href: '/mission', bg: '#7c3aed' },
             { label: '🤖 Ask SarkariGPT', href: '/sarkarigpt', bg: '#7c3aed' },
             { label: '📝 Take Mock Test', href: '/mocktest', bg: '#dc2626' },
             { label: '📚 Practice Questions', href: '/questions', bg: '#16a34a' },
