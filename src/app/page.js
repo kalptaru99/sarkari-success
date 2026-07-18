@@ -60,6 +60,7 @@ export default function Home() {
           { label: 'Question Bank', href: '/questions' },
           { label: 'SarkariGPT', href: '/sarkarigpt' },
           { label: 'AI Coach', href: '/coach' },
+          { label: 'Daily Mission', href: '/mission' },
           { label: 'My Profile', href: '/profile' },
           { label: 'Dashboard', href: '/dashboard' },
         ].map((item, index) => (
