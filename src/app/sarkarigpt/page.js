@@ -1,20 +1,110 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 
-const suggestedQuestions = [
-  "SSC CGL 2026 eligibility criteria kya hai?",
-  "RRB NTPC syllabus in Hindi",
-  "UPSC preparation strategy for beginners",
-  "Banking exam me kaunse subject hote hain?",
-  "Railway Group D physical test details",
-  "SSC CGL vs IBPS PO which is better?",
-];
+const suggestedQuestionsByLanguage = {
+  "Hindi": [
+    "SSC CGL 2026 की पात्रता क्या है?",
+    "RRB NTPC का सिलेबस बताएं",
+    "UPSC की तैयारी कैसे शुरू करें?",
+    "बैंकिंग परीक्षा में कौन से विषय होते हैं?",
+    "Railway Group D की फिजिकल टेस्ट डिटेल्स",
+    "SSC CGL vs IBPS PO कौन बेहतर है?",
+  ],
+  "English": [
+    "SSC CGL 2026 eligibility criteria",
+    "RRB NTPC syllabus details",
+    "UPSC preparation strategy for beginners",
+    "Subjects in banking exams",
+    "Railway Group D physical test details",
+    "SSC CGL vs IBPS PO which is better?",
+  ],
+  "Tamil": [
+    "TNPSC Group 4 2026 தகுதி என்ன?",
+    "SSC CGL தேர்வு எப்படி தயாரிக்கணும்?",
+    "RRB NTPC பாடத்திட்டம் விவரங்கள்",
+    "வங்கி தேர்வுகளில் என்ன பாடங்கள் உள்ளன?",
+    "UPSC தேர்வு எப்படி படிக்கணும்?",
+    "அரசு வேலை சம்பளம் எவ்வளவு?",
+  ],
+  "Telugu": [
+    "APPSC Group 2 2026 అర్హతలు ఏమిటి?",
+    "SSC CGL పరీక్షకు ఎలా సిద్ధం కావాలి?",
+    "RRB NTPC సిలబస్ వివరాలు",
+    "బ్యాంకింగ్ పరీక్షలలో ఏ విషయాలు ఉంటాయి?",
+    "UPSC పరీక్షకు ఎలా చదవాలి?",
+    "ప్రభుత్వ ఉద్యోగ జీతం ఎంత?",
+  ],
+  "Malayalam": [
+    "Kerala PSC LDC 2026 യോഗ്യത എന്ത്?",
+    "SSC CGL പരീക്ഷക്ക് എങ്ങനെ തയ്യാറെടുക്കാം?",
+    "RRB NTPC സിലബസ് വിവരങ്ങൾ",
+    "ബാങ്കിംഗ് പരീക്ഷകളിൽ എന്ത് വിഷയങ്ങൾ?",
+    "UPSC പരീക്ഷക്ക് എങ്ങനെ പഠിക്കാം?",
+    "സർക്കാർ ജോലി ശമ്പളം എത്ര?",
+  ],
+  "Kannada": [
+    "KPSC 2026 ಅರ್ಹತೆ ಏನು?",
+    "SSC CGL ಪರೀಕ್ಷೆಗೆ ಹೇಗೆ ತಯಾರಾಗಬೇಕು?",
+    "RRB NTPC ಪಠ್ಯಕ್ರಮ ವಿವರಗಳು",
+    "ಬ್ಯಾಂಕಿಂಗ್ ಪರೀಕ್ಷೆಗಳಲ್ಲಿ ಯಾವ ವಿಷಯಗಳು?",
+    "UPSC ಪರೀಕ್ಷೆಗೆ ಹೇಗೆ ಓದಬೇಕು?",
+    "ಸರ್ಕಾರಿ ಉದ್ಯೋಗ ವೇತನ ಎಷ್ಟು?",
+  ],
+  "Marathi": [
+    "MPSC 2026 पात्रता काय आहे?",
+    "SSC CGL परीक्षेची तयारी कशी करावी?",
+    "RRB NTPC अभ्यासक्रम तपशील",
+    "बँकिंग परीक्षांमध्ये कोणते विषय असतात?",
+    "UPSC परीक्षेसाठी कसे अभ्यास करावे?",
+    "सरकारी नोकरीचा पगार किती असतो?",
+  ],
+  "Bengali": [
+    "WBPSC 2026 যোগ্যতা কী?",
+    "SSC CGL পরীক্ষার প্রস্তুতি কীভাবে নেব?",
+    "RRB NTPC সিলেবাস বিবরণ",
+    "ব্যাংকিং পরীক্ষায় কী কী বিষয় থাকে?",
+    "UPSC পরীক্ষার জন্য কীভাবে পড়ব?",
+    "সরকারি চাকরির বেতন কত?",
+  ],
+  "Gujarati": [
+    "GPSC 2026 લાયકાત શું છે?",
+    "SSC CGL પરીક્ષાની તૈયારી કેવી રીતે કરવી?",
+    "RRB NTPC અભ્યાસક્રમ વિગતો",
+    "બેંકિંગ પરીક્ષાઓમાં કયા વિષયો હોય છે?",
+    "UPSC પરીક્ષા માટે કેવી રીતે અભ્યાસ કરવો?",
+    "સરકારી નોકરીનો પગાર કેટલો?",
+  ],
+  "Odia": [
+    "OPSC 2026 ଯୋଗ୍ୟତା କ'ଣ?",
+    "SSC CGL ପରୀକ୍ଷା ପ୍ରସ୍ତୁତି କିପରି କରିବ?",
+    "RRB NTPC ପାଠ୍ୟକ୍ରମ ବିବରଣୀ",
+    "ବ୍ୟାଙ୍କିଂ ପରୀକ୍ଷାରେ କ'ଣ ବିଷୟ ଅଛି?",
+    "UPSC ପ୍ରସ୍ତୁତି କିପରି କରିବ?",
+    "ସରକାରୀ ଚାକିରିର ବେତନ କେତେ?",
+  ],
+  "Punjabi": [
+    "PPSC 2026 ਯੋਗਤਾ ਕੀ ਹੈ?",
+    "SSC CGL ਪ੍ਰੀਖਿਆ ਦੀ ਤਿਆਰੀ ਕਿਵੇਂ ਕਰੀਏ?",
+    "RRB NTPC ਸਿਲੇਬਸ ਵੇਰਵੇ",
+    "ਬੈਂਕਿੰਗ ਪ੍ਰੀਖਿਆਵਾਂ ਵਿੱਚ ਕਿਹੜੇ ਵਿਸ਼ੇ ਹੁੰਦੇ ਹਨ?",
+    "UPSC ਪ੍ਰੀਖਿਆ ਲਈ ਕਿਵੇਂ ਪੜ੍ਹੀਏ?",
+    "ਸਰਕਾਰੀ ਨੌਕਰੀ ਦੀ ਤਨਖਾਹ ਕਿੰਨੀ ਹੈ?",
+  ],
+  "Assamese": [
+    "APSC 2026 যোগ্যতা কি?",
+    "SSC CGL পৰীক্ষাৰ প্ৰস্তুতি কেনেকৈ লব?",
+    "RRB NTPC পাঠ্যক্ৰমৰ বিৱৰণ",
+    "বেংকিং পৰীক্ষাত কি কি বিষয় থাকে?",
+    "UPSC পৰীক্ষাৰ বাবে কেনেকৈ পঢ়িব?",
+    "চৰকাৰী চাকৰিৰ দৰমহা কিমান?",
+  ],
+};
 
 export default function SarkariGPT() {
   const [preferredLanguage, setPreferredLanguage] = useState("Hindi");
 
   const welcomeMessages = {
-    "Hindi": "Namaste! 🙏 Main SarkariGPT hoon — aapka AI career guide for government jobs. SSC, Railway, UPSC, Banking ya kisi bhi sarkari naukri ke baare mein poochein. Main Hindi aur English dono mein help kar sakta hoon!",
+    "Hindi": "नमस्ते! 🙏 मैं SarkariGPT हूँ — आपका AI करियर गाइड सरकारी नौकरियों के लिए। SSC, Railway, UPSC, Banking या किसी भी सरकारी नौकरी के बारे में पूछें। मैं हिंदी और English दोनों में मदद कर सकता हूँ!",
     "English": "Hello! 🙏 I am SarkariGPT — your AI career guide for government jobs. Ask me about SSC, Railway, UPSC, Banking or any government exam. I can help you in English and Hindi!",
     "Tamil": "வணக்கம்! 🙏 நான் SarkariGPT — உங்கள் AI தொழில் வழிகாட்டி. SSC, Railway, UPSC, Banking மற்றும் அனைத்து அரசு வேலை தேர்வுகள் பற்றி கேளுங்கள். தமிழிலும் ஆங்கிலத்திலும் உதவுவேன்!",
     "Telugu": "నమస్కారం! 🙏 నేను SarkariGPT — మీ AI కెరీర్ గైడ్. SSC, Railway, UPSC, Banking లేదా ఏదైనా ప్రభుత్వ ఉద్యోగం గురించి అడగండి. తెలుగు మరియు ఇంగ్లీష్ లో సహాయం చేస్తాను!",
@@ -37,6 +127,7 @@ export default function SarkariGPT() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
+  const suggestedQuestions = suggestedQuestionsByLanguage[preferredLanguage] || suggestedQuestionsByLanguage["Hindi"];
 
   useEffect(() => {
     fetch("/api/student-profile")
