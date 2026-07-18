@@ -42,7 +42,7 @@ export default function PrivacyPolicy() {
             },
             {
               title: "7. Your Rights",
-              content: "You have the right to access, update, or delete your personal data at any time. You can delete your account by contacting us at support@sarkarisuccess.com. We will process your request within 7 business days."
+              content: "You have the right to access, update, or delete your personal data at any time. You can delete your account by contacting us at contact.sarkarisuccess@gmail.com. We will process your request within 7 business days."
             },
             {
               title: "8. Children's Privacy",
@@ -54,7 +54,7 @@ export default function PrivacyPolicy() {
             },
             {
               title: "10. Contact Us",
-              content: "For privacy-related queries, contact us at support@sarkarisuccess.com or write to us at Sarkari Success, India."
+              content: "For privacy-related queries, contact us at contact.sarkarisuccess@gmail.com or write to us at Sarkari Success, India."
             },
           ].map((section, i) => (
             <div key={i} style={{ marginBottom: '24px' }}>

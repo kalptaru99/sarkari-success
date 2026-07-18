@@ -62,7 +62,7 @@ export default function TermsOfService() {
             },
             {
               title: "12. Contact",
-              content: "For questions about these Terms of Service, contact us at support@sarkarisuccess.com."
+              content: "For questions about these Terms of Service, contact us at contact.sarkarisuccess@gmail.com."
             },
           ].map((section, i) => (
             <div key={i} style={{ marginBottom: '24px' }}>
