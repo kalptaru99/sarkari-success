@@ -41,7 +41,7 @@ export default function Home() {
           <h1 style={{ fontSize: '28px', fontWeight: 'bold', color: '#1e3a8a', margin: 0 }}>
             Sarkari <span style={{ color: '#dc2626' }}>Success</span>
           </h1>
-          <p style={{ color: '#555', fontSize: '12px', margin: '2px 0 0 0' }}>AI-Powered Sarkari Naukri, Results and Exam Updates</p>
+          <p style={{ color: '#374151', fontSize: '12px', margin: '2px 0 0 0' }}>AI-Powered Sarkari Naukri, Results and Exam Updates</p>
         </div>
         <div style={{ display: 'flex', gap: '10px' }}>
           <a href="/login" style={{ padding: '8px 16px', border: '2px solid #1e3a8a', borderRadius: '6px', color: '#1e3a8a', textDecoration: 'none', fontSize: '13px', fontWeight: 'bold' }}>Login</a>
@@ -112,7 +112,7 @@ export default function Home() {
         ].map((stat, i) => (
           <div key={i} style={{ textAlign: 'center' }}>
             <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#1e3a8a' }}>{stat.value}</div>
-            <div style={{ fontSize: '12px', color: '#666' }}>{stat.label}</div>
+            <div style={{ fontSize: '12px', color: '#374151' }}>{stat.label}</div>
           </div>
         ))}
       </div><div style={{ maxWidth: '960px', margin: '0 auto', padding: '30px 20px' }}>
@@ -121,7 +121,7 @@ export default function Home() {
           <h2 style={{ fontSize: '22px', color: '#1e3a8a', margin: '0 0 16px 0' }}>Latest Sarkari Jobs</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {filteredJobs.length === 0 && searchQuery === '' && (
-              <div style={{ textAlign: 'center', padding: '40px', color: '#888', backgroundColor: 'white', borderRadius: '8px' }}>Loading jobs...</div>
+              <div style={{ textAlign: 'center', padding: '40px', color: '#4B5563', backgroundColor: 'white', borderRadius: '8px' }}>Loading jobs...</div>
             )}
             {filteredJobs.length === 0 && searchQuery !== '' && (
               <div style={{ textAlign: 'center', padding: '40px', color: '#888', backgroundColor: 'white', borderRadius: '8px' }}>No jobs found for "{searchQuery}"</div>
@@ -134,7 +134,7 @@ export default function Home() {
                     {job.is_new && <span style={{ backgroundColor: '#dc2626', color: 'white', fontSize: '10px', padding: '2px 6px', borderRadius: '4px', fontWeight: 'bold' }}>NEW</span>}
                   </div>
                   <p style={{ color: '#666', fontSize: '13px', margin: '0 0 4px 0' }}>{job.org}</p>
-                  <p style={{ color: '#444', fontSize: '12px', margin: 0 }}>
+                  <p style={{ color: '#1f2937', fontSize: '12px', margin: 0 }}>
                     Vacancies: <strong>{job.vacancies}</strong> | Last Date: <strong style={{ color: '#dc2626' }}>{job.last_date}</strong>
                   </p>
                 </div>
