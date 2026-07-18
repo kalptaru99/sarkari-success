@@ -11,15 +11,46 @@ const suggestedQuestions = [
 ];
 
 export default function SarkariGPT() {
+  const [preferredLanguage, setPreferredLanguage] = useState("Hindi");
+
+  const welcomeMessages = {
+    "Hindi": "Namaste! 🙏 Main SarkariGPT hoon — aapka AI career guide for government jobs. SSC, Railway, UPSC, Banking ya kisi bhi sarkari naukri ke baare mein poochein. Main Hindi aur English dono mein help kar sakta hoon!",
+    "English": "Hello! 🙏 I am SarkariGPT — your AI career guide for government jobs. Ask me about SSC, Railway, UPSC, Banking or any government exam. I can help you in English and Hindi!",
+    "Tamil": "வணக்கம்! 🙏 நான் SarkariGPT — உங்கள் AI தொழில் வழிகாட்டி. SSC, Railway, UPSC, Banking மற்றும் அனைத்து அரசு வேலை தேர்வுகள் பற்றி கேளுங்கள். தமிழிலும் ஆங்கிலத்திலும் உதவுவேன்!",
+    "Telugu": "నమస్కారం! 🙏 నేను SarkariGPT — మీ AI కెరీర్ గైడ్. SSC, Railway, UPSC, Banking లేదా ఏదైనా ప్రభుత్వ ఉద్యోగం గురించి అడగండి. తెలుగు మరియు ఇంగ్లీష్ లో సహాయం చేస్తాను!",
+    "Malayalam": "നമസ്കാരം! 🙏 ഞാൻ SarkariGPT — നിങ്ങളുടെ AI കരിയർ ഗൈഡ്. SSC, Railway, UPSC, Banking അല്ലെങ്കിൽ ഏതെങ്കിലും സർക്കാർ ജോലിയെ കുറിച്ച് ചോദിക്കൂ. മലയാളത്തിലും ഇംഗ്ലീഷിലും സഹായിക്കാം!",
+    "Kannada": "ನಮಸ್ಕಾರ! 🙏 ನಾನು SarkariGPT — ನಿಮ್ಮ AI ವೃತ್ತಿ ಮಾರ್ಗದರ್ಶಿ. SSC, Railway, UPSC, Banking ಅಥವಾ ಯಾವುದೇ ಸರ್ಕಾರಿ ಉದ್ಯೋಗದ ಬಗ್ಗೆ ಕೇಳಿ. ಕನ್ನಡ ಮತ್ತು ಇಂಗ್ಲಿಷ್‌ನಲ್ಲಿ ಸಹಾಯ ಮಾಡುತ್ತೇನೆ!",
+    "Marathi": "नमस्कार! 🙏 मी SarkariGPT — तुमचा AI करिअर गाइड. SSC, Railway, UPSC, Banking किंवा कोणत्याही सरकारी नोकरीबद्दल विचारा. मराठी आणि इंग्रजीत मदत करेन!",
+    "Bengali": "নমস্কার! 🙏 আমি SarkariGPT — আপনার AI ক্যারিয়ার গাইড। SSC, Railway, UPSC, Banking বা যেকোনো সরকারি চাকরি সম্পর্কে জিজ্ঞেস করুন। বাংলা ও ইংরেজিতে সাহায্য করব!",
+    "Gujarati": "નમસ્તે! 🙏 હું SarkariGPT — તમારો AI કારકિર્દી માર્ગદર્શક. SSC, Railway, UPSC, Banking અથવા કોઈ પણ સરકારી નોકરી વિશે પૂછો. ગુજરાતી અને અંગ્રેજીમાં મદદ કરીશ!",
+    "Odia": "ନମସ୍କାର! 🙏 ମୁଁ SarkariGPT — ଆପଣଙ୍କ AI କ୍ୟାରିୟର ଗାଇଡ୍। SSC, Railway, UPSC, Banking ବା ଯେକୌଣସି ସରକାରୀ ଚାକିରି ବିଷୟରେ ପଚାରନ୍ତୁ। ଓଡ଼ିଆ ଓ ଇଂରାଜୀରେ ସାହାଯ୍ୟ କରିବି!",
+    "Punjabi": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ! 🙏 ਮੈਂ SarkariGPT — ਤੁਹਾਡਾ AI ਕਰੀਅਰ ਗਾਈਡ। SSC, Railway, UPSC, Banking ਜਾਂ ਕਿਸੇ ਵੀ ਸਰਕਾਰੀ ਨੌਕਰੀ ਬਾਰੇ ਪੁੱਛੋ। ਪੰਜਾਬੀ ਅਤੇ ਅੰਗਰੇਜ਼ੀ ਵਿੱਚ ਮਦਦ ਕਰਾਂਗਾ!",
+    "Assamese": "নমস্কাৰ! 🙏 মই SarkariGPT — আপোনাৰ AI কেৰিয়াৰ গাইড। SSC, Railway, UPSC, Banking বা যিকোনো চৰকাৰী চাকৰিৰ বিষয়ে সুধিব। অসমীয়া আৰু ইংৰাজীত সহায় কৰিম!",
+  };
+
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      content: "Namaste! 🙏 Main SarkariGPT hoon — aapka AI career guide for government jobs. SSC, Railway, UPSC, Banking ya kisi bhi sarkari naukri ke baare mein poochein. Main Hindi aur English dono mein help kar sakta hoon!",
+      content: welcomeMessages["Hindi"],
     },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    fetch("/api/student-profile")
+      .then(res => res.json())
+      .then(data => {
+        const lang = data?.profile?.preferred_language || "Hindi";
+        setPreferredLanguage(lang);
+        setMessages([{
+          role: "assistant",
+          content: welcomeMessages[lang] || welcomeMessages["Hindi"],
+        }]);
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
