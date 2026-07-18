@@ -27,31 +27,17 @@ export async function GET(request) {
     const userName = userResult.rows[0].name;
 
     const attempts = await pool.query(
-      `SELECT * FROM mock_attempts WHERE user_id = $1 ORDER BY created_at DESC LIMIT 10`,
+      'SELECT * FROM mock_attempts WHERE user_id = $1 ORDER BY created_at DESC LIMIT 10',
       [userId]
     );
 
     const subjectPerformance = await pool.query(
-      `SELECT 
-        subject,
-        COUNT(*) as total_questions,
-        SUM(CASE WHEN is_correct THEN 1 ELSE 0 END) as correct,
-        SUM(CASE WHEN NOT is_correct AND NOT is_unattempted THEN 1 ELSE 0 END) as wrong,
-        SUM(CASE WHEN is_unattempted THEN 1 ELSE 0 END) as unattempted,
-        ROUND(AVG(CASE WHEN is_correct THEN 100.0 ELSE 0 END), 1) as accuracy
-       FROM question_attempts 
-       WHERE user_id = $1
-       GROUP BY subject
-       ORDER BY accuracy ASC`,
+      'SELECT subject, COUNT(*) as total_questions, SUM(CASE WHEN is_correct THEN 1 ELSE 0 END) as correct, SUM(CASE WHEN NOT is_correct AND NOT is_unattempted THEN 1 ELSE 0 END) as wrong, SUM(CASE WHEN is_unattempted THEN 1 ELSE 0 END) as unattempted, ROUND(AVG(CASE WHEN is_correct THEN 100.0 ELSE 0 END), 1) as accuracy FROM question_attempts WHERE user_id = $1 GROUP BY subject ORDER BY accuracy ASC',
       [userId]
     );
 
     const mistakeBank = await pool.query(
-      `SELECT subject, COUNT(*) as mistake_count
-       FROM mistake_bank
-       WHERE user_id = $1 AND is_resolved = false
-       GROUP BY subject
-       ORDER BY mistake_count DESC`,
+      'SELECT subject, COUNT(*) as mistake_count FROM mistake_bank WHERE user_id = $1 AND is_resolved = false GROUP BY subject ORDER BY mistake_count DESC',
       [userId]
     );
 
@@ -79,49 +65,47 @@ export async function GET(request) {
     const langNote = profile.rows[0]?.preferred_language && profile.rows[0]?.preferred_language !== 'English'
       ? 'Respond in ' + profile.rows[0].preferred_language + ' language.'
       : 'Respond in Hindi or English.';
+
+    const prompt = 'You are an AI Selection Coach for Indian government exam aspirants.\n\n'
+      + 'Analyze this student performance data and provide a detailed actionable report.\n\n'
+      + 'Student: ' + userName + '\n'
+      + 'Total Mock Tests Taken: ' + performanceData.totalMocks + '\n\n'
+      + 'Recent Mock Scores:\n'
+      + performanceData.recentAttempts.map(function(a) {
+          return '- ' + a.exam + ': ' + a.correct + '/' + a.total_questions + ' correct, ' + a.wrong + ' wrong, ' + a.unattempted + ' unattempted (' + Math.round((a.correct/a.total_questions)*100) + '%)';
+        }).join('\n')
+      + '\n\nSubject-wise Performance:\n'
+      + performanceData.subjectPerformance.map(function(s) {
+          return '- ' + s.subject + ': ' + s.accuracy + '% accuracy, ' + s.correct + ' correct, ' + s.wrong + ' wrong out of ' + s.total_questions + ' questions';
+        }).join('\n')
+      + '\n\nMistake Bank (repeated mistakes):\n'
+      + performanceData.mistakeBank.map(function(m) {
+          return '- ' + m.subject + ': ' + m.mistake_count + ' repeated mistakes';
+        }).join('\n')
+      + '\n\nProvide analysis in this exact format with no asterisks or special characters:\n\n'
+      + 'OVERALL ASSESSMENT\n'
+      + '[2-3 sentences about overall performance trend]\n\n'
+      + 'TOP 3 WEAKNESSES\n'
+      + '1. [Subject/Topic]: [specific problem and evidence from data]\n'
+      + '2. [Subject/Topic]: [specific problem and evidence from data]\n'
+      + '3. [Subject/Topic]: [specific problem and evidence from data]\n\n'
+      + 'TODAY\'S ACTION PLAN\n'
+      + '1. [Specific task with time estimate]\n'
+      + '2. [Specific task with time estimate]\n'
+      + '3. [Specific task with time estimate]\n'
+      + '4. [Specific task with time estimate]\n\n'
+      + 'THIS WEEK\'S PRIORITY\n'
+      + '[Most important thing to focus on this week with reason]\n\n'
+      + 'IMPROVEMENT PREDICTION\n'
+      + '[If student follows the plan, what score improvement can they expect and in how many days]\n\n'
+      + 'Be specific, data-driven, and encouraging. Use the actual numbers from the data. ' + langNote;
+
+    const aiAnalysis = await client.messages.create({
       model: 'claude-sonnet-4-6',
       max_tokens: 2000,
       messages: [{
         role: 'user',
-        content: `You are an AI Selection Coach for Indian government exam aspirants.
-
-Analyze this student's performance data and provide a detailed, actionable report.
-
-Student: ${userName}
-Total Mock Tests Taken: ${performanceData.totalMocks}
-
-Recent Mock Scores:
-${performanceData.recentAttempts.map(a => `- ${a.exam}: ${a.correct}/${a.total_questions} correct, ${a.wrong} wrong, ${a.unattempted} unattempted (${Math.round((a.correct/a.total_questions)*100)}%)`).join('\n')}
-
-Subject-wise Performance:
-${performanceData.subjectPerformance.map(s => `- ${s.subject}: ${s.accuracy}% accuracy, ${s.correct} correct, ${s.wrong} wrong out of ${s.total_questions} questions`).join('\n')}
-
-Mistake Bank (repeated mistakes):
-${performanceData.mistakeBank.map(m => `- ${m.subject}: ${m.mistake_count} repeated mistakes`).join('\n')}
-
-Provide analysis in this exact format with no asterisks or special characters:
-
-OVERALL ASSESSMENT
-[2-3 sentences about overall performance trend]
-
-TOP 3 WEAKNESSES
-1. [Subject/Topic]: [specific problem and evidence from data]
-2. [Subject/Topic]: [specific problem and evidence from data]  
-3. [Subject/Topic]: [specific problem and evidence from data]
-
-TODAY'S ACTION PLAN
-1. [Specific task with time estimate]
-2. [Specific task with time estimate]
-3. [Specific task with time estimate]
-4. [Specific task with time estimate]
-
-THIS WEEK'S PRIORITY
-[Most important thing to focus on this week with reason]
-
-IMPROVEMENT PREDICTION
-[If student follows the plan, what score improvement can they expect and in how many days]
-
-Be specific, data-driven, and encouraging. Use the actual numbers from the data. ` + langNote
+        content: prompt,
       }]
     });
 
