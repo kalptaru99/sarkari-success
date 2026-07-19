@@ -129,9 +129,15 @@ export default function SarkariGPT() {
   const messagesEndRef = useRef(null);
   const [isListening, setIsListening] = useState(false);
 
-  const startVoice = () => {
+  const startVoice = async () => {
+    try {
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (err) {
+      alert('Please allow microphone access to use voice search.');
+      return;
+    }
     if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-      alert('Voice search not supported. Please use Chrome.');
+      alert('Voice search not supported. Please use Chrome browser.');
       return;
     }
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -141,7 +147,16 @@ export default function SarkariGPT() {
     recognition.interimResults = false;
     recognition.onstart = () => setIsListening(true);
     recognition.onend = () => setIsListening(false);
-    recognition.onerror = () => setIsListening(false);
+    recognition.onerror = (event) => {
+      setIsListening(false);
+      if (event.error === 'not-allowed') {
+        alert('Microphone access denied. Please allow it in Chrome settings.');
+      } else if (event.error === 'no-speech') {
+        alert('No speech detected. Please try again.');
+      } else {
+        alert('Voice error: ' + event.error);
+      }
+    };
     recognition.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
       setInput(transcript);
