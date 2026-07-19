@@ -134,10 +134,7 @@ export default function SarkariGPT() {
       .then(data => {
         const lang = data?.profile?.preferred_language || "Hindi";
         setPreferredLanguage(lang);
-        setMessages([{
-          role: "assistant",
-          content: welcomeMessages[lang] || welcomeMessages["Hindi"],
-        }]);
+        setMessages([{ role: "assistant", content: welcomeMessages[lang] || welcomeMessages["Hindi"] }]);
       })
       .catch(() => {});
   }, []);
@@ -175,7 +172,6 @@ export default function SarkariGPT() {
         alert('Voice error: ' + event.error + '. Please try again.');
       }
     };
-    };
     recognition.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
       setInput(transcript);
@@ -209,15 +205,9 @@ export default function SarkariGPT() {
         }),
       });
       const data = await response.json();
-      setMessages(prev => [...prev, {
-        role: "assistant",
-        content: data.reply || data.error,
-      }]);
+      setMessages(prev => [...prev, { role: "assistant", content: data.reply || data.error }]);
     } catch (error) {
-      setMessages(prev => [...prev, {
-        role: "assistant",
-        content: "Sorry, kuch problem aa gayi. Please dobara try karein.",
-      }]);
+      setMessages(prev => [...prev, { role: "assistant", content: "Sorry, kuch problem aa gayi. Please dobara try karein." }]);
     }
     setLoading(false);
   };
@@ -230,9 +220,7 @@ export default function SarkariGPT() {
           <h1 style={{ color: 'white', fontSize: '22px', fontWeight: 'bold', margin: 0 }}>
             Sarkari<span style={{ color: '#fca5a5' }}>GPT</span>
           </h1>
-          <p style={{ color: '#93c5fd', fontSize: '12px', margin: '2px 0 0 0' }}>
-            AI-Powered Govt Job Career Guide
-          </p>
+          <p style={{ color: '#93c5fd', fontSize: '12px', margin: '2px 0 0 0' }}>AI-Powered Govt Job Career Guide</p>
         </div>
         <a href="/" style={{ color: 'white', fontSize: '13px', textDecoration: 'none' }}>← Home</a>
       </div>
@@ -266,7 +254,6 @@ export default function SarkariGPT() {
             )}
           </div>
         ))}
-
         {loading && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
             <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: '#1e3a8a', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px' }}>🤖</div>
@@ -291,19 +278,9 @@ export default function SarkariGPT() {
             onKeyDown={(e) => e.key === 'Enter' && !loading && sendMessage()}
             placeholder="SSC, Railway, UPSC ke baare mein poochein..."
             style={{ flex: 1, padding: '12px 16px', borderRadius: '25px', border: '2px solid #e5e7eb', fontSize: '14px', outline: 'none', color: '#1a1a1a' }}
-            x-webkit-speech="true"
-            speech="true"
           />
           <button
-            onClick={() => {
-              const input = document.querySelector('input[type="text"]');
-              if (input) {
-                input.focus();
-                const event = new MouseEvent('click', { bubbles: true });
-                input.dispatchEvent(event);
-              }
-              startVoice();
-            }}
+            onClick={startVoice}
             style={{ padding: '0', borderRadius: '50%', border: 'none', backgroundColor: isListening ? '#dc2626' : 'white', boxShadow: isListening ? '0 0 0 4px rgba(220,38,38,0.2)' : '0 1px 4px rgba(0,0,0,0.2)', cursor: 'pointer', flexShrink: 0, width: '46px', height: '46px', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }}
             title={isListening ? 'Listening...' : 'Speak your question'}
           >
