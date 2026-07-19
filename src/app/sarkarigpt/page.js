@@ -169,15 +169,7 @@ export default function SarkariGPT() {
     recognition.onend = () => setIsListening(false);
     recognition.onerror = (event) => {
       setIsListening(false);
-      if (event.error === 'not-allowed') {
-        alert('Microphone permission denied. Go to Chrome Settings > Site Settings > Microphone and allow sarkarisuccess.com');
-      } else if (event.error === 'no-speech') {
-        alert('No speech detected. Please speak clearly and try again.');
-      } else if (event.error === 'network') {
-        alert('Network error. Please check your internet connection.');
-      } else {
-        alert('Voice error: ' + event.error + '. Please try again.');
-      }
+      alert('Voice error code: ' + event.error);
     };
     recognition.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
