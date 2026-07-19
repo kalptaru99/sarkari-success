@@ -82,7 +82,7 @@ export default function Home() {
           <span style={{ color: '#fbbf24', fontSize: '14px', fontWeight: 'bold' }}>🤖 India's First AI-Powered Sarkari Career Companion</span>
         </div>
         <h2 style={{ color: 'white', fontSize: '36px', fontWeight: '800', margin: '0 0 8px 0', lineHeight: '1.2' }}>
-          Find Your Sarkari Naukri with AI
+          Find Your Sarkari Success with AI
         </h2>
         <p style={{ color: '#bfdbfe', fontSize: '18px', margin: '0 0 8px 0' }}>
           SSC • Railway • UPSC • Banking • State PSC
