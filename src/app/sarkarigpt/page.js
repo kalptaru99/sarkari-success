@@ -102,6 +102,10 @@ const suggestedQuestionsByLanguage = {
 
 export default function SarkariGPT() {
   const [preferredLanguage, setPreferredLanguage] = useState("Hindi");
+  const [isListening, setIsListening] = useState(false);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const messagesEndRef = useRef(null);
 
   const welcomeMessages = {
     "Hindi": "नमस्ते! 🙏 मैं SarkariGPT हूँ — आपका AI करियर गाइड सरकारी नौकरियों के लिए। SSC, Railway, UPSC, Banking या किसी भी सरकारी नौकरी के बारे में पूछें। मैं हिंदी और English दोनों में मदद कर सकता हूँ!",
@@ -119,51 +123,9 @@ export default function SarkariGPT() {
   };
 
   const [messages, setMessages] = useState([
-    {
-      role: "assistant",
-      content: welcomeMessages["Hindi"],
-    },
+    { role: "assistant", content: welcomeMessages["Hindi"] },
   ]);
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
-  const messagesEndRef = useRef(null);
-  const [isListening, setIsListening] = useState(false);
 
-  const startVoice = async () => {
-    try {
-      await navigator.mediaDevices.getUserMedia({ audio: true });
-    } catch (err) {
-      alert('Please allow microphone access to use voice search.');
-      return;
-    }
-    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-      alert('Voice search not supported. Please use Chrome browser.');
-      return;
-    }
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    const recognition = new SpeechRecognition();
-    recognition.lang = 'hi-IN';
-    recognition.continuous = false;
-    recognition.interimResults = false;
-    recognition.onstart = () => setIsListening(true);
-    recognition.onend = () => setIsListening(false);
-    recognition.onerror = (event) => {
-      setIsListening(false);
-      if (event.error === 'not-allowed') {
-        alert('Microphone access denied. Please allow it in Chrome settings.');
-      } else if (event.error === 'no-speech') {
-        alert('No speech detected. Please try again.');
-      } else {
-        alert('Voice error: ' + event.error);
-      }
-    };
-    recognition.onresult = (event) => {
-      const transcript = event.results[0][0].transcript;
-      setInput(transcript);
-      setTimeout(() => sendMessage(transcript, true), 300);
-    };
-    recognition.start();
-  };
   const suggestedQuestions = suggestedQuestionsByLanguage[preferredLanguage] || suggestedQuestionsByLanguage["Hindi"];
 
   useEffect(() => {
@@ -184,33 +146,72 @@ export default function SarkariGPT() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  const startVoice = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert('Voice search is not supported in this browser. Please use Chrome.');
+      return;
+    }
+    const recognition = new SpeechRecognition();
+    recognition.lang = preferredLanguage === 'Tamil' ? 'ta-IN' :
+      preferredLanguage === 'Telugu' ? 'te-IN' :
+      preferredLanguage === 'Malayalam' ? 'ml-IN' :
+      preferredLanguage === 'Kannada' ? 'kn-IN' :
+      preferredLanguage === 'Marathi' ? 'mr-IN' :
+      preferredLanguage === 'Bengali' ? 'bn-IN' :
+      preferredLanguage === 'Gujarati' ? 'gu-IN' :
+      preferredLanguage === 'Punjabi' ? 'pa-IN' :
+      preferredLanguage === 'English' ? 'en-IN' : 'hi-IN';
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+    recognition.onstart = () => setIsListening(true);
+    recognition.onend = () => setIsListening(false);
+    recognition.onerror = (event) => {
+      setIsListening(false);
+      if (event.error === 'not-allowed') {
+        alert('Microphone permission denied. Go to Chrome Settings > Site Settings > Microphone and allow sarkarisuccess.com');
+      } else if (event.error === 'no-speech') {
+        alert('No speech detected. Please speak clearly and try again.');
+      } else if (event.error === 'network') {
+        alert('Network error. Please check your internet connection.');
+      } else {
+        alert('Voice error: ' + event.error + '. Please try again.');
+      }
+    };
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      setInput(transcript);
+      setTimeout(() => sendMessage(transcript, true), 500);
+    };
+    try {
+      recognition.start();
+    } catch (e) {
+      alert('Could not start voice recognition. Please try again.');
+    }
+  };
+
   const sendMessage = async (text, autoDetectLanguage = false) => {
     const userMessage = text || input.trim();
     if (!userMessage) return;
-
     setInput("");
     setLoading(true);
-
     const newMessages = [...messages, { role: "user", content: userMessage }];
     setMessages(newMessages);
-
     try {
       const profileRes = await fetch("/api/student-profile");
       const profileData = await profileRes.json();
-      const preferredLanguage = autoDetectLanguage ? 'auto' : (profileData?.profile?.preferred_language || "Hindi");
-
+      const lang = autoDetectLanguage ? 'auto' : (profileData?.profile?.preferred_language || "Hindi");
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message: userMessage,
           history: messages.map(m => ({ role: m.role, content: m.content })),
-          preferredLanguage,
+          preferredLanguage: lang,
         }),
       });
-
       const data = await response.json();
-
       setMessages(prev => [...prev, {
         role: "assistant",
         content: data.reply || data.error,
@@ -221,14 +222,12 @@ export default function SarkariGPT() {
         content: "Sorry, kuch problem aa gayi. Please dobara try karein.",
       }]);
     }
-
     setLoading(false);
   };
 
   return (
     <main style={{ minHeight: '100vh', backgroundColor: '#f4f6f9', fontFamily: 'Arial, sans-serif', display: 'flex', flexDirection: 'column' }}>
 
-      {/* Header */}
       <div style={{ backgroundColor: '#1e3a8a', padding: '16px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
           <h1 style={{ color: 'white', fontSize: '22px', fontWeight: 'bold', margin: 0 }}>
@@ -241,57 +240,26 @@ export default function SarkariGPT() {
         <a href="/" style={{ color: 'white', fontSize: '13px', textDecoration: 'none' }}>← Home</a>
       </div>
 
-      {/* Suggested Questions */}
       <div style={{ backgroundColor: 'white', padding: '12px 20px', borderBottom: '1px solid #e5e7eb', overflowX: 'auto' }}>
         <div style={{ display: 'flex', gap: '8px', whiteSpace: 'nowrap' }}>
           {suggestedQuestions.map((q, i) => (
-            <button
-              key={i}
-              onClick={() => sendMessage(q)}
-              style={{
-                padding: '6px 14px',
-                borderRadius: '20px',
-                border: '1px solid #1e3a8a',
-                backgroundColor: 'white',
-                color: '#1e3a8a',
-                fontSize: '12px',
-                cursor: 'pointer',
-                whiteSpace: 'nowrap',
-              }}
-            >
+            <button key={i} onClick={() => sendMessage(q)}
+              style={{ padding: '6px 14px', borderRadius: '20px', border: '1px solid #1e3a8a', backgroundColor: 'white', color: '#1e3a8a', fontSize: '12px', cursor: 'pointer', whiteSpace: 'nowrap' }}>
               {q}
             </button>
           ))}
         </div>
       </div>
 
-      {/* Messages */}
       <div style={{ flex: 1, overflowY: 'auto', padding: '20px', maxWidth: '800px', width: '100%', margin: '0 auto' }}>
         {messages.map((msg, i) => (
-          <div
-            key={i}
-            style={{
-              display: 'flex',
-              justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start',
-              marginBottom: '16px',
-            }}
-          >
+          <div key={i} style={{ display: 'flex', justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start', marginBottom: '16px' }}>
             {msg.role === 'assistant' && (
               <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: '#1e3a8a', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', marginRight: '10px', flexShrink: 0 }}>
                 🤖
               </div>
             )}
-            <div style={{
-              maxWidth: '70%',
-              padding: '12px 16px',
-              borderRadius: msg.role === 'user' ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
-              backgroundColor: msg.role === 'user' ? '#1e3a8a' : 'white',
-              color: msg.role === 'user' ? 'white' : '#1a1a1a',
-              fontSize: '14px',
-              lineHeight: '1.6',
-              boxShadow: '0 2px 6px rgba(0,0,0,0.08)',
-              whiteSpace: 'pre-wrap',
-            }}>
+            <div style={{ maxWidth: '70%', padding: '12px 16px', borderRadius: msg.role === 'user' ? '18px 18px 4px 18px' : '18px 18px 18px 4px', backgroundColor: msg.role === 'user' ? '#1e3a8a' : 'white', color: msg.role === 'user' ? 'white' : '#1a1a1a', fontSize: '14px', lineHeight: '1.6', boxShadow: '0 2px 6px rgba(0,0,0,0.08)', whiteSpace: 'pre-wrap' }}>
               {msg.content}
             </div>
             {msg.role === 'user' && (
@@ -304,16 +272,11 @@ export default function SarkariGPT() {
 
         {loading && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
-            <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: '#1e3a8a', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px' }}>
-              🤖
-            </div>
+            <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: '#1e3a8a', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px' }}>🤖</div>
             <div style={{ backgroundColor: 'white', padding: '12px 16px', borderRadius: '18px 18px 18px 4px', boxShadow: '0 2px 6px rgba(0,0,0,0.08)' }}>
               <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
                 {[0, 1, 2].map(i => (
-                  <div key={i} style={{
-                    width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#1e3a8a',
-                    animation: `bounce 1s infinite ${i * 0.2}s`,
-                  }} />
+                  <div key={i} style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#1e3a8a', animation: `bounce 1s infinite ${i * 0.2}s` }} />
                 ))}
               </div>
             </div>
@@ -322,28 +285,19 @@ export default function SarkariGPT() {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input */}
       <div style={{ backgroundColor: 'white', borderTop: '1px solid #e5e7eb', padding: '16px 20px' }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto', display: 'flex', gap: '10px' }}>
+        <div style={{ maxWidth: '800px', margin: '0 auto', display: 'flex', gap: '10px', alignItems: 'center' }}>
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && !loading && sendMessage()}
             placeholder="SSC, Railway, UPSC ke baare mein poochein..."
-            style={{
-              flex: 1,
-              padding: '12px 16px',
-              borderRadius: '25px',
-              border: '2px solid #e5e7eb',
-              fontSize: '14px',
-              outline: 'none',
-              color: '#1a1a1a',
-            }}
+            style={{ flex: 1, padding: '12px 16px', borderRadius: '25px', border: '2px solid #e5e7eb', fontSize: '14px', outline: 'none', color: '#1a1a1a' }}
           />
           <button
             onClick={startVoice}
-            style={{ padding: '10px', borderRadius: '50%', border: 'none', backgroundColor: isListening ? '#dc2626' : 'white', boxShadow: isListening ? '0 0 0 4px rgba(220,38,38,0.2)' : '0 1px 4px rgba(0,0,0,0.15)', cursor: 'pointer', flexShrink: 0, width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }}
+            style={{ padding: '0', borderRadius: '50%', border: 'none', backgroundColor: isListening ? '#dc2626' : 'white', boxShadow: isListening ? '0 0 0 4px rgba(220,38,38,0.2)' : '0 1px 4px rgba(0,0,0,0.2)', cursor: 'pointer', flexShrink: 0, width: '46px', height: '46px', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }}
             title={isListening ? 'Listening...' : 'Speak your question'}
           >
             {isListening ? (
@@ -352,26 +306,18 @@ export default function SarkariGPT() {
                 <rect x="14" y="4" width="4" height="12" rx="2"/>
               </svg>
             ) : (
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                 <rect x="9" y="2" width="6" height="12" rx="3" fill="#dc2626"/>
                 <path d="M5 10a7 7 0 0 0 14 0" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round"/>
                 <line x1="12" y1="17" x2="12" y2="21" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round"/>
                 <line x1="9" y1="21" x2="15" y2="21" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round"/>
               </svg>
             )}
-          </button><button
+          </button>
+          <button
             onClick={() => sendMessage()}
             disabled={loading || !input.trim()}
-            style={{
-              padding: '12px 20px',
-              borderRadius: '25px',
-              border: 'none',
-              backgroundColor: loading || !input.trim() ? '#93c5fd' : '#1e3a8a',
-              color: 'white',
-              fontWeight: 'bold',
-              fontSize: '14px',
-              cursor: loading || !input.trim() ? 'not-allowed' : 'pointer',
-            }}
+            style={{ padding: '12px 20px', borderRadius: '25px', border: 'none', backgroundColor: loading || !input.trim() ? '#93c5fd' : '#1e3a8a', color: 'white', fontWeight: 'bold', fontSize: '14px', cursor: loading || !input.trim() ? 'not-allowed' : 'pointer' }}
           >
             Send →
           </button>
