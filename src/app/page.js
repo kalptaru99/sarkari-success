@@ -63,6 +63,7 @@ export default function Home() {
           { label: 'Daily Mission', href: '/mission' },
           { label: 'Revision Plan', href: '/revision' },
           { label: 'Learning Hub', href: '/learning-hub' },
+          { label: 'Rank Predictor', href: '/rank-predictor' },
           { label: 'My Profile', href: '/profile' },
           { label: 'Dashboard', href: '/dashboard' },
         ].map((item, index) => (
@@ -132,7 +133,7 @@ export default function Home() {
             { label: '📚 Question Bank', href: '/questions' },
             { label: '🏛️ State Jobs', href: '/states' },
           ].map((item, i) => (
-            <a key={i} href={item.href} style={{ padding: '8px 18px', backgroundColor: item.color ? 'rgba(22,163,74,0.2)' : 'rgba(255,255,255,0.15)', color: item.color || 'white', borderRadius: '20px', textDecoration: 'none', fontSize: '13px', border: `1px solid ${item.color || 'rgba(255,255,255,0.3)'}`, fontWeight: '500' }}>
+            <a key={i} href={item.href} style={{ padding: '8px 18px', backgroundColor: 'rgba(255,255,255,0.15)', color: 'white', borderRadius: '20px', textDecoration: 'none', fontSize: '13px', border: '1px solid rgba(255,255,255,0.3)', fontWeight: '500' }}>
               {item.label}
             </a>
           ))}
