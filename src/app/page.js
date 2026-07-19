@@ -62,6 +62,7 @@ export default function Home() {
           { label: 'AI Coach', href: '/coach', color: '#4ade80' },
           { label: 'Daily Mission', href: '/mission' },
           { label: 'Revision Plan', href: '/revision' },
+          { label: 'Learning Hub', href: '/learning-hub' },
           { label: 'My Profile', href: '/profile' },
           { label: 'Dashboard', href: '/dashboard' },
         ].map((item, index) => (
