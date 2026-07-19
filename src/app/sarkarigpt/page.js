@@ -169,7 +169,12 @@ export default function SarkariGPT() {
     recognition.onend = () => setIsListening(false);
     recognition.onerror = (event) => {
       setIsListening(false);
-      alert('Voice error code: ' + event.error);
+      if (event.error === 'not-allowed') {
+        alert('Microphone blocked. Go to Android Settings > Apps > Chrome > Permissions > Microphone > Allow. Then refresh this page.');
+      } else {
+        alert('Voice error: ' + event.error + '. Please try again.');
+      }
+    };
     };
     recognition.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
@@ -286,9 +291,19 @@ export default function SarkariGPT() {
             onKeyDown={(e) => e.key === 'Enter' && !loading && sendMessage()}
             placeholder="SSC, Railway, UPSC ke baare mein poochein..."
             style={{ flex: 1, padding: '12px 16px', borderRadius: '25px', border: '2px solid #e5e7eb', fontSize: '14px', outline: 'none', color: '#1a1a1a' }}
+            x-webkit-speech="true"
+            speech="true"
           />
           <button
-            onClick={startVoice}
+            onClick={() => {
+              const input = document.querySelector('input[type="text"]');
+              if (input) {
+                input.focus();
+                const event = new MouseEvent('click', { bubbles: true });
+                input.dispatchEvent(event);
+              }
+              startVoice();
+            }}
             style={{ padding: '0', borderRadius: '50%', border: 'none', backgroundColor: isListening ? '#dc2626' : 'white', boxShadow: isListening ? '0 0 0 4px rgba(220,38,38,0.2)' : '0 1px 4px rgba(0,0,0,0.2)', cursor: 'pointer', flexShrink: 0, width: '46px', height: '46px', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }}
             title={isListening ? 'Listening...' : 'Speak your question'}
           >
