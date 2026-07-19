@@ -64,6 +64,7 @@ export default function Home() {
           { label: 'Revision Plan', href: '/revision' },
           { label: 'Learning Hub', href: '/learning-hub' },
           { label: 'Rank Predictor', href: '/rank-predictor' },
+          { label: 'Selection DNA', href: '/selection-dna' },
           { label: 'My Profile', href: '/profile' },
           { label: 'Dashboard', href: '/dashboard' },
         ].map((item, index) => (
