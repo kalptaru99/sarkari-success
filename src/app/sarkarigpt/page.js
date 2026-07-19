@@ -127,6 +127,28 @@ export default function SarkariGPT() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
+  const [isListening, setIsListening] = useState(false);
+
+  const startVoice = () => {
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+      alert('Voice search not supported. Please use Chrome.');
+      return;
+    }
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'hi-IN';
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.onstart = () => setIsListening(true);
+    recognition.onend = () => setIsListening(false);
+    recognition.onerror = () => setIsListening(false);
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      setInput(transcript);
+      setTimeout(() => sendMessage(transcript, true), 300);
+    };
+    recognition.start();
+  };
   const suggestedQuestions = suggestedQuestionsByLanguage[preferredLanguage] || suggestedQuestionsByLanguage["Hindi"];
 
   useEffect(() => {
@@ -147,7 +169,7 @@ export default function SarkariGPT() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const sendMessage = async (text) => {
+  const sendMessage = async (text, autoDetectLanguage = false) => {
     const userMessage = text || input.trim();
     if (!userMessage) return;
 
@@ -160,7 +182,7 @@ export default function SarkariGPT() {
     try {
       const profileRes = await fetch("/api/student-profile");
       const profileData = await profileRes.json();
-      const preferredLanguage = profileData?.profile?.preferred_language || "Hindi";
+      const preferredLanguage = autoDetectLanguage ? 'auto' : (profileData?.profile?.preferred_language || "Hindi");
 
       const response = await fetch("/api/chat", {
         method: "POST",
@@ -305,6 +327,24 @@ export default function SarkariGPT() {
             }}
           />
           <button
+            onClick={startVoice}
+            style={{ padding: '10px', borderRadius: '50%', border: 'none', backgroundColor: isListening ? '#dc2626' : 'white', boxShadow: isListening ? '0 0 0 4px rgba(220,38,38,0.2)' : '0 1px 4px rgba(0,0,0,0.15)', cursor: 'pointer', flexShrink: 0, width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }}
+            title={isListening ? 'Listening...' : 'Speak your question'}
+          >
+            {isListening ? (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                <rect x="6" y="4" width="4" height="12" rx="2"/>
+                <rect x="14" y="4" width="4" height="12" rx="2"/>
+              </svg>
+            ) : (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <rect x="9" y="2" width="6" height="12" rx="3" fill="#dc2626"/>
+                <path d="M5 10a7 7 0 0 0 14 0" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round"/>
+                <line x1="12" y1="17" x2="12" y2="21" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round"/>
+                <line x1="9" y1="21" x2="15" y2="21" stroke="#1e3a8a" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+            )}
+          </button><button
             onClick={() => sendMessage()}
             disabled={loading || !input.trim()}
             style={{

@@ -54,9 +54,12 @@ export async function POST(request) {
 
     const { message, history, preferredLanguage } = await request.json();
 
-    const langNote = preferredLanguage && preferredLanguage !== "English"
+    const langNote = preferredLanguage === 'auto'
+      ? " Detect the language the student is using and respond in the SAME language. If they write or speak in Tamil respond in Tamil. If Hindi respond in Hindi. If Telugu respond in Telugu. If Malayalam respond in Malayalam. Match their language exactly."
+      : preferredLanguage && preferredLanguage !== "English"
       ? " Respond in " + preferredLanguage + " language."
       : " Respond in Hindi or English based on what the student uses.";
+      
 
     const searchResults = await searchWeb(message);
 
