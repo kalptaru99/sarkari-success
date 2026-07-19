@@ -80,58 +80,43 @@ export default function RevisionPage() {
 
       <div style={{ maxWidth: '960px', margin: '30px auto', padding: '0 20px' }}>
 
-        {/* Header Stats */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '24px' }}>
           <div style={{ backgroundColor: 'white', borderRadius: '10px', padding: '16px', textAlign: 'center', boxShadow: '0 2px 6px rgba(0,0,0,0.06)' }}>
-            <div style={{ fontSize: '24px', fontWeight: '800', color: '#1e3a8a' }}>{studentData.targetExam}</div>
+            <div style={{ fontSize: '18px', fontWeight: '800', color: '#1e3a8a' }}>{studentData.targetExam}</div>
             <div style={{ fontSize: '12px', color: '#666' }}>Target Exam</div>
           </div>
           <div style={{ backgroundColor: 'white', borderRadius: '10px', padding: '16px', textAlign: 'center', boxShadow: '0 2px 6px rgba(0,0,0,0.06)' }}>
-            <div style={{ fontSize: '24px', fontWeight: '800', color: daysUntilExam && daysUntilExam < 30 ? '#dc2626' : '#1e3a8a' }}>
+            <div style={{ fontSize: '18px', fontWeight: '800', color: daysUntilExam && daysUntilExam < 30 ? '#dc2626' : '#1e3a8a' }}>
               {daysUntilExam ? daysUntilExam + ' days' : 'Set exam date'}
             </div>
             <div style={{ fontSize: '12px', color: '#666' }}>Until Exam</div>
           </div>
           <div style={{ backgroundColor: 'white', borderRadius: '10px', padding: '16px', textAlign: 'center', boxShadow: '0 2px 6px rgba(0,0,0,0.06)' }}>
-            <div style={{ fontSize: '24px', fontWeight: '800', color: '#16a34a' }}>{studentData.studyHours}h/day</div>
+            <div style={{ fontSize: '18px', fontWeight: '800', color: '#16a34a' }}>{studentData.studyHours}h/day</div>
             <div style={{ fontSize: '12px', color: '#666' }}>Study Hours</div>
           </div>
         </div>
 
-        {/* 7 Day Plan Overview */}
         <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '20px', marginBottom: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
           <h2 style={{ color: '#1e3a8a', margin: '0 0 16px 0', fontSize: '18px' }}>📅 Your 7-Day Revision Plan</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px' }}>
             {revisionPlan.map((day, index) => {
               const priority = priorityColor[day.priority] || priorityColor.medium;
               return (
-                <div
-                  key={index}
-                  onClick={() => setSelectedDay(index)}
-                  style={{
-                    backgroundColor: selectedDay === index ? '#1e3a8a' : priority.bg,
-                    borderRadius: '10px',
-                    padding: '12px 8px',
-                    textAlign: 'center',
-                    cursor: 'pointer',
-                    border: selectedDay === index ? '2px solid #1e3a8a' : '2px solid transparent',
-                    transition: 'all 0.2s',
-                  }}
-                >
+                <div key={index} onClick={() => setSelectedDay(index)}
+                  style={{ backgroundColor: selectedDay === index ? '#1e3a8a' : priority.bg, borderRadius: '10px', padding: '12px 8px', textAlign: 'center', cursor: 'pointer', border: selectedDay === index ? '2px solid #1e3a8a' : '2px solid transparent', transition: 'all 0.2s' }}>
                   <div style={{ fontSize: '11px', fontWeight: '700', color: selectedDay === index ? 'white' : priority.color, marginBottom: '4px' }}>
                     Day {day.day}
                   </div>
                   <div style={{ fontSize: '10px', color: selectedDay === index ? '#93c5fd' : '#666', lineHeight: '1.3' }}>
                     {day.focus?.split(' ')[0]}
                   </div>
-                  <div style={{ marginTop: '6px', width: '8px', height: '8px', borderRadius: '50%', backgroundColor: priority.color, margin: '6px auto 0' }} />
+                  <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: priority.color, margin: '6px auto 0' }} />
                 </div>
               );
             })}
           </div>
         </div>
-
-        {/* Selected Day Detail */}
         {selectedDayData && (
           <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '24px', marginBottom: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
@@ -151,7 +136,6 @@ export default function RevisionPage() {
               </div>
             </div>
 
-            {/* Topics */}
             <div style={{ marginBottom: '16px' }}>
               <h3 style={{ color: '#1e3a8a', fontSize: '15px', margin: '0 0 10px 0' }}>📖 Topics to Cover Today</h3>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
@@ -163,7 +147,6 @@ export default function RevisionPage() {
               </div>
             </div>
 
-            {/* Reason */}
             {selectedDayData.reason && (
               <div style={{ backgroundColor: '#f0fdf4', borderRadius: '8px', padding: '14px', marginBottom: '16px', borderLeft: '4px solid #16a34a' }}>
                 <p style={{ color: '#166534', fontSize: '14px', margin: 0, lineHeight: '1.6' }}>
@@ -172,7 +155,6 @@ export default function RevisionPage() {
               </div>
             )}
 
-            {/* Skip */}
             {selectedDayData.skip && (
               <div style={{ backgroundColor: '#fef9c3', borderRadius: '8px', padding: '14px', borderLeft: '4px solid #ca8a04' }}>
                 <p style={{ color: '#854d0e', fontSize: '13px', margin: 0 }}>
@@ -183,7 +165,6 @@ export default function RevisionPage() {
           </div>
         )}
 
-        {/* Subject Performance */}
         {studentData.subjectPerformance.length > 0 && (
           <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '24px', marginBottom: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
             <h2 style={{ color: '#1e3a8a', margin: '0 0 16px 0', fontSize: '18px' }}>📊 Your Subject Accuracy</h2>
@@ -195,3 +176,33 @@ export default function RevisionPage() {
                     <span style={{ fontSize: '13px', fontWeight: '700', color: parseFloat(subject.accuracy) >= 70 ? '#16a34a' : parseFloat(subject.accuracy) >= 40 ? '#ca8a04' : '#dc2626' }}>
                       {subject.accuracy}%
                     </span>
+                  </div>
+                  <div style={{ backgroundColor: '#f0f0f0', borderRadius: '4px', height: '8px', overflow: 'hidden' }}>
+                    <div style={{ backgroundColor: parseFloat(subject.accuracy) >= 70 ? '#16a34a' : parseFloat(subject.accuracy) >= 40 ? '#ca8a04' : '#dc2626', height: '100%', width: subject.accuracy + '%', borderRadius: '4px' }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', marginBottom: '40px', flexWrap: 'wrap' }}>
+          <button onClick={fetchRevisionPlan} style={{ backgroundColor: '#1e3a8a', color: 'white', padding: '12px 24px', borderRadius: '8px', border: 'none', fontWeight: 'bold', fontSize: '14px', cursor: 'pointer' }}>
+            🔄 Regenerate Plan
+          </button>
+          <a href="/mocktest" style={{ backgroundColor: '#dc2626', color: 'white', padding: '12px 24px', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold', fontSize: '14px' }}>
+            📝 Take Mock Test
+          </a>
+          <a href="/coach" style={{ backgroundColor: 'white', color: '#1e3a8a', padding: '12px 24px', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold', fontSize: '14px', border: '2px solid #1e3a8a' }}>
+            🎯 AI Coach
+          </a>
+        </div>
+
+      </div>
+
+      <footer style={{ backgroundColor: '#1e3a8a', color: 'white', textAlign: 'center', padding: '16px', fontSize: '13px' }}>
+        2026 Sarkari Success. All rights reserved. sarkarisuccess.com
+      </footer>
+    </main>
+  );
+}
