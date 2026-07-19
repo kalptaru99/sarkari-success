@@ -160,7 +160,15 @@ Write in ${language} language. Focus on speed and accuracy.`,
         }),
       });
       const data = await response.json();
-      setAiResponse(data.reply || data.error);
+      const fullText = data.reply || data.error;
+      setLoading(false);
+      let displayed = "";
+      for (let i = 0; i < fullText.length; i++) {
+        displayed += fullText[i];
+        setAiResponse(displayed);
+        await new Promise(r => setTimeout(r, 5));
+      }
+      return;
     } catch (error) {
       setAiResponse("Something went wrong. Please try again.");
     }
