@@ -61,6 +61,7 @@ export default function Home() {
           { label: 'SarkariGPT', href: '/sarkarigpt' },
           { label: 'AI Coach', href: '/coach', color: '#4ade80' },
           { label: 'Daily Mission', href: '/mission' },
+          { label: 'Revision Plan', href: '/revision' },
           { label: 'My Profile', href: '/profile' },
           { label: 'Dashboard', href: '/dashboard' },
         ].map((item, index) => (
