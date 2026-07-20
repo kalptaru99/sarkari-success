@@ -264,6 +264,7 @@ export default function Home() {
                 {[
                   { label: 'Jobs', href: '#jobs' },
                   { label: 'Results', href: '#results' },
+                  { label: 'Admit Cards', href: '/admit-card' },
                   { label: 'Mock Test', href: '/mocktest' },
                   { label: 'SarkariGPT', href: '/sarkarigpt' },
                 ].map((link, i) => (
