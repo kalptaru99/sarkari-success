@@ -289,6 +289,9 @@ export default function Home() {
               <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
                 <a href="/privacy" style={{ color: '#93c5fd', textDecoration: 'none', fontSize: '12px' }}>Privacy Policy</a>
                 <a href="/terms" style={{ color: '#93c5fd', textDecoration: 'none', fontSize: '12px' }}>Terms of Service</a>
+                <a href="/disclaimer" style={{ color: '#93c5fd', textDecoration: 'none', fontSize: '12px' }}>Disclaimer</a>
+                <a href="/refund-policy" style={{ color: '#93c5fd', textDecoration: 'none', fontSize: '12px' }}>Refund Policy</a>
+                <a href="/cookie-policy" style={{ color: '#93c5fd', textDecoration: 'none', fontSize: '12px' }}>Cookie Policy</a>
                 <a href="/sarkarigpt" style={{ color: '#93c5fd', textDecoration: 'none', fontSize: '12px' }}>SarkariGPT</a>
               </div>
             </div>
