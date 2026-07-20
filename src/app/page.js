@@ -288,12 +288,12 @@ export default function Home() {
             <div style={{ textAlign: 'center', flex: 1 }}>
               <p style={{ color: '#93c5fd', fontSize: '12px', margin: '0 0 8px 0' }}>2026 Sarkari Success. All rights reserved. sarkarisuccess.com</p>
               <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap' }}>
-                <a href="/privacy" style={{ color: '#93c5fd', textDecoration: 'none', fontSize: '12px' }}>Privacy Policy</a>
-                <a href="/terms" style={{ color: '#93c5fd', textDecoration: 'none', fontSize: '12px' }}>Terms of Service</a>
-                <a href="/disclaimer" style={{ color: '#93c5fd', textDecoration: 'none', fontSize: '12px' }}>Disclaimer</a>
-                <a href="/refund-policy" style={{ color: '#93c5fd', textDecoration: 'none', fontSize: '12px' }}>Refund Policy</a>
-                <a href="/cookie-policy" style={{ color: '#93c5fd', textDecoration: 'none', fontSize: '12px' }}>Cookie Policy</a>
-                <a href="/sarkarigpt" style={{ color: '#93c5fd', textDecoration: 'none', fontSize: '12px' }}>SarkariGPT</a>
+                <a href="/privacy" style={{ color: 'white', textDecoration: 'none', fontSize: '12px', fontWeight: '700' }}>Privacy Policy</a>
+                <a href="/terms" style={{ color: 'white', textDecoration: 'none', fontSize: '12px', fontWeight: '700' }}>Terms of Service</a>
+                <a href="/disclaimer" style={{ color: 'white', textDecoration: 'none', fontSize: '12px', fontWeight: '700' }}>Disclaimer</a>
+                <a href="/refund-policy" style={{ color: 'white', textDecoration: 'none', fontSize: '12px', fontWeight: '700' }}>Refund Policy</a>
+                <a href="/cookie-policy" style={{ color: 'white', textDecoration: 'none', fontSize: '12px', fontWeight: '700' }}>Cookie Policy</a>
+                <a href="/sarkarigpt" style={{ color: 'white', textDecoration: 'none', fontSize: '12px', fontWeight: '700' }}>SarkariGPT</a>
               </div>
             </div>
             <div style={{ textAlign: 'center' }}>
