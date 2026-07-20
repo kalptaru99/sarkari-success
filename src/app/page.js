@@ -53,6 +53,7 @@ export default function Home() {
           { label: 'Home', href: '/' },
           { label: 'Jobs', href: '#jobs' },
           { label: 'Results', href: '#results' },
+          { label: 'Admit Cards', href: '/admit-card' },
           { label: 'Exam Calendar', href: '#calendar' },
           { label: 'State Jobs', href: '/states' },
           { label: 'Mock Test', href: '/mocktest' },
