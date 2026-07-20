@@ -103,19 +103,24 @@ export default function Dashboard() {
           ))}
         </div>
 
-        {/* Coming Soon */}
         <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
-          <h3 style={{ color: '#1e3a8a', marginTop: 0 }}>Coming Soon to Your Dashboard</h3>
+          <h3 style={{ color: '#1e3a8a', marginTop: 0 }}>Your AI Features — All Live</h3>
           {[
-            '🤖 AI Daily Mission — personalized study tasks every morning',
-            '📊 Mock Test History — track your scores over time',
-            '❌ Mistake Bank — learn from your wrong answers',
-            '🔔 Custom Job Alerts — get notified for your target exams',
-            '📈 Preparation Progress — see how you are improving',
+            { icon: '📅', label: 'AI Daily Mission', desc: 'Personalized study tasks every morning', href: '/mission' },
+            { icon: '🎯', label: 'AI Selection Coach', desc: 'Weakness analysis and action plan', href: '/coach' },
+            { icon: '🧠', label: 'AI Revision Planner', desc: '7-day personalized revision plan', href: '/revision' },
+            { icon: '📚', label: 'AI Learning Hub', desc: 'Subject-wise AI mentors', href: '/learning-hub' },
+            { icon: '📈', label: 'AI Rank Predictor', desc: 'See your rank improvement potential', href: '/rank-predictor' },
+            { icon: '🧬', label: 'AI Selection DNA', desc: 'Your unique preparation profile', href: '/selection-dna' },
           ].map((item, i) => (
-            <div key={i} style={{ padding: '10px 0', borderBottom: i < 4 ? '1px solid #f0f0f0' : 'none', color: '#444', fontSize: '14px' }}>
-              {item}
-            </div>
+            <a key={i} href={item.href} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 0', borderBottom: i < 5 ? '1px solid #f0f0f0' : 'none', textDecoration: 'none' }}>
+              <span style={{ fontSize: '20px' }}>{item.icon}</span>
+              <div>
+                <p style={{ color: '#1e3a8a', fontWeight: '700', fontSize: '14px', margin: 0 }}>{item.label}</p>
+                <p style={{ color: '#666', fontSize: '12px', margin: 0 }}>{item.desc}</p>
+              </div>
+              <span style={{ marginLeft: 'auto', color: '#1e3a8a' }}>→</span>
+            </a>
           ))}
         </div>
 
