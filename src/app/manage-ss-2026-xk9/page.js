@@ -354,6 +354,7 @@ function StateJobForm() {
           <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Description (English)</label>
           <textarea placeholder="Brief description in English..."
             value={form.description}
+          
             onChange={(e) => setForm(prev => ({ ...prev, description: e.target.value }))}
             rows={3}
             style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box', resize: 'vertical' }}
@@ -378,6 +379,79 @@ function StateJobForm() {
         style={{ marginTop: '20px', width: '100%', padding: '14px', backgroundColor: '#1e3a8a', color: 'white', border: 'none', borderRadius: '8px', fontSize: '15px', fontWeight: 'bold', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1 }}
       >
         {loading ? 'Adding...' : '🗺️ Add State Job'}
+      </button>
+    </div>
+  );
+}
+function AdmitCardForm() {
+  const [form, setForm] = useState({ exam: '', org: '', slug: '', exam_date: '', admit_card_date: '', official_link: '', description: '' });
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async () => {
+    if (!form.exam || !form.org || !form.slug) {
+      setError('Exam name, organization and slug are required.');
+      return;
+    }
+    setLoading(true);
+    setError('');
+    setMessage('');
+    try {
+      const response = await fetch('/api/admit-cards', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      const data = await response.json();
+      if (data.admit_card) {
+        setMessage('Admit card added successfully!');
+        setForm({ exam: '', org: '', slug: '', exam_date: '', admit_card_date: '', official_link: '', description: '' });
+      } else {
+        setError('Something went wrong. Try again.');
+      }
+    } catch (err) {
+      setError('Something went wrong. Try again.');
+    }
+    setLoading(false);
+  };
+
+  return (
+    <div>
+      {message && <div style={{ backgroundColor: '#dcfce7', color: '#16a34a', padding: '12px', borderRadius: '8px', marginBottom: '16px', fontSize: '14px' }}>{message}</div>}
+      {error && <div style={{ backgroundColor: '#fee2e2', color: '#dc2626', padding: '12px', borderRadius: '8px', marginBottom: '16px', fontSize: '14px' }}>{error}</div>}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+        <div style={{ gridColumn: '1 / -1' }}>
+          <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Exam Name *</label>
+          <input type="text" placeholder="e.g. SSC CGL Tier 1 Admit Card 2026" value={form.exam} onChange={(e) => { const v = e.target.value; setForm(p => ({ ...p, exam: v, slug: v.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') })); }} style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box' }} />
+        </div>
+        <div>
+          <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Organization *</label>
+          <input type="text" placeholder="e.g. Staff Selection Commission" value={form.org} onChange={(e) => setForm(p => ({ ...p, org: e.target.value }))} style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box' }} />
+        </div>
+        <div>
+          <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Slug *</label>
+          <input type="text" placeholder="ssc-cgl-tier-1-admit-card-2026" value={form.slug} onChange={(e) => setForm(p => ({ ...p, slug: e.target.value }))} style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box' }} />
+        </div>
+        <div>
+          <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Exam Date</label>
+          <input type="text" placeholder="e.g. 3-21 August 2026" value={form.exam_date} onChange={(e) => setForm(p => ({ ...p, exam_date: e.target.value }))} style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box' }} />
+        </div>
+        <div>
+          <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Admit Card Available Date</label>
+          <input type="text" placeholder="e.g. 20 July 2026" value={form.admit_card_date} onChange={(e) => setForm(p => ({ ...p, admit_card_date: e.target.value }))} style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box' }} />
+        </div>
+        <div style={{ gridColumn: '1 / -1' }}>
+          <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Official Download Link</label>
+          <input type="text" placeholder="https://ssc.gov.in" value={form.official_link} onChange={(e) => setForm(p => ({ ...p, official_link: e.target.value }))} style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box' }} />
+        </div>
+        <div style={{ gridColumn: '1 / -1' }}>
+          <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Description</label>
+          <textarea placeholder="Brief description about the admit card..." value={form.description} onChange={(e) => setForm(p => ({ ...p, description: e.target.value }))} rows={3} style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box', resize: 'vertical' }} />
+        </div>
+      </div>
+      <button onClick={handleSubmit} disabled={loading} style={{ marginTop: '16px', width: '100%', padding: '14px', backgroundColor: '#1e3a8a', color: 'white', border: 'none', borderRadius: '8px', fontSize: '15px', fontWeight: 'bold', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1 }}>
+        {loading ? 'Adding...' : '🪪 Add Admit Card'}
       </button>
     </div>
   );
@@ -572,6 +646,7 @@ if (!authenticated) {
           { id: 'addstatejob', label: '🗺️ Add State Job' },
           { id: 'editstatejob', label: '✏️ Edit State Job' },
           { id: 'questions', label: '📝 Generate Questions' },
+          { id: 'addadmitcard', label: '🪪 Add Admit Card' },
         ].map((tab) => (
           <button
             key={tab.id}
@@ -900,6 +975,13 @@ if (!authenticated) {
         {/* Edit State Job Tab */}
         {activeTab === 'editstatejob' && (
           <EditStateJob />
+        )}
+       {/* Add Admit Card Tab */}
+        {activeTab === 'addadmitcard' && (
+          <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '28px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
+            <h2 style={{ color: '#1e3a8a', margin: '0 0 24px 0' }}>Add New Admit Card</h2>
+            <AdmitCardForm />
+          </div>
         )}
         {/* Generate Questions Tab */}
         {activeTab === 'questions' && (
