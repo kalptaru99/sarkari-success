@@ -256,7 +256,11 @@ export default function Home() {
               <h3 style={{ fontSize: '18px', fontWeight: 'bold', margin: '0 0 8px 0' }}>
                 Sarkari <span style={{ color: '#fca5a5' }}>Success</span>
               </h3>
-              <p style={{ color: '#93c5fd', fontSize: '13px', margin: 0 }}>India's First AI-Powered Sarkari Career Companion</p>
+              <p style={{ color: '#93c5fd', fontSize: '13px', margin: '0 0 12px 0' }}>India's First AI-Powered Sarkari Career Companion</p>
+              <p style={{ color: '#93c5fd', fontSize: '12px', margin: '0 0 4px 0', fontWeight: '700' }}>CONTACT US</p>
+              <a href="mailto:contact.sarkarisuccess@gmail.com" style={{ color: 'white', fontSize: '16px', textDecoration: 'none', fontWeight: '800' }}>
+                📧 <span style={{ color: '#fca5a5' }}>contact.sarkarisuccess@gmail.com</span>
+              </a>
             </div>
             <div style={{ display: 'flex', gap: '40px', flexWrap: 'wrap' }}>
               <div>
