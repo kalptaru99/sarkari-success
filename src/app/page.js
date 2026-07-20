@@ -297,7 +297,7 @@ export default function Home() {
               </div>
             </div>
             <div style={{ textAlign: 'center' }}>
-              <p style={{ color: '#93c5fd', fontSize: '11px', margin: '0 0 8px 0' }}>Scan to open on mobile</p>
+            <p style={{ color: 'white', fontSize: '12px', margin: '0 0 8px 0', fontWeight: '800' }}>Scan to open on mobile</p>
               <img
                 src={"https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://sarkarisuccess.com&color=ffffff&bgcolor=1e3a8a"}
                 alt="Sarkari Success QR Code"
