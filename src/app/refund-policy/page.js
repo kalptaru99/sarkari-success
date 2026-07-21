@@ -32,10 +32,7 @@ export default function RefundPolicy() {
               title: "4. Duplicate Payment",
               content: "In the rare event of a genuine duplicate payment due to a technical error on our payment gateway, the duplicate amount will be adjusted as credit toward your next billing cycle. This is not a refund and will be handled at our sole discretion after verification."
             },
-            {
-              title: "5. Governing Law",
-              content: "This refund policy is governed by the laws of India. Any disputes arising from this policy shall be subject to the jurisdiction of courts in India. By making a payment on Sarkari Success, you agree to this refund policy and all our terms of service."
-            },
+            
           ].map((section, i) => (
             <div key={i} style={{ marginBottom: '24px' }}>
               <h2 style={{ color: '#1e3a8a', fontSize: '16px', margin: '0 0 8px 0' }}>{section.title}</h2>
