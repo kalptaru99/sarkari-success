@@ -110,6 +110,7 @@ export default function Dashboard() {
               { icon: '📚', label: 'AI Learning Hub', desc: 'Subject-wise AI mentors for your target exam' },
               { icon: '📈', label: 'AI Rank Predictor', desc: 'See exactly how to improve your rank' },
               { icon: '🧬', label: 'AI Selection DNA', desc: 'Your unique preparation fingerprint and readiness score' },
+              { icon: '📊', label: 'Exam Intelligence Report', desc: '10-year analysis + AI personalized 6-month roadmap' },
             ].map((item, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: '10px', padding: '12px 16px' }}>
                 <span style={{ fontSize: '20px' }}>{item.icon}</span>
