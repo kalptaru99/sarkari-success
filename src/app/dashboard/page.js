@@ -87,7 +87,7 @@ export default function Dashboard() {
           ))}
         </div>
 
-        {/* Premium Plan Card */}
+        {/* Topper's Plan Card */}
         <div style={{ background: 'linear-gradient(135deg, #1e3a8a, #7c3aed)', borderRadius: '16px', padding: '28px', boxShadow: '0 4px 20px rgba(124,58,237,0.3)', marginBottom: '24px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
             <div>
@@ -104,26 +104,27 @@ export default function Dashboard() {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '20px' }}>
             {[
-              { icon: '📅', label: 'AI Daily Mission', desc: 'Personalized daily study plan every morning' },
-              { icon: '🎯', label: 'AI Selection Coach', desc: 'Find your 20% weaknesses causing 80% lost marks' },
-              { icon: '🧠', label: 'AI Smart Revision Planner', desc: '7-day AI revision plan based on your weak topics' },
-              { icon: '📚', label: 'AI Learning Hub', desc: 'Subject-wise AI mentors for your target exam' },
-              { icon: '📈', label: 'AI Rank Predictor', desc: 'See exactly how to improve your rank' },
-              { icon: '🧬', label: 'AI Selection DNA', desc: 'Your unique preparation fingerprint and readiness score' },
-              { icon: '📊', label: 'Exam Intelligence Report', desc: '10-year analysis + AI personalized 6-month roadmap' },
+              { icon: '📅', label: 'AI Daily Mission', desc: 'Personalized daily study plan every morning', href: '/mission' },
+              { icon: '🎯', label: 'AI Selection Coach', desc: 'Find your 20% weaknesses causing 80% lost marks', href: '/coach' },
+              { icon: '🧠', label: 'AI Smart Revision Planner', desc: '7-day AI revision plan based on your weak topics', href: '/revision' },
+              { icon: '📚', label: 'AI Learning Hub', desc: 'Subject-wise AI mentors for your target exam', href: '/learning-hub' },
+              { icon: '📈', label: 'AI Rank Predictor', desc: 'See exactly how to improve your rank', href: '/rank-predictor' },
+              { icon: '🧬', label: 'AI Selection DNA', desc: 'Your unique preparation fingerprint and readiness score', href: '/selection-dna' },
+              { icon: '📊', label: 'Exam Intelligence Report', desc: '10-year analysis + AI personalized 6-month roadmap', href: '/exam-guide' },
+              { icon: '🤖', label: 'Unlimited SarkariGPT', desc: 'Unlimited AI career guidance in 12 languages', href: '/sarkarigpt' },
             ].map((item, i) => (
-              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: '10px', padding: '12px 16px' }}>
+              <a key={i} href={item.href} style={{ display: 'flex', alignItems: 'center', gap: '12px', backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: '10px', padding: '12px 16px', textDecoration: 'none' }}>
                 <span style={{ fontSize: '20px' }}>{item.icon}</span>
                 <div style={{ flex: 1 }}>
                   <p style={{ color: 'white', fontWeight: '700', fontSize: '13px', margin: 0 }}>{item.label}</p>
                   <p style={{ color: '#c4b5fd', fontSize: '11px', margin: 0 }}>{item.desc}</p>
                 </div>
-                <span style={{ fontSize: '16px' }}>🔒</span>
-              </div>
+                <span style={{ fontSize: '16px', color: '#4ade80' }}>→</span>
+              </a>
             ))}
           </div>
 
-          <a href="https://wa.me/919999999999?text=I want to subscribe to Topper's Plan Plan" target="_blank" style={{ display: 'block', backgroundColor: '#fbbf24', color: '#1a1a1a', padding: '14px 20px', borderRadius: '10px', textDecoration: 'none', fontWeight: '800', fontSize: '15px', textAlign: 'center' }}>
+          <a href="/toppers-plan" style={{ display: 'block', backgroundColor: '#fbbf24', color: '#1a1a1a', padding: '14px 20px', borderRadius: '10px', textDecoration: 'none', fontWeight: '800', fontSize: '15px', textAlign: 'center' }}>
             👑 Upgrade to Topper's Plan — ₹99/month
           </a>
           <p style={{ color: '#c4b5fd', fontSize: '11px', margin: '10px 0 0 0', textAlign: 'center' }}>

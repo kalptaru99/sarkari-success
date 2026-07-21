@@ -165,7 +165,7 @@ export default function ExamGuide() {
             </div>
 
             {/* AI Personalized Strategy */}
-            {!aiText && !data.preview && (
+            {!aiText && (
               <div style={{ textAlign: 'center', backgroundColor: 'rgba(251,191,36,0.1)', borderRadius: '16px', padding: '32px', border: '1px solid rgba(251,191,36,0.3)', marginBottom: '20px' }}>
                 <div style={{ fontSize: '48px', marginBottom: '12px' }}>🤖</div>
                 <h3 style={{ color: 'white', margin: '0 0 8px 0', fontSize: '20px' }}>Your AI Personalized Strategy is Ready</h3>
@@ -176,7 +176,7 @@ export default function ExamGuide() {
               </div>
             )}
 
-            {data.preview && !aiText && (
+            {false && !aiText && (
               <div style={{ backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: '16px', border: '1px solid rgba(251,191,36,0.3)', overflow: 'hidden', marginBottom: '20px' }}>
                 <div style={{ padding: '24px', filter: 'blur(4px)', pointerEvents: 'none', userSelect: 'none' }}>
                   <h3 style={{ color: 'white', margin: '0 0 12px 0' }}>🤖 AI Personalized Strategy</h3>
