@@ -58,7 +58,7 @@ export default function Home() {
           { label: 'Mock Test', href: '/mocktest' },
           { label: 'SarkariGPT', href: '/sarkarigpt' },
           { label: 'AI Coach', href: '/coach', color: '#4ade80' },
-          { label: "👑 Topper's Plan", href: '/dashboard', color: '#fbbf24' },
+          { label: "👑 Topper's Plan", href: '/toppers-plan', color: '#fbbf24' },
           { label: 'Dashboard', href: '/dashboard' },
         ].map((item, index) => (
           <a key={index} href={item.href} style={{ color: item.color || 'white', textDecoration: 'none', fontSize: '13px', fontWeight: '500' }}>
