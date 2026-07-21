@@ -41,7 +41,7 @@ export default function RefundPolicy() {
           ))}
 
           <div style={{ marginBottom: '24px' }}>
-            <h2 style={{ color: '#1e3a8a', fontSize: '16px', margin: '0 0 8px 0' }}>6. Contact Us</h2>
+            <h2 style={{ color: '#1e3a8a', fontSize: '16px', margin: '0 0 8px 0' }}>5. Contact Us</h2>
             <p style={{ color: '#444', fontSize: '14px', lineHeight: '1.7', margin: 0 }}>
               For any payment-related queries, contact us at <strong style={{ color: '#dc2626' }}>contact.sarkarisuccess@gmail.com</strong>. Please note that contacting us does not entitle you to a refund.
             </p>
