@@ -103,7 +103,7 @@ export async function GET(request) {
     if (preview) {
       return Response.json({
         success: true,
-        preview: true,
+        preview: false,
         exam,
         examData: data,
         aiAnalysis: null,
