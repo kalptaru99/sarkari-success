@@ -50,22 +50,15 @@ export default function Home() {
 
       <nav style={{ backgroundColor: '#1e3a8a', padding: '10px 20px', display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap' }}>
         {[
-          { label: 'Home', href: '/' },
+         { label: 'Home', href: '/' },
           { label: 'Jobs', href: '#jobs' },
           { label: 'Results', href: '#results' },
           { label: 'Admit Cards', href: '/admit-card' },
-          { label: 'Exam Calendar', href: '#calendar' },
           { label: 'State Jobs', href: '/states' },
           { label: 'Mock Test', href: '/mocktest' },
-          { label: 'Question Bank', href: '/questions' },
           { label: 'SarkariGPT', href: '/sarkarigpt' },
           { label: 'AI Coach', href: '/coach', color: '#4ade80' },
-          { label: 'Daily Mission', href: '/mission' },
-          { label: 'Revision Plan', href: '/revision' },
-          { label: 'Learning Hub', href: '/learning-hub' },
-          { label: 'Rank Predictor', href: '/rank-predictor' },
-          { label: 'Selection DNA', href: '/selection-dna' },
-          { label: 'My Profile', href: '/profile' },
+          { label: "👑 Topper's Plan", href: '/dashboard', color: '#fbbf24' },
           { label: 'Dashboard', href: '/dashboard' },
         ].map((item, index) => (
           <a key={index} href={item.href} style={{ color: item.color || 'white', textDecoration: 'none', fontSize: '13px', fontWeight: '500' }}>
