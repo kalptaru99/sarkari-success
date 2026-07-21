@@ -93,9 +93,9 @@ export default function Dashboard() {
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
                 <span style={{ fontSize: '24px' }}>👑</span>
-                <h3 style={{ color: 'white', margin: 0, fontSize: '20px', fontWeight: '800' }}>Sarkari Success Pro</h3>
+                <h3 style={{ color: 'white', margin: 0, fontSize: '20px', fontWeight: '800' }}>Topper's Plan</h3>
               </div>
-              <p style={{ color: '#c4b5fd', margin: 0, fontSize: '13px' }}>India's First AI-Powered Exam Preparation Plan</p>
+              <p style={{ color: '#c4b5fd', margin: 0, fontSize: '13px' }}>India's Most Powerful AI Exam Preparation Plan</p>
             </div>
             <div style={{ backgroundColor: '#fbbf24', borderRadius: '20px', padding: '6px 16px' }}>
               <span style={{ color: '#1a1a1a', fontWeight: '800', fontSize: '16px' }}>₹99/month</span>
@@ -122,8 +122,8 @@ export default function Dashboard() {
             ))}
           </div>
 
-          <a href="https://wa.me/919999999999?text=I want to subscribe to Sarkari Success Pro Plan" target="_blank" style={{ display: 'block', backgroundColor: '#fbbf24', color: '#1a1a1a', padding: '14px 20px', borderRadius: '10px', textDecoration: 'none', fontWeight: '800', fontSize: '15px', textAlign: 'center' }}>
-            👑 Upgrade to Pro — ₹99/month
+          <a href="https://wa.me/919999999999?text=I want to subscribe to Topper's Plan Plan" target="_blank" style={{ display: 'block', backgroundColor: '#fbbf24', color: '#1a1a1a', padding: '14px 20px', borderRadius: '10px', textDecoration: 'none', fontWeight: '800', fontSize: '15px', textAlign: 'center' }}>
+            👑 Upgrade to Topper's Plan — ₹99/month
           </a>
           <p style={{ color: '#c4b5fd', fontSize: '11px', margin: '10px 0 0 0', textAlign: 'center' }}>
             🔒 Secure payment via Razorpay • Cancel anytime • Instant access
