@@ -89,9 +89,10 @@ export default function Home() {
             placeholder="Search SSC, Railway, UPSC, Banking jobs..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && document.getElementById('jobs').scrollIntoView({ behavior: 'smooth' })}
             style={{ flex: 1, padding: '14px 20px', borderRadius: '8px', border: '2px solid white', fontSize: '15px', outline: 'none', color: '#1a1a1a', backgroundColor: 'white' }}
           />
-          <button style={{ padding: '14px 24px', backgroundColor: '#dc2626', color: 'white', border: 'none', borderRadius: '8px', fontSize: '14px', fontWeight: 'bold', cursor: 'pointer' }}>
+          <button onClick={() => document.getElementById('jobs').scrollIntoView({ behavior: 'smooth' })} style={{ padding: '14px 24px', backgroundColor: '#dc2626', color: 'white', border: 'none', borderRadius: '8px', fontSize: '14px', fontWeight: 'bold', cursor: 'pointer' }}>
             Search
           </button>
         </div>
