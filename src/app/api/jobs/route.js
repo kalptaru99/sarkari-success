@@ -59,7 +59,21 @@ export async function POST(request) {
       [title, org, vacancies, last_date, apply_link, notification_link, exam_date, salary, eligibility, description, category, slug]
     );
 
-    return Response.json({ success: true, job: result.rows[0] });
+    const newJob = result.rows[0];
+
+    try {
+      await fetch(`${process.env.NEXTAUTH_URL || 'https://sarkarisuccess.com'}/api/indexnow`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          urls: [`https://sarkarisuccess.com/jobs/${newJob.slug}`]
+        }),
+      });
+    } catch (e) {
+      console.error('IndexNow ping failed:', e);
+    }
+
+    return Response.json({ success: true, job: newJob });
 
   } catch (error) {
     console.error('Job insert error:', error);
