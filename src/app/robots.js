@@ -45,6 +45,9 @@ export default function robots() {
         ],
       },
     ],
-    sitemap: 'https://sarkarisuccess.com/sitemap.xml',
+    sitemap: [
+  'https://sarkarisuccess.com/sitemap.xml',
+  'https://sarkarisuccess.com/api/sitemap-dynamic',
+],
   };
 }
