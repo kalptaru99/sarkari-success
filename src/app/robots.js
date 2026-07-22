@@ -2,28 +2,23 @@ export default function robots() {
   return {
     rules: [
       {
-        userAgent: '*',
+        userAgent: 'Googlebot',
         allow: [
           '/',
-          '/jobs/',
-          '/results/',
-          '/admit-card/',
-          '/states/',
-          '/state-jobs/',
-          '/sarkarigpt',
-          '/mocktest',
-          '/questions',
-          '/toppers-plan',
-          '/exam-guide',
-          '/privacy',
-          '/terms',
-          '/disclaimer',
-          '/refund-policy',
-          '/cookie-policy',
           '/api/sitemap-dynamic',
         ],
         disallow: [
-          '/api/',
+          '/manage-ss-2026-xk9',
+          '/admin-login',
+        ],
+      },
+      {
+        userAgent: '*',
+        allow: [
+          '/',
+          '/api/sitemap-dynamic',
+        ],
+        disallow: [
           '/manage-ss-2026-xk9',
           '/admin-login',
           '/dashboard',
@@ -34,18 +29,6 @@ export default function robots() {
           '/learning-hub',
           '/rank-predictor',
           '/selection-dna',
-        ],
-      },
-      {
-        userAgent: 'Googlebot',
-        allow: [
-          '/',
-          '/api/sitemap-dynamic',
-        ],
-        disallow: [
-          '/api/',
-          '/manage-ss-2026-xk9',
-          '/admin-login',
         ],
       },
     ],
