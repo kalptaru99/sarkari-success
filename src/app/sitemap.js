@@ -1,11 +1,7 @@
-import pool from '@/lib/db.js';
-
-export const dynamic = 'force-dynamic';
-
-export default async function sitemap() {
+export default function sitemap() {
   const baseUrl = 'https://sarkarisuccess.com';
 
-  const staticPages = [
+  return [
     { url: baseUrl, lastModified: new Date(), changeFrequency: 'daily', priority: 1 },
     { url: `${baseUrl}/sarkarigpt`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
     { url: `${baseUrl}/mocktest`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
@@ -28,46 +24,4 @@ export default async function sitemap() {
     { url: `${baseUrl}/login`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
     { url: `${baseUrl}/register`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
   ];
-
-  try {
-    const [jobsResult, resultsResult, admitResult, stateResult] = await Promise.all([
-      pool.query('SELECT slug, created_at FROM jobs ORDER BY created_at DESC'),
-      pool.query('SELECT slug, created_at FROM results ORDER BY created_at DESC'),
-      pool.query('SELECT slug, created_at FROM admit_cards ORDER BY created_at DESC'),
-      pool.query('SELECT slug, created_at FROM state_jobs ORDER BY created_at DESC LIMIT 200'),
-    ]);
-
-    const jobPages = jobsResult.rows.map(job => ({
-      url: `${baseUrl}/jobs/${job.slug}`,
-      lastModified: new Date(job.created_at),
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    }));
-
-    const resultPages = resultsResult.rows.map(result => ({
-      url: `${baseUrl}/results/${result.slug}`,
-      lastModified: new Date(result.created_at),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    }));
-
-    const admitPages = admitResult.rows.map(card => ({
-      url: `${baseUrl}/admit-card/${card.slug}`,
-      lastModified: new Date(card.created_at),
-      changeFrequency: 'daily',
-      priority: 0.9,
-    }));
-
-    const statePages = stateResult.rows.map(job => ({
-      url: `${baseUrl}/state-jobs/${job.slug}`,
-      lastModified: new Date(job.created_at),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    }));
-
-    return [...staticPages, ...jobPages, ...resultPages, ...admitPages, ...statePages];
-  } catch (error) {
-    console.error('Sitemap error:', error);
-    return staticPages;
-  }
 }
