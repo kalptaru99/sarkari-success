@@ -41,8 +41,92 @@ export default function JobPage() {
     );
   }
 
+  const jobSchema = {
+    "@context": "https://schema.org",
+    "@type": "JobPosting",
+    "title": job.title,
+    "description": job.description || job.title + " recruitment notification by " + job.org,
+    "datePosted": job.created_at ? new Date(job.created_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+    "validThrough": job.last_date ? job.last_date : "",
+    "hiringOrganization": {
+      "@type": "Organization",
+      "name": job.org,
+      "sameAs": job.official_link || "https://sarkarisuccess.com"
+    },
+    "jobLocation": {
+      "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "IN",
+        "addressRegion": "All India"
+      }
+    },
+    "baseSalary": {
+      "@type": "MonetaryAmount",
+      "currency": "INR",
+      "value": {
+        "@type": "QuantitativeValue",
+        "minValue": 25500,
+        "maxValue": 151100,
+        "unitText": "MONTH"
+      }
+    },
+    "employmentType": "FULL_TIME",
+    "educationRequirements": "Bachelor's Degree",
+    "experienceRequirements": "Freshers eligible",
+    "applicantLocationRequirements": {
+      "@type": "Country",
+      "name": "India"
+    }
+  };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is the last date to apply for " + job.title + "?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The last date to apply for " + job.title + " is " + job.last_date + ". Apply through the official website."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How many vacancies are there in " + job.title + "?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "There are " + job.vacancies + " vacancies in " + job.title + " by " + job.org + "."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the salary for " + job.title + "?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": job.salary || "Salary details are available in the official notification for " + job.title + "."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the eligibility for " + job.title + "?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": job.eligibility || "Check the official notification for " + job.title + " eligibility criteria."
+        }
+      }
+    ]
+  };
   return (
-    <main style={{ minHeight: '100vh', backgroundColor: '#f4f6f9', fontFamily: 'Arial, sans-serif' }}>
+    <main style={{ minHeight: '100vh', backgroundColor: '#f4f6f9', fontFamily: 'Arial, sans-serif' }}> <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jobSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
 
       {/* Header */}
       <div style={{ backgroundColor: '#1e3a8a', padding: '16px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
