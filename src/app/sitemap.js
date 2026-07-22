@@ -1,5 +1,3 @@
-import pool from '@/lib/db.js';
-
 export default async function sitemap() {
   const baseUrl = 'https://sarkarisuccess.com';
 
@@ -28,34 +26,44 @@ export default async function sitemap() {
   ];
 
   try {
-    const jobsResult = await pool.query('SELECT slug, created_at FROM jobs ORDER BY created_at DESC');
-    const jobPages = jobsResult.rows.map(job => ({
+    const [jobsRes, resultsRes, admitRes, stateRes] = await Promise.all([
+      fetch(`${baseUrl}/api/jobs?limit=100`),
+      fetch(`${baseUrl}/api/results?limit=100`),
+      fetch(`${baseUrl}/api/admit-cards?limit=100`),
+      fetch(`${baseUrl}/api/state-jobs?limit=200`),
+    ]);
+
+    const [jobsData, resultsData, admitData, stateData] = await Promise.all([
+      jobsRes.json(),
+      resultsRes.json(),
+      admitRes.json(),
+      stateRes.json(),
+    ]);
+
+    const jobPages = (jobsData.jobs || []).map(job => ({
       url: `${baseUrl}/jobs/${job.slug}`,
-      lastModified: new Date(job.created_at),
+      lastModified: new Date(job.created_at || new Date()),
       changeFrequency: 'weekly',
       priority: 0.9,
     }));
 
-    const resultsResult = await pool.query('SELECT slug, created_at FROM results ORDER BY created_at DESC');
-    const resultPages = resultsResult.rows.map(result => ({
+    const resultPages = (resultsData.results || []).map(result => ({
       url: `${baseUrl}/results/${result.slug}`,
-      lastModified: new Date(result.created_at),
+      lastModified: new Date(result.created_at || new Date()),
       changeFrequency: 'weekly',
       priority: 0.8,
     }));
 
-    const admitResult = await pool.query('SELECT slug, created_at FROM admit_cards ORDER BY created_at DESC');
-    const admitPages = admitResult.rows.map(card => ({
+    const admitPages = (admitData.admit_cards || []).map(card => ({
       url: `${baseUrl}/admit-card/${card.slug}`,
-      lastModified: new Date(card.created_at),
+      lastModified: new Date(card.created_at || new Date()),
       changeFrequency: 'daily',
       priority: 0.9,
     }));
 
-    const stateResult = await pool.query('SELECT slug, created_at FROM state_jobs ORDER BY created_at DESC');
-    const statePages = stateResult.rows.map(job => ({
+    const statePages = (stateData.state_jobs || []).map(job => ({
       url: `${baseUrl}/state-jobs/${job.slug}`,
-      lastModified: new Date(job.created_at),
+      lastModified: new Date(job.created_at || new Date()),
       changeFrequency: 'weekly',
       priority: 0.8,
     }));
