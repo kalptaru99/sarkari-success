@@ -20,6 +20,7 @@ export default function robots() {
           '/disclaimer',
           '/refund-policy',
           '/cookie-policy',
+          '/api/sitemap-dynamic',
         ],
         disallow: [
           '/api/',
@@ -37,7 +38,10 @@ export default function robots() {
       },
       {
         userAgent: 'Googlebot',
-        allow: '/',
+        allow: [
+          '/',
+          '/api/sitemap-dynamic',
+        ],
         disallow: [
           '/api/',
           '/manage-ss-2026-xk9',
@@ -46,8 +50,8 @@ export default function robots() {
       },
     ],
     sitemap: [
-  'https://sarkarisuccess.com/sitemap.xml',
-  'https://sarkarisuccess.com/api/sitemap-dynamic',
-],
+      'https://sarkarisuccess.com/sitemap.xml',
+      'https://sarkarisuccess.com/api/sitemap-dynamic',
+    ],
   };
 }
