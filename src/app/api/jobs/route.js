@@ -23,11 +23,11 @@ export async function GET(request) {
     let query = 'SELECT * FROM jobs WHERE is_active = true';
     let params = [];
 
-    if (category) {
-      query += ' AND category = $1 ORDER BY created_at DESC LIMIT $2';
+   if (category) {
+      query += ' AND category = $1 ORDER BY CASE WHEN vacancies != \'TBA\' THEN 0 ELSE 1 END, created_at DESC LIMIT $2';
       params = [category, limit];
     } else {
-      query += ' ORDER BY created_at DESC LIMIT $1';
+      query += ' ORDER BY CASE WHEN vacancies != \'TBA\' THEN 0 ELSE 1 END, created_at DESC LIMIT $1';
       params = [limit];
     }
 

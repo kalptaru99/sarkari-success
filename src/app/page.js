@@ -14,7 +14,7 @@ export default function Home() {
   const [results, setResults] = useState([]);
 
   useEffect(() => {
-    fetch('/api/jobs?limit=20')
+    fetch('/api/jobs?limit=50')
       .then(res => res.json())
       .then(data => setJobs(data.jobs || []));
     fetch('/api/results?limit=10')
