@@ -69,8 +69,8 @@ async function extractWithClaude(results, type, org) {
     + '  "found": true/false,\n'
     + '  "title": "exact notification title",\n'
     + '  "org": "organization name",\n'
-    + '  "vacancies": "number or TBA",\n'
-    + '  "last_date": "last date to apply",\n'
+    + '  "vacancies": "exact number only like 1234 or null if not found",\n'
+    + '  "last_date": "exact date only like 25 June 2026 or null if not found",\n'
     + '  "exam_date": "exam date if mentioned",\n'
     + '  "salary": "salary if mentioned",\n'
     + '  "eligibility": "eligibility if mentioned",\n'
@@ -111,11 +111,15 @@ async function saveToDatabase(data, type) {
       const existing = await pool.query('SELECT id FROM jobs WHERE slug = $1', [data.slug]);
       if (existing.rows.length > 0) return { saved: false, reason: 'already exists' };
 
-      if (!data.vacancies || data.vacancies === 'TBA' || data.vacancies === 'See notification') {
+      if (!data.vacancies || data.vacancies === 'TBA' || data.vacancies === 'See notification' || data.vacancies === 'null' || data.vacancies === null) {
         return { saved: false, reason: 'no vacancy data' };
       }
-      if (!data.last_date || data.last_date === 'TBA' || data.last_date === 'See notification') {
+      if (!data.last_date || data.last_date === 'TBA' || data.last_date === 'See notification' || data.last_date === 'null' || data.last_date === null) {
         return { saved: false, reason: 'no last date' };
+      }
+      const vacancyNum = parseInt(data.vacancies.replace(/,/g, '').replace(/\+/g, ''));
+      if (isNaN(vacancyNum) || vacancyNum < 1) {
+        return { saved: false, reason: 'invalid vacancy number' };
       }
       if (!data.title || data.title.length < 10) {
         return { saved: false, reason: 'invalid title' };
