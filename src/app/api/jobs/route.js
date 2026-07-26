@@ -24,10 +24,10 @@ export async function GET(request) {
     let params = [];
 
    if (category) {
-      query += ' AND category = $1 ORDER BY CASE WHEN vacancies != \'TBA\' THEN 0 ELSE 1 END, created_at DESC LIMIT $2';
+      query += ' AND category = $1 ORDER BY CASE WHEN vacancies != \'TBA\' AND vacancies != \'See notification\' THEN 0 ELSE 1 END, CAST(REPLACE(REPLACE(vacancies, \',\', \'\'), \'+\', \'\') AS INTEGER) DESC NULLIF(vacancies, \'TBA\'), created_at DESC LIMIT $2';
       params = [category, limit];
     } else {
-      query += ' ORDER BY CASE WHEN vacancies != \'TBA\' THEN 0 ELSE 1 END, created_at DESC LIMIT $1';
+      query += ' ORDER BY CASE WHEN vacancies != \'TBA\' AND vacancies != \'See notification\' THEN 0 ELSE 1 END, created_at DESC LIMIT $1';
       params = [limit];
     }
 

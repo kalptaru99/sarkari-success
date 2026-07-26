@@ -111,6 +111,16 @@ async function saveToDatabase(data, type) {
       const existing = await pool.query('SELECT id FROM jobs WHERE slug = $1', [data.slug]);
       if (existing.rows.length > 0) return { saved: false, reason: 'already exists' };
 
+      if (!data.vacancies || data.vacancies === 'TBA' || data.vacancies === 'See notification') {
+        return { saved: false, reason: 'no vacancy data' };
+      }
+      if (!data.last_date || data.last_date === 'TBA' || data.last_date === 'See notification') {
+        return { saved: false, reason: 'no last date' };
+      }
+      if (!data.title || data.title.length < 10) {
+        return { saved: false, reason: 'invalid title' };
+      }
+
       await pool.query(
         `INSERT INTO jobs (title, org, vacancies, last_date, apply_link, notification_link, exam_date, salary, eligibility, description, category, slug, is_new)
          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, true)`,
