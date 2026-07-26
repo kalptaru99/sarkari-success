@@ -100,3 +100,20 @@ export async function PUT(request) {
     return Response.json({ error: 'Something went wrong' }, { status: 500 });
   }
 }
+export async function DELETE(request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return Response.json({ error: 'Job ID required' }, { status: 400 });
+    }
+
+    await pool.query('DELETE FROM jobs WHERE id = $1', [id]);
+
+    return Response.json({ success: true });
+  } catch (error) {
+    console.error('Delete job error:', error);
+    return Response.json({ error: 'Something went wrong' }, { status: 500 });
+  }
+}

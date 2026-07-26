@@ -383,6 +383,66 @@ function StateJobForm() {
     </div>
   );
 }
+function ManageJobs() {
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState(null);
+  const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    fetchJobs();
+  }, []);
+
+  const fetchJobs = async () => {
+    setLoading(true);
+    const res = await fetch('/api/jobs?limit=100');
+    const data = await res.json();
+    setJobs(data.jobs || []);
+    setLoading(false);
+  };
+
+  const deleteJob = async (id, title) => {
+    if (!confirm('Delete: ' + title + '?')) return;
+    setDeleting(id);
+    try {
+      const res = await fetch('/api/jobs?id=' + id, { method: 'DELETE' });
+      const data = await res.json();
+      if (data.success) {
+        setMessage('Deleted: ' + title);
+        setJobs(prev => prev.filter(j => j.id !== id));
+      }
+    } catch (e) {
+      setMessage('Error deleting job');
+    }
+    setDeleting(null);
+  };
+
+  if (loading) return <div style={{ padding: '20px', color: '#666' }}>Loading jobs...</div>;
+
+  return (
+    <div>
+      <h2 style={{ color: '#1e3a8a', margin: '0 0 16px 0' }}>Manage Jobs ({jobs.length})</h2>
+      {message && <div style={{ backgroundColor: '#dcfce7', color: '#16a34a', padding: '10px', borderRadius: '6px', marginBottom: '12px', fontSize: '13px' }}>{message}</div>}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        {jobs.map(job => (
+          <div key={job.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+            <div style={{ flex: 1 }}>
+              <p style={{ color: '#1e3a8a', fontWeight: '700', fontSize: '13px', margin: '0 0 2px 0' }}>{job.title}</p>
+              <p style={{ color: '#64748b', fontSize: '11px', margin: 0 }}>{job.org} | Vacancies: {job.vacancies} | Last Date: {job.last_date}</p>
+            </div>
+            <button
+              onClick={() => deleteJob(job.id, job.title)}
+              disabled={deleting === job.id}
+              style={{ backgroundColor: '#dc2626', color: 'white', border: 'none', padding: '6px 14px', borderRadius: '6px', fontSize: '12px', fontWeight: 'bold', cursor: 'pointer', flexShrink: 0, marginLeft: '12px' }}
+            >
+              {deleting === job.id ? '...' : '🗑️ Delete'}
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 function AdmitCardForm() {
   const [form, setForm] = useState({ exam: '', org: '', slug: '', exam_date: '', admit_card_date: '', official_link: '', description: '' });
   const [message, setMessage] = useState('');
@@ -647,6 +707,7 @@ if (!authenticated) {
           { id: 'editstatejob', label: '✏️ Edit State Job' },
           { id: 'questions', label: '📝 Generate Questions' },
           { id: 'addadmitcard', label: '🪪 Add Admit Card' },
+          { id: 'managejobs', label: '🗑️ Manage Jobs' },
         ].map((tab) => (
           <button
             key={tab.id}
@@ -975,6 +1036,10 @@ if (!authenticated) {
         {/* Edit State Job Tab */}
         {activeTab === 'editstatejob' && (
           <EditStateJob />
+        )}
+       {/* Manage Jobs Tab */}
+        {activeTab === 'managejobs' && (
+          <ManageJobs />
         )}
        {/* Add Admit Card Tab */}
         {activeTab === 'addadmitcard' && (
