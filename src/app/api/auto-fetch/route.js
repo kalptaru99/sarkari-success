@@ -111,15 +111,15 @@ async function saveToDatabase(data, type) {
       const existing = await pool.query('SELECT id FROM jobs WHERE slug = $1', [data.slug]);
       if (existing.rows.length > 0) return { saved: false, reason: 'already exists' };
 
-      if (!data.vacancies || data.vacancies === 'TBA' || data.vacancies === 'See notification' || data.vacancies === 'null' || data.vacancies === null) {
+      if (!data.vacancies || data.vacancies === 'TBA' || data.vacancies === 'See notification' || data.vacancies === 'null' || data.vacancies === null || data.vacancies.toLowerCase().includes('tba')) {
         return { saved: false, reason: 'no vacancy data' };
       }
-      if (!data.last_date || data.last_date === 'TBA' || data.last_date === 'See notification' || data.last_date === 'null' || data.last_date === null) {
+      if (!data.last_date || data.last_date === 'TBA' || data.last_date === 'See notification' || data.last_date === 'null' || data.last_date === null || data.last_date.toLowerCase().includes('tba')) {
         return { saved: false, reason: 'no last date' };
       }
-      const vacancyNum = parseInt(data.vacancies.replace(/,/g, '').replace(/\+/g, ''));
-      if (isNaN(vacancyNum) || vacancyNum < 1) {
-        return { saved: false, reason: 'invalid vacancy number' };
+      const vacancyNum = parseInt(data.vacancies.toString().replace(/,/g, '').replace(/\+/g, '').replace(/[^0-9]/g, ''));
+      if (isNaN(vacancyNum) || vacancyNum < 10) {
+        return { saved: false, reason: 'vacancy number too low or invalid' };
       }
       if (!data.title || data.title.length < 10) {
         return { saved: false, reason: 'invalid title' };
