@@ -1,7 +1,7 @@
 {
   "crons": [
     {
-      "path": "/api/auto-fetch?secret=sarkari_success_cron_secret_2026",
+      "path": "/api/auto-fetch",
       "schedule": "0 6 * * *"
     }
   ]
