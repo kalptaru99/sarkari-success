@@ -206,7 +206,7 @@ export default function StatesPage() {
                         )}
                         <p style={{ color: '#888', fontSize: '13px', margin: '0 0 4px 0' }}>{job.org}</p>
                         <p style={{ color: '#444', fontSize: '12px', margin: 0 }}>
-                          Vacancies: <strong>{job.vacancies}</strong> | Last Date: <strong style={{ color: '#dc2626' }}>{job.last_date}</strong>
+                          Vacancies: <strong>{job.vacancies && !job.vacancies.toLowerCase().includes('tba') ? job.vacancies : 'Check official website'}</strong> | Last Date: <strong style={{ color: '#dc2626' }}>{job.last_date && !job.last_date.toLowerCase().includes('tba') ? job.last_date : 'See notification'}</strong>
                         </p>
                       </div>
                       <a href={"/state-jobs/" + job.slug} style={{ backgroundColor: '#1e3a8a', color: 'white', padding: '8px 16px', borderRadius: '6px', fontSize: '13px', fontWeight: 'bold', textDecoration: 'none', flexShrink: 0 }}>
