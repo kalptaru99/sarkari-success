@@ -172,6 +172,10 @@ async function saveToDatabase(data, type) {
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
+  const batch = parseInt(searchParams.get('batch') || '0');
+  const batchSize = 8;
+  const start = batch * batchSize;
+  const queriesToRun = searchQueries.slice(start, start + batchSize);
   const secret = searchParams.get('secret');
   const cronHeader = request.headers.get('x-vercel-cron');
   const authHeader = request.headers.get('authorization');
@@ -189,7 +193,7 @@ export async function GET(request) {
     details: [],
   };
 
-  for (const searchQuery of searchQueries) {
+  for (const searchQuery of queriesToRun) {
     try {
       const searchResults = await searchSerper(searchQuery.query);
       results.searched++;
