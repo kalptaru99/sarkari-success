@@ -89,7 +89,7 @@ export default function StateJobPage() {
               { label: 'Last Date', value: job.last_date, urgent: true },
               { label: 'Exam Date', value: job.exam_date },
               { label: 'Salary', value: job.salary },
-            ].filter(item => item.value).map((item, i) => (
+            ].filter(item => item.value && item.value !== 'TBA' && !item.value.toLowerCase().includes('tba')).map((item, i) => (
               <div key={i} style={{ backgroundColor: '#f8fafc', borderRadius: '8px', padding: '14px', border: '1px solid #e5e7eb' }}>
                 <p style={{ color: '#888', fontSize: '12px', margin: '0 0 4px 0' }}>{item.label}</p>
                 <p style={{ color: item.urgent ? '#dc2626' : '#1e3a8a', fontSize: '15px', fontWeight: 'bold', margin: 0 }}>{item.value}</p>
