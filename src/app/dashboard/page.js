@@ -111,6 +111,11 @@ export default function Dashboard() {
               { icon: '📈', label: 'AI Rank Predictor', desc: 'See exactly how to improve your rank', href: '/rank-predictor' },
               { icon: '🧬', label: 'AI Selection DNA', desc: 'Your unique preparation fingerprint and readiness score', href: '/selection-dna' },
               { icon: '📊', label: 'Exam Intelligence Report', desc: '10-year analysis + AI personalized 6-month roadmap', href: '/exam-guide' },
+              { icon: '📘', label: 'English AI', desc: 'Error Detection, Vocabulary, RC, Cloze Test — Hindi explanation', href: '/english-ai' },
+              { icon: '📗', label: 'Maths AI', desc: 'Percentage, Profit/Loss, Geometry, DI — Hindi shortcuts', href: '/maths-ai' },
+              { icon: '🧩', label: 'Reasoning AI', desc: 'Analogy, Syllogism, Puzzle, Coding — Hindi tricks', href: '/reasoning-ai' },
+              { icon: '🌍', label: 'GK/GS AI', desc: 'History, Polity, Geography, Current Affairs', href: '/gk-ai' },
+              { icon: '✍️', label: 'Descriptive AI', desc: 'Essay + Letter Writing with AI Evaluation', href: '/descriptive-ai' },
               { icon: '🤖', label: 'Unlimited SarkariGPT', desc: 'Unlimited AI career guidance in 12 languages', href: '/sarkarigpt' },
             ].map((item, i) => (
               <a key={i} href={item.href} style={{ display: 'flex', alignItems: 'center', gap: '12px', backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: '10px', padding: '12px 16px', textDecoration: 'none' }}>
