@@ -60,24 +60,24 @@ const content = {
 
 const topicsData = {
   en: [
-    { id: "rc", name: "Reading Comprehension", icon: "📖", count: "2,340", repeat: 95, color: "#1e3a8a" },
-    { id: "error", name: "Error Detection", icon: "🔍", count: "1,890", repeat: 90, color: "#dc2626" },
-    { id: "sentence", name: "Sentence Improvement", icon: "✏️", count: "1,560", repeat: 85, color: "#7c3aed" },
-    { id: "cloze", name: "Cloze Test", icon: "📝", count: "1,230", repeat: 88, color: "#0891b2" },
-    { id: "jumbles", name: "Para Jumbles", icon: "🔀", count: "980", repeat: 82, color: "#ca8a04" },
-    { id: "vocab", name: "Vocabulary", icon: "📚", count: "2,450", repeat: 92, color: "#16a34a" },
-    { id: "idioms", name: "Idioms & Phrases", icon: "💬", count: "890", repeat: 78, color: "#db2777" },
-    { id: "spelling", name: "Spelling Error", icon: "🔤", count: "1,110", repeat: 75, color: "#ea580c" },
+    { id: "rc", name: "Reading Comprehension", icon: "📖", count: "820", repeat: 95, color: "#1e3a8a" },
+    { id: "error", name: "Error Detection", icon: "🔍", count: "680", repeat: 90, color: "#dc2626" },
+    { id: "sentence", name: "Sentence Improvement", icon: "✏️", count: "560", repeat: 85, color: "#7c3aed" },
+    { id: "cloze", name: "Cloze Test", icon: "📝", count: "420", repeat: 88, color: "#0891b2" },
+    { id: "jumbles", name: "Para Jumbles", icon: "🔀", count: "340", repeat: 82, color: "#ca8a04" },
+    { id: "vocab", name: "Vocabulary", icon: "📚", count: "890", repeat: 92, color: "#16a34a" },
+    { id: "idioms", name: "Idioms & Phrases", icon: "💬", count: "290", repeat: 78, color: "#db2777" },
+    { id: "spelling", name: "Spelling Error", icon: "🔤", count: "390", repeat: 75, color: "#ea580c" },
   ],
   hi: [
-    { id: "rc", name: "पठन बोध", icon: "📖", count: "2,340", repeat: 95, color: "#1e3a8a" },
-    { id: "error", name: "त्रुटि पहचान", icon: "🔍", count: "1,890", repeat: 90, color: "#dc2626" },
-    { id: "sentence", name: "वाक्य सुधार", icon: "✏️", count: "1,560", repeat: 85, color: "#7c3aed" },
-    { id: "cloze", name: "रिक्त स्थान", icon: "📝", count: "1,230", repeat: 88, color: "#0891b2" },
-    { id: "jumbles", name: "वाक्य क्रम", icon: "🔀", count: "980", repeat: 82, color: "#ca8a04" },
-    { id: "vocab", name: "शब्द भंडार", icon: "📚", count: "2,450", repeat: 92, color: "#16a34a" },
-    { id: "idioms", name: "मुहावरे और वाक्यांश", icon: "💬", count: "890", repeat: 78, color: "#db2777" },
-    { id: "spelling", name: "वर्तनी त्रुटि", icon: "🔤", count: "1,110", repeat: 75, color: "#ea580c" },
+    { id: "rc", name: "पठन बोध", icon: "📖", count: "820", repeat: 95, color: "#1e3a8a" },
+    { id: "error", name: "त्रुटि पहचान", icon: "🔍", count: "680", repeat: 90, color: "#dc2626" },
+    { id: "sentence", name: "वाक्य सुधार", icon: "✏️", count: "560", repeat: 85, color: "#7c3aed" },
+    { id: "cloze", name: "रिक्त स्थान", icon: "📝", count: "420", repeat: 88, color: "#0891b2" },
+    { id: "jumbles", name: "वाक्य क्रम", icon: "🔀", count: "340", repeat: 82, color: "#ca8a04" },
+    { id: "vocab", name: "शब्द भंडार", icon: "📚", count: "890", repeat: 92, color: "#16a34a" },
+    { id: "idioms", name: "मुहावरे और वाक्यांश", icon: "💬", count: "290", repeat: 78, color: "#db2777" },
+    { id: "spelling", name: "वर्तनी त्रुटि", icon: "🔤", count: "390", repeat: 75, color: "#ea580c" },
   ]
 };
 
@@ -295,7 +295,7 @@ export default function EnglishAI() {
           <div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '12px', marginBottom: '24px' }}>
               {[
-                { value: '12,450', label: c.totalQ, color: '#1e3a8a' },
+                { value: '5,000', label: c.totalQ, color: '#1e3a8a' },
                 { value: '20', label: c.yearsQ, color: '#7c3aed' },
                 { value: '500+', label: c.mostImp, color: '#dc2626' },
                 { value: '8', label: c.topicsCount, color: '#16a34a' },
