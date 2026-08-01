@@ -24,7 +24,6 @@ const letterTemplates = [
 export default function DescriptiveAI() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [lang, setLang] = useState("en");
   const [activeTab, setActiveTab] = useState("dashboard");
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [userText, setUserText] = useState("");
@@ -50,9 +49,7 @@ export default function DescriptiveAI() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          message: lang === 'hi'
-            ? `आप SSC CGL Tier 3 और बैंकिंग Mains वर्णनात्मक परीक्षा के लिए एक विशेषज्ञ अंग्रेज़ी लेखन शिक्षक हैं। विषय पर एक आदर्श ${type} लिखें: "${topic}"\n\nआवश्यकताएं:\n- शब्द सीमा: निबंध के लिए 250 शब्द, पत्र के लिए 150 शब्द\n- SSC CGL Tier 3 पैटर्न\n- स्पष्ट संरचना: परिचय, मुख्य भाग, निष्कर्ष\n\n${type} लिखने के बाद शुद्ध हिंदी में संरचना की व्याख्या करें।`
-            : `You are an expert English writing teacher for SSC CGL Tier 3 and Banking Mains descriptive exam. Write a model ${type} on: "${topic}"\n\nRequirements:\n- Word limit: 250 words for essay, 150 words for letter\n- SSC CGL Tier 3 pattern\n- Clear structure: Introduction, Body (2-3 paragraphs), Conclusion\n- Formal academic English\n\nAfter the ${type}, provide structure explanation to help Hindi-medium students.
+          message: `You are an expert English writing teacher for SSC CGL Tier 3 and Banking Mains descriptive exam.
 
 Write a model ${type} on: "${topic}"
 
@@ -98,9 +95,7 @@ Write in a way that helps Hindi-medium students understand the structure.`,
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          message: lang === 'hi'
-            ? `आप SSC CGL Tier 3 परीक्षक हैं। इस छात्र के लेखन का मूल्यांकन करें:\n\n"${userText}"\n\nविषय: ${selectedTopic?.title || "सामान्य निबंध"}\n\nSSC CGL पैटर्न पर मूल्यांकन करें (100 में से):\n1. सामग्री और प्रासंगिकता (30 अंक)\n2. भाषा और व्याकरण (30 अंक)\n3. संरचना और संगठन (20 अंक)\n4. शब्द भंडार (20 अंक)\n\nशुद्ध हिंदी में विस्तृत फीडबैक दें।`
-            : `You are an SSC CGL Tier 3 examiner. Evaluate this student's writing:\n\n"${userText}"\n\nTopic: ${selectedTopic?.title || "General Essay"}\n\nEvaluate on SSC CGL pattern (out of 100):\n1. Content & Relevance (30 marks)\n2. Language & Grammar (30 marks)\n3. Structure & Organization (20 marks)\n4. Vocabulary (20 marks)\n\nGive detailed feedback with specific corrections and model sentence rewrites.
+          message: `You are an SSC CGL Tier 3 examiner. Evaluate this student's writing:
 
 "${userText}"
 
@@ -158,19 +153,7 @@ Be honest and constructive. Response in Hindi/Hinglish.`,
             <h1 style={{ color: 'white', fontSize: '20px', fontWeight: '900', margin: 0 }}>✍️ Sarkari Descriptive English AI</h1>
             <p style={{ color: '#a5f3fc', fontSize: '12px', margin: '2px 0 0 0' }}>SSC CGL Tier 3 • Banking Mains • Essay Writing • Letter Writing • AI Evaluation</p>
           </div>
-          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-            <div style={{ display: 'flex', backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: '20px', padding: '3px' }}>
-              <button onClick={() => setLang('en')}
-                style={{ padding: '5px 14px', borderRadius: '16px', border: 'none', fontSize: '12px', fontWeight: '700', cursor: 'pointer', backgroundColor: lang === 'en' ? 'white' : 'transparent', color: lang === 'en' ? '#0e7490' : 'white' }}>
-                English
-              </button>
-              <button onClick={() => setLang('hi')}
-                style={{ padding: '5px 14px', borderRadius: '16px', border: 'none', fontSize: '12px', fontWeight: '700', cursor: 'pointer', backgroundColor: lang === 'hi' ? 'white' : 'transparent', color: lang === 'hi' ? '#0e7490' : 'white' }}>
-                हिंदी
-              </button>
-            </div>
-            <a href="/dashboard" style={{ color: 'white', fontSize: '13px', textDecoration: 'none' }}>← Back</a>
-          </div>
+          <a href="/dashboard" style={{ color: 'white', fontSize: '13px', textDecoration: 'none' }}>← Dashboard</a>
         </div>
       </div>
 
