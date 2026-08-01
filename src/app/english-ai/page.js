@@ -60,7 +60,7 @@ const content = {
 
 const topicsData = {
   en: [
-    { id: "rc", name: "Reading Comprehension", icon: "📖", count: "820", repeat: 95, color: "#1e3a8a" },
+    { id: "rc", name: "Reading Comprehension", icon: "📖", count: "1430", repeat: 95, color: "#1e3a8a" },
     { id: "error", name: "Error Detection", icon: "🔍", count: "680", repeat: 90, color: "#dc2626" },
     { id: "sentence", name: "Sentence Improvement", icon: "✏️", count: "560", repeat: 85, color: "#7c3aed" },
     { id: "cloze", name: "Cloze Test", icon: "📝", count: "420", repeat: 88, color: "#0891b2" },
@@ -70,7 +70,7 @@ const topicsData = {
     { id: "spelling", name: "Spelling Error", icon: "🔤", count: "390", repeat: 75, color: "#ea580c" },
   ],
   hi: [
-    { id: "rc", name: "पठन बोध", icon: "📖", count: "820", repeat: 95, color: "#1e3a8a" },
+    { id: "rc", name: "पठन बोध", icon: "📖", count: "1,430", repeat: 95, color: "#1e3a8a" },
     { id: "error", name: "त्रुटि पहचान", icon: "🔍", count: "680", repeat: 90, color: "#dc2626" },
     { id: "sentence", name: "वाक्य सुधार", icon: "✏️", count: "560", repeat: 85, color: "#7c3aed" },
     { id: "cloze", name: "रिक्त स्थान", icon: "📝", count: "420", repeat: 88, color: "#0891b2" },
