@@ -383,6 +383,103 @@ function StateJobForm() {
     </div>
   );
 }
+function AutoGenerateQuestions() {
+  const [running, setRunning] = useState(false);
+  const [log, setLog] = useState([]);
+  const [progress, setProgress] = useState({ total: 0, done: 0 });
+  const [selectedSubject, setSelectedSubject] = useState('Maths');
+
+  const subjects = ['Maths', 'English', 'Reasoning', 'GK'];
+  const batchCounts = { Maths: 5, English: 5, Reasoning: 5, GK: 5 };
+  const chapterCounts = { Maths: 14, English: 8, Reasoning: 12, GK: 8 };
+
+  const addLog = (msg, type = 'info') => {
+    setLog(prev => [...prev, { msg, type, time: new Date().toLocaleTimeString() }]);
+  };
+
+  const runAll = async () => {
+    setRunning(true);
+    setLog([]);
+    const totalBatches = batchCounts[selectedSubject];
+    const totalChapters = chapterCounts[selectedSubject];
+    const total = totalBatches * totalChapters;
+    setProgress({ total, done: 0 });
+    let done = 0;
+    addLog(`Starting ${selectedSubject} generation — ${total} requests total`, 'start');
+    for (let batch = 0; batch < totalBatches; batch++) {
+      for (let chapter = 0; chapter < totalChapters; chapter++) {
+        try {
+          const res = await fetch(`/api/generate-questions?secret=sarkari_success_cron_secret_2026&subject=${selectedSubject}&batch=${batch}&chapter=${chapter}`);
+          const data = await res.json();
+          done++;
+          setProgress({ total, done });
+          if (data.success) {
+            addLog(`✅ ${data.exam} — ${data.chapter}: ${data.inserted} questions`, 'success');
+          } else {
+            addLog(`❌ batch=${batch} chapter=${chapter}: ${data.error}`, 'error');
+          }
+        } catch (e) {
+          addLog(`❌ Network error batch=${batch} chapter=${chapter}`, 'error');
+          done++;
+          setProgress({ total, done });
+        }
+        await new Promise(r => setTimeout(r, 2000));
+      }
+    }
+    addLog(`🎉 Generation complete! ${done}/${total} requests processed.`, 'done');
+    setRunning(false);
+  };
+
+  const progressPct = progress.total > 0 ? Math.round((progress.done / progress.total) * 100) : 0;
+
+  return (
+    <div>
+      <h2 style={{ color: '#1e3a8a', margin: '0 0 20px 0' }}>🤖 Auto Generate Questions</h2>
+      <p style={{ color: '#666', fontSize: '13px', margin: '0 0 20px 0' }}>Automatically generates all chapter-wise questions. Keep this tab open while running.</p>
+      <div style={{ display: 'flex', gap: '12px', marginBottom: '20px', flexWrap: 'wrap' }}>
+        {subjects.map(s => (
+          <button key={s} onClick={() => !running && setSelectedSubject(s)}
+            style={{ padding: '10px 24px', borderRadius: '8px', border: '2px solid', fontSize: '14px', fontWeight: '700', cursor: running ? 'not-allowed' : 'pointer', borderColor: selectedSubject === s ? '#1e3a8a' : '#e2e8f0', backgroundColor: selectedSubject === s ? '#1e3a8a' : 'white', color: selectedSubject === s ? 'white' : '#64748b' }}>
+            {s} ({batchCounts[s] * chapterCounts[s]} requests)
+          </button>
+        ))}
+      </div>
+      <div style={{ backgroundColor: '#eff6ff', borderRadius: '8px', padding: '14px', marginBottom: '16px', border: '1px solid #bfdbfe' }}>
+        <p style={{ color: '#1e3a8a', fontWeight: '700', fontSize: '13px', margin: '0 0 4px 0' }}>
+          {selectedSubject} — {batchCounts[selectedSubject]} exams × {chapterCounts[selectedSubject]} chapters = {batchCounts[selectedSubject] * chapterCounts[selectedSubject]} requests
+        </p>
+        <p style={{ color: '#64748b', fontSize: '12px', margin: 0 }}>
+          Estimated time: ~{Math.round(batchCounts[selectedSubject] * chapterCounts[selectedSubject] * 1.5)} minutes • ~{batchCounts[selectedSubject] * chapterCounts[selectedSubject] * 20} questions
+        </p>
+      </div>
+      {running && (
+        <div style={{ marginBottom: '16px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+            <span style={{ color: '#1e3a8a', fontWeight: '700', fontSize: '13px' }}>Progress: {progress.done}/{progress.total}</span>
+            <span style={{ color: '#1e3a8a', fontWeight: '700', fontSize: '13px' }}>{progressPct}%</span>
+          </div>
+          <div style={{ backgroundColor: '#e2e8f0', borderRadius: '4px', height: '10px' }}>
+            <div style={{ backgroundColor: '#1e3a8a', height: '100%', width: progressPct + '%', borderRadius: '4px', transition: 'width 0.3s' }} />
+          </div>
+        </div>
+      )}
+      <button onClick={runAll} disabled={running}
+        style={{ backgroundColor: running ? '#94a3b8' : '#1e3a8a', color: 'white', padding: '14px 32px', borderRadius: '8px', border: 'none', fontSize: '15px', fontWeight: '700', cursor: running ? 'not-allowed' : 'pointer', marginBottom: '20px', width: '100%' }}>
+        {running ? `🔄 Generating... (${progress.done}/${progress.total})` : `🚀 Start Auto Generate — ${selectedSubject}`}
+      </button>
+      {log.length > 0 && (
+        <div style={{ backgroundColor: '#0f172a', borderRadius: '8px', padding: '16px', maxHeight: '400px', overflowY: 'auto' }}>
+          {log.map((entry, i) => (
+            <div key={i} style={{ display: 'flex', gap: '10px', marginBottom: '4px' }}>
+              <span style={{ color: '#64748b', fontSize: '11px', flexShrink: 0 }}>{entry.time}</span>
+              <span style={{ fontSize: '12px', color: entry.type === 'success' ? '#4ade80' : entry.type === 'error' ? '#f87171' : entry.type === 'done' ? '#fbbf24' : '#94a3b8' }}>{entry.msg}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 function ManageJobs() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -709,6 +806,7 @@ if (!authenticated) {
           { id: 'questions', label: '📝 Generate Questions' },
           { id: 'addadmitcard', label: '🪪 Add Admit Card' },
           { id: 'managejobs', label: '🗑️ Manage Jobs' },
+          { id: 'autogenerate', label: '🤖 Auto Generate Questions' },
         ].map((tab) => (
           <button
             key={tab.id}
@@ -1038,7 +1136,15 @@ if (!authenticated) {
         {activeTab === 'editstatejob' && (
           <EditStateJob />
         )}
+        {/* Auto Generate Tab */}
+        {activeTab === 'autogenerate' && (
+          <AutoGenerateQuestions />
+        )}
        {/* Manage Jobs Tab */}
+       {/* Auto Generate Tab */}
+        {activeTab === 'autogenerate' && (
+          <AutoGenerateQuestions />
+        )}
         {activeTab === 'managejobs' && (
           <ManageJobs />
         )}
