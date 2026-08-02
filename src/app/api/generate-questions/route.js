@@ -95,7 +95,7 @@ Return ONLY a valid JSON array, no other text:
     "question": "question text",
     "option_a": "option A",
     "option_b": "option B",
-    "option_c": "option C", 
+    "option_c": "option C",
     "option_d": "option D",
     "correct_answer": "A",
     "explanation": "detailed explanation",
@@ -118,25 +118,18 @@ Return ONLY a valid JSON array, no other text:
 export async function POST(request) {
   try {
     const { exam, topic, chapter, count } = await request.json();
-
-    // Single chapter generation (existing feature)
-    if (exam && topic && count && !request.url.includes('bulk')) {
-      const questions = await generateChapterQuestions(exam, topic, chapter, count);
-      let inserted = 0;
-      for (const q of questions) {
-        await pool.query(
-          `INSERT INTO questions (exam, topic, chapter, question, option_a, option_b, option_c, option_d, correct_answer, explanation, difficulty)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
-           ON CONFLICT DO NOTHING`,
-          [exam, topic, chapter, q.question, q.option_a, q.option_b, q.option_c, q.option_d, q.correct_answer, q.explanation, q.difficulty]
-        );
-        inserted++;
-      }
-      return Response.json({ success: true, generated: questions.length, inserted });
+    const questions = await generateChapterQuestions(exam, topic, chapter, count || 10);
+    let inserted = 0;
+    for (const q of questions) {
+      await pool.query(
+        `INSERT INTO questions (exam, topic, chapter, question, option_a, option_b, option_c, option_d, correct_answer, explanation, difficulty)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+         ON CONFLICT DO NOTHING`,
+        [exam, topic, chapter, q.question, q.option_a, q.option_b, q.option_c, q.option_d, q.correct_answer, q.explanation, q.difficulty]
+      );
+      inserted++;
     }
-
-    return Response.json({ error: 'Invalid request' }, { status: 400 });
-
+    return Response.json({ success: true, generated: questions.length, inserted });
   } catch (error) {
     console.error('Generate error:', error);
     return Response.json({ error: 'Something went wrong: ' + error.message }, { status: 500 });
@@ -148,6 +141,7 @@ export async function GET(request) {
   const secret = searchParams.get('secret');
   const subject = searchParams.get('subject');
   const batchIndex = parseInt(searchParams.get('batch') || '0');
+  const chapterIndex = parseInt(searchParams.get('chapter') || '0');
 
   if (secret !== process.env.CRON_SECRET) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -158,38 +152,61 @@ export async function GET(request) {
     return Response.json({ error: 'Invalid subject. Use: Maths, English, Reasoning, GK' }, { status: 400 });
   }
 
-  const results = { subject, generated: 0, inserted: 0, errors: 0, details: [] };
-
-  // Process one exam at a time per batch to avoid timeout
   const exam = subjectPlan.exams[batchIndex];
   if (!exam) {
-    return Response.json({ success: true, message: 'All batches complete', results });
+    return Response.json({ success: true, message: 'All batches complete for ' + subject });
   }
 
-  for (const chapter of subjectPlan.chapters) {
-    try {
-      const questions = await generateChapterQuestions(exam, subjectPlan.topic, chapter.id, chapter.count);
-      results.generated += questions.length;
+  const chapter = subjectPlan.chapters[chapterIndex];
+  if (!chapter) {
+    return Response.json({ 
+      success: true, 
+      message: 'All chapters complete for ' + exam,
+      nextBatch: batchIndex + 1,
+      nextChapter: 0,
+      totalBatches: subjectPlan.exams.length
+    });
+  }
 
-      for (const q of questions) {
-        try {
-          await pool.query(
-            `INSERT INTO questions (exam, topic, chapter, question, option_a, option_b, option_c, option_d, correct_answer, explanation, difficulty)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
-             ON CONFLICT DO NOTHING`,
-            [exam, subjectPlan.topic, chapter.id, q.question, q.option_a, q.option_b, q.option_c, q.option_d, q.correct_answer, q.explanation, q.difficulty]
-          );
-          results.inserted++;
-        } catch (e) {
-          results.errors++;
-        }
+  try {
+    const questions = await generateChapterQuestions(exam, subjectPlan.topic, chapter.id, chapter.count);
+    let inserted = 0;
+    let errors = 0;
+
+    for (const q of questions) {
+      try {
+        await pool.query(
+          `INSERT INTO questions (exam, topic, chapter, question, option_a, option_b, option_c, option_d, correct_answer, explanation, difficulty)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+           ON CONFLICT DO NOTHING`,
+          [exam, subjectPlan.topic, chapter.id, q.question, q.option_a, q.option_b, q.option_c, q.option_d, q.correct_answer, q.explanation, q.difficulty]
+        );
+        inserted++;
+      } catch (e) {
+        errors++;
       }
-      results.details.push({ exam, chapter: chapter.id, generated: questions.length });
-    } catch (error) {
-      results.errors++;
-      results.details.push({ exam, chapter: chapter.id, error: error.message });
     }
-  }
 
-  return Response.json({ success: true, results, nextBatch: batchIndex + 1, totalBatches: subjectPlan.exams.length });
+    return Response.json({
+      success: true,
+      exam,
+      chapter: chapter.id,
+      generated: questions.length,
+      inserted,
+      errors,
+      nextBatch: batchIndex,
+      nextChapter: chapterIndex + 1,
+      totalChapters: subjectPlan.chapters.length,
+      totalBatches: subjectPlan.exams.length,
+      message: `Generated ${inserted} questions for ${exam} - ${chapter.id}`
+    });
+
+  } catch (error) {
+    return Response.json({
+      success: false,
+      error: error.message,
+      nextBatch: batchIndex,
+      nextChapter: chapterIndex + 1,
+    });
+  }
 }
