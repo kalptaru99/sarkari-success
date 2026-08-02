@@ -159,9 +159,15 @@ export default function GKAI() {
     if (status === "unauthenticated") router.push("/login");
   }, [status]);
 
-  const fetchQuestions = async (topicName) => {
+  const fetchQuestions = async (chapterName) => {
     try {
-      const res = await fetch('/api/questions?exam=' + encodeURIComponent(selectedExam) + '&topic=General Awareness&limit=20');
+      const chapterMap = {
+        history: 'History', geography: 'Geography', polity: 'Polity',
+        economics: 'Economics', science: 'Science & Tech', awards: 'Awards & Honours',
+        books: 'Books & Authors', sports: 'Sports'
+      };
+      const chapter = chapterMap[chapterName] || chapterName;
+      const res = await fetch('/api/questions?exam=' + encodeURIComponent(selectedExam) + '&topic=General Awareness&chapter=' + encodeURIComponent(chapter) + '&limit=20');
       const data = await res.json();
       if (data.questions && data.questions.length > 0) {
         setDbQuestions(data.questions.map(q => ({

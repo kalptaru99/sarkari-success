@@ -1,5 +1,5 @@
 import pool from './src/lib/db.js';
 
-const result = await pool.query('SELECT DISTINCT exam, topic FROM questions ORDER BY exam, topic LIMIT 30');
-result.rows.forEach(row => console.log(row.exam, '|', row.topic));
+const result = await pool.query('ALTER TABLE questions ADD COLUMN IF NOT EXISTS chapter VARCHAR(100)');
+console.log('Chapter column added:', result.command);
 process.exit(0);

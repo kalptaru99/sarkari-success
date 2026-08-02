@@ -160,9 +160,17 @@ export default function MathsAI() {
     if (status === "unauthenticated") router.push("/login");
   }, [status]);
 
-  const fetchQuestions = async () => {
+  const fetchQuestions = async (chapterName) => {
     try {
-      const res = await fetch('/api/questions?exam=' + encodeURIComponent(selectedExam) + '&topic=Quantitative Aptitude&limit=20');
+      const chapterMap = {
+        percentage: 'Percentage', profit: 'Profit & Loss', ratio: 'Ratio & Proportion',
+        timework: 'Time & Work', timedist: 'Time Speed & Distance', si: 'Simple & Compound Interest',
+        average: 'Average', partnership: 'Partnership', number: 'Number System',
+        algebra: 'Algebra', geometry: 'Geometry', trig: 'Trigonometry',
+        mensuration: 'Mensuration', di: 'Data Interpretation'
+      };
+      const chapter = chapterMap[chapterName] || chapterName;
+      const res = await fetch('/api/questions?exam=' + encodeURIComponent(selectedExam) + '&topic=Quantitative Aptitude&chapter=' + encodeURIComponent(chapter) + '&limit=20');
       const data = await res.json();
       if (data.questions && data.questions.length > 0) {
         setDbQuestions(data.questions.map(q => ({

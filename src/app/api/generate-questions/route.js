@@ -7,7 +7,7 @@ const client = new Anthropic({
 
 export async function POST(request) {
   try {
-    const { exam, topic, count } = await request.json();
+    const { exam, topic, chapter, count } = await request.json();
 
     const response = await client.messages.create({
       model: "claude-sonnet-4-6",
@@ -15,7 +15,9 @@ export async function POST(request) {
       messages: [
         {
           role: "user",
-          content: `Generate ${count || 10} multiple choice questions for ${exam} exam on the topic of ${topic}.
+          content: `Generate ${count || 10} multiple choice questions for ${exam} exam on the topic of ${topic}${chapter ? ', specifically on the chapter: ' + chapter : ''}.
+
+Make questions specifically about ${chapter || topic} as it appears in ${exam} exam pattern.
 
 Return ONLY a JSON array with no other text, in this exact format:
 [
@@ -48,10 +50,10 @@ Rules:
     let inserted = 0;
     for (const q of questions) {
       await pool.query(
-        `INSERT INTO questions (exam, topic, question, option_a, option_b, option_c, option_d, correct_answer, explanation, difficulty)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+        `INSERT INTO questions (exam, topic, chapter, question, option_a, option_b, option_c, option_d, correct_answer, explanation, difficulty)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
          ON CONFLICT DO NOTHING`,
-        [exam, topic, q.question, q.option_a, q.option_b, q.option_c, q.option_d, q.correct_answer, q.explanation, q.difficulty]
+        [exam, topic, chapter, q.question, q.option_a, q.option_b, q.option_c, q.option_d, q.correct_answer, q.explanation, q.difficulty]
       );
       inserted++;
     }

@@ -156,9 +156,16 @@ export default function ReasoningAI() {
     if (status === "unauthenticated") router.push("/login");
   }, [status]);
 
-  const fetchQuestions = async () => {
+  const fetchQuestions = async (chapterName) => {
     try {
-      const res = await fetch('/api/questions?exam=' + encodeURIComponent(selectedExam) + '&topic=General Intelligence&limit=20');
+      const chapterMap = {
+        analogy: 'Analogy', blood: 'Blood Relation', syllogism: 'Syllogism',
+        coding: 'Coding-Decoding', direction: 'Direction Sense', puzzle: 'Puzzle & Seating',
+        inequality: 'Inequality', series: 'Series', nonverbal: 'Non-Verbal',
+        classification: 'Classification', statement: 'Statement & Assumption', calendar: 'Calendar & Clock'
+      };
+      const chapter = chapterMap[chapterName] || chapterName;
+      const res = await fetch('/api/questions?exam=' + encodeURIComponent(selectedExam) + '&topic=General Intelligence&chapter=' + encodeURIComponent(chapter) + '&limit=20');
       const data = await res.json();
       if (data.questions && data.questions.length > 0) {
         setDbQuestions(data.questions.map(q => ({

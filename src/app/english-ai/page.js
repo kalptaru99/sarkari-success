@@ -165,9 +165,15 @@ export default function EnglishAI() {
     if (status === "unauthenticated") router.push("/login");
   }, [status]);
 
-  const fetchQuestions = async () => {
+  const fetchQuestions = async (chapterName) => {
     try {
-      const res = await fetch('/api/questions?exam=' + encodeURIComponent(selectedExam) + '&topic=English Language&limit=20');
+      const chapterMap = {
+        rc: 'Reading Comprehension', error: 'Error Detection', sentence: 'Sentence Improvement',
+        cloze: 'Cloze Test', jumbles: 'Para Jumbles', vocab: 'Vocabulary',
+        idioms: 'Idioms & Phrases', spelling: 'Spelling Error'
+      };
+      const chapter = chapterMap[chapterName] || chapterName;
+      const res = await fetch('/api/questions?exam=' + encodeURIComponent(selectedExam) + '&topic=English Language&chapter=' + encodeURIComponent(chapter) + '&limit=20');
       const data = await res.json();
       if (data.questions && data.questions.length > 0) {
         setDbQuestions(data.questions.map(q => ({

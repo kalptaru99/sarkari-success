@@ -556,6 +556,7 @@ export default function AdminPage() {
   const [error, setError] = useState("");
   const [genExam, setGenExam] = useState("SSC CGL");
   const [genTopic, setGenTopic] = useState("General Intelligence");
+  const [genChapter, setGenChapter] = useState("");
   const [genCount, setGenCount] = useState(10);
   const [genLoading, setGenLoading] = useState(false);
   const [genResults, setGenResults] = useState([]);
@@ -628,7 +629,7 @@ useEffect(() => {
       const response = await fetch("/api/generate-questions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ exam: genExam, topic: genTopic, count: genCount }),
+        body: JSON.stringify({ exam: genExam, topic: genTopic, chapter: genChapter, count: genCount }),
       });
       const data = await response.json();
       if (data.success) {
@@ -1074,6 +1075,17 @@ if (!authenticated) {
                   {topics[genExam].map((topic, i) => <option key={i} value={topic}>{topic}</option>)}
                 </select>
               </div>
+            </div>
+
+            <div style={{ marginBottom: '16px' }}>
+              <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '6px', fontWeight: 'bold' }}>Chapter (Optional) — e.g. Percentage, Blood Relation, Subject-Verb Agreement</label>
+              <input
+                type="text"
+                placeholder="e.g. Percentage, Profit & Loss, Analogy, Subject-Verb Agreement"
+                value={genChapter}
+                onChange={(e) => setGenChapter(e.target.value)}
+                style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box' }}
+              />
             </div>
 
             <div style={{ marginBottom: '16px' }}>

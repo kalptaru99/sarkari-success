@@ -7,12 +7,20 @@ export async function GET(request) {
     const topic = searchParams.get('topic') || null;
     const limit = parseInt(searchParams.get('limit')) || 10;
 
+    const chapter = searchParams.get('chapter') || null;
+
     let query = 'SELECT * FROM questions WHERE exam = $1';
     let params = [exam];
 
-    if (topic) {
+    if (topic && chapter) {
+      query += ' AND topic = $2 AND chapter = $3 ORDER BY RANDOM() LIMIT $4';
+      params.push(topic, chapter, limit);
+    } else if (topic) {
       query += ' AND topic = $2 ORDER BY RANDOM() LIMIT $3';
       params.push(topic, limit);
+    } else if (chapter) {
+      query += ' AND chapter = $2 ORDER BY RANDOM() LIMIT $3';
+      params.push(chapter, limit);
     } else {
       query += ' ORDER BY RANDOM() LIMIT $2';
       params.push(limit);
