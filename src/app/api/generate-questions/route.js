@@ -110,13 +110,31 @@ IMPORTANT: Return ONLY the raw JSON array starting with [ and ending with ]. No 
   });
 
   const text = response.content[0].text.trim();
-  let jsonMatch = text.match(/\[[\s\S]*\]/);
-  if (!jsonMatch) {
-    const cleaned = text.replace(/```json|```/g, '').trim();
-    jsonMatch = cleaned.match(/\[[\s\S]*\]/);
+  let jsonStr = text.replace(/```json|```/g, '').trim();
+  
+  // Find the start of JSON array
+  const startIndex = jsonStr.indexOf('[');
+  if (startIndex === -1) throw new Error('No JSON array found in: ' + jsonStr.substring(0, 200));
+  
+  jsonStr = jsonStr.substring(startIndex);
+  
+  // Fix truncated JSON by finding last complete object
+  const lastComplete = jsonStr.lastIndexOf('},');
+  if (lastComplete !== -1) {
+    jsonStr = jsonStr.substring(0, lastComplete + 1) + ']';
   }
-  if (!jsonMatch) throw new Error('No JSON array found in: ' + text.substring(0, 200));
-  return JSON.parse(jsonMatch[0]);
+  
+  try {
+    return JSON.parse(jsonStr);
+  } catch(e) {
+    // Try to find last complete object ending with }
+    const lastObj = jsonStr.lastIndexOf('}');
+    if (lastObj !== -1) {
+      jsonStr = jsonStr.substring(0, lastObj + 1) + ']';
+      return JSON.parse(jsonStr);
+    }
+    throw new Error('Could not parse JSON: ' + e.message);
+  }
 }
 
 export async function POST(request) {
