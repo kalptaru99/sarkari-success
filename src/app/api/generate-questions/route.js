@@ -86,7 +86,7 @@ Requirements:
 - Include the most repeated and important question types from last 5 years
 - Questions should be of mixed difficulty (60% medium, 25% hard, 15% easy)
 - Each question must have exactly 4 options with only one correct answer
-- Explanations must be detailed and educational
+- Explanations must be brief, under 80 words each
 - Questions must be unique and not repetitive
 
 IMPORTANT: Return ONLY the raw JSON array starting with [ and ending with ]. No explanation, no markdown, no code blocks, no other text whatsoever. Start your response with [ and end with ].
@@ -98,7 +98,7 @@ IMPORTANT: Return ONLY the raw JSON array starting with [ and ending with ]. No 
     "option_c": "option C",
     "option_d": "option D",
     "correct_answer": "A",
-    "explanation": "detailed explanation",
+    "explanation": "brief explanation under 100 words",
     "difficulty": "medium"
   }
 ]`;
