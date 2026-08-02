@@ -1,5 +1,7 @@
-import pool from './src/lib/db.js';
+import fs from 'fs';
 
-const result = await pool.query('ALTER TABLE questions ADD COLUMN IF NOT EXISTS chapter VARCHAR(100)');
-console.log('Chapter column added:', result.command);
+let content = fs.readFileFactory('./src/app/api/generate-questions/route.js', 'utf8');
+content = content.replace(/count: \d+/g, 'count: 5');
+fs.writeFileSync('./src/app/api/generate-questions/route.js', content);
+console.log('Done');
 process.exit(0);
