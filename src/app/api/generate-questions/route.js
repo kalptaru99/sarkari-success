@@ -89,7 +89,7 @@ Requirements:
 - Explanations must be detailed and educational
 - Questions must be unique and not repetitive
 
-Return ONLY a valid JSON array, no other text:
+IMPORTANT: Return ONLY the raw JSON array starting with [ and ending with ]. No explanation, no markdown, no code blocks, no other text whatsoever. Start your response with [ and end with ].
 [
   {
     "question": "question text",
@@ -110,8 +110,12 @@ Return ONLY a valid JSON array, no other text:
   });
 
   const text = response.content[0].text.trim();
-  const jsonMatch = text.match(/\[[\s\S]*\]/);
-  if (!jsonMatch) throw new Error('No JSON array found');
+  let jsonMatch = text.match(/\[[\s\S]*\]/);
+  if (!jsonMatch) {
+    const cleaned = text.replace(/```json|```/g, '').trim();
+    jsonMatch = cleaned.match(/\[[\s\S]*\]/);
+  }
+  if (!jsonMatch) throw new Error('No JSON array found in: ' + text.substring(0, 200));
   return JSON.parse(jsonMatch[0]);
 }
 
