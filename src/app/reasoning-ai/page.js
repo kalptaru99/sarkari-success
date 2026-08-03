@@ -192,7 +192,7 @@ export default function ReasoningAI() {
         body: JSON.stringify({
           message: lang === 'hi'
             ? `आप SSC/बैंकिंग परीक्षा के लिए एक विशेषज्ञ तर्कशक्ति शिक्षक हैं। इस प्रश्न को शुद्ध हिंदी (देवनागरी लिपि) में समझाएं:\n\nप्रश्न: ${question}\n\n1. विधि/नियम (शुद्ध हिंदी में)\n2. चरण-दर-चरण हल (शुद्ध हिंदी में)\n3. शॉर्टकट ट्रिक (शुद्ध हिंदी में)\n4. सामान्य गलतियाँ जो बचनी चाहिए\n\nशुद्ध देवनागरी हिंदी में उत्तर दें।`
-            : `You are an expert Reasoning teacher for SSC/Banking exam aspirants. Explain this question clearly:\n\nQuestion: ${question}\n\n1. Method/Rule\n2. Step-by-step solution\n3. Shortcut trick\n4. Common mistakes to avoid\n\nKeep it clear and practical.`,
+            : `You are an expert Reasoning teacher for SSC/Banking exam aspirants. Explain this question clearly:\n\nQuestion: ${question}\n\n1. Method/Rule\n2. Step-by-step solution\n3. Shortcut trick\n4. Common mistakes to avoid\n\nKeep it clear and practical. Respond in pure English only. No Hindi or Hinglish words whatsoever.`,,
           history: [],
           preferredLanguage: lang === 'hi' ? "Hindi" : "English",
         }),

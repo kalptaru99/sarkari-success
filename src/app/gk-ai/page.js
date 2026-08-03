@@ -194,7 +194,7 @@ export default function GKAI() {
         body: JSON.stringify({
           message: lang === 'hi'
             ? `आप SSC/बैंकिंग परीक्षा के लिए एक विशेषज्ञ सामान्य ज्ञान शिक्षक हैं। इस प्रश्न को शुद्ध हिंदी (देवनागरी लिपि) में समझाएं:\n\nप्रश्न: ${question}\n\n1. पूर्ण स्पष्टीकरण (शुद्ध हिंदी में)\n2. संबंधित तथ्य जो परीक्षा में आ सकते हैं\n3. याद करने की युक्ति (शुद्ध हिंदी में)\n4. इसी विषय से और प्रश्न\n\nशुद्ध देवनागरी हिंदी में उत्तर दें।`
-            : `You are an expert GK teacher for SSC/Banking exam aspirants. Explain this question clearly:\n\nQuestion: ${question}\n\n1. Complete explanation with context\n2. Related facts that may appear in exams\n3. Memory trick\n4. Similar questions from this topic\n\nKeep it clear and practical.`,
+            : `You are an expert GK teacher for SSC/Banking exam aspirants. Explain this question clearly:\n\nQuestion: ${question}\n\n1. Complete explanation with context\n2. Related facts that may appear in exams\n3. Memory trick\n4. Similar questions from this topic\n\nKeep it clear and practical. Respond in pure English only. No Hindi or Hinglish words whatsoever.`,
           history: [],
           preferredLanguage: lang === 'hi' ? "Hindi" : "English",
         }),

@@ -197,7 +197,7 @@ export default function MathsAI() {
         body: JSON.stringify({
           message: lang === 'hi'
             ? `आप SSC/बैंकिंग परीक्षा के लिए एक विशेषज्ञ गणित शिक्षक हैं। इस प्रश्न को शुद्ध हिंदी (देवनागरी लिपि) में समझाएं:\n\nप्रश्न: ${question}\n\n1. सूत्र/नियम (शुद्ध हिंदी में)\n2. चरण-दर-चरण हल (शुद्ध हिंदी में)\n3. शॉर्टकट ट्रिक (शुद्ध हिंदी में)\n4. इसी तरह के प्रश्नों में कैसे लागू करें\n\nशुद्ध देवनागरी हिंदी में उत्तर दें।`
-            : `You are an expert Maths teacher for SSC/Banking exam aspirants. Explain this question clearly:\n\nQuestion: ${question}\n\n1. Formula/Rule\n2. Step-by-step solution\n3. Shortcut trick\n4. How to apply in similar questions\n\nKeep it clear and practical.`,
+            : `You are an expert Maths teacher for SSC/Banking exam aspirants. Explain this question clearly:\n\nQuestion: ${question}\n\n1. Formula/Rule\n2. Step-by-step solution\n3. Shortcut trick\n4. How to apply in similar questions\n\nKeep it clear and practical. Respond in pure English only. No Hindi or Hinglish words whatsoever.`,,
           history: [],
           preferredLanguage: lang === 'hi' ? "Hindi" : "English",
         }),
