@@ -315,7 +315,7 @@ export default function MathsAI() {
               <h2 style={{ color: '#0f766e', fontSize: '16px', margin: '0 0 16px 0', fontWeight: '800' }}>🎯 {c.arithmetic}</h2>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', marginBottom: '20px' }}>
                 {arithmeticTopics.map(topic => (
-                  <div key={topic.id} onClick={() => { setSelectedTopic(topic.id); setActiveTab('topics'); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(); }}
+                  <div key={topic.id} onClick={() => { setSelectedTopic(topic.id); setActiveTab('topics'); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(topic.id); }}
                     style={{ backgroundColor: '#f8fafc', borderRadius: '10px', padding: '14px', cursor: 'pointer', border: '1px solid #e2e8f0', textAlign: 'center' }}>
                     <div style={{ fontSize: '24px', marginBottom: '6px' }}>{topic.icon}</div>
                     <p style={{ color: topic.color, fontWeight: '700', fontSize: '12px', margin: '0 0 2px 0' }}>{topic.name}</p>
@@ -327,7 +327,7 @@ export default function MathsAI() {
               <h2 style={{ color: '#dc2626', fontSize: '16px', margin: '0 0 16px 0', fontWeight: '800' }}>🧠 {c.advanced}</h2>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
                 {advancedTopics.map(topic => (
-                  <div key={topic.id} onClick={() => { setSelectedTopic(topic.id); setActiveTab('topics'); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(); }}
+                  <div key={topic.id} onClick={() => { setSelectedTopic(topic.id); setActiveTab('topics'); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(topic.id); }}
                     style={{ backgroundColor: '#f8fafc', borderRadius: '10px', padding: '14px', cursor: 'pointer', border: '1px solid #e2e8f0', textAlign: 'center' }}>
                     <div style={{ fontSize: '24px', marginBottom: '6px' }}>{topic.icon}</div>
                     <p style={{ color: topic.color, fontWeight: '700', fontSize: '12px', margin: '0 0 2px 0' }}>{topic.name}</p>
@@ -346,7 +346,7 @@ export default function MathsAI() {
                 <h2 style={{ color: '#0f766e', margin: '0 0 12px 0', fontSize: '16px' }}>{lang === 'hi' ? 'अंकगणित विषय' : 'Arithmetic Topics'}</h2>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px', marginBottom: '20px' }}>
                   {arithmeticTopics.map(topic => (
-                    <div key={topic.id} onClick={() => { setSelectedTopic(topic.id); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(); }}
+                    <div key={topic.id} onClick={() => { setSelectedTopic(topic.id); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(topic.id); }}
                       style={{ backgroundColor: 'white', borderRadius: '12px', padding: '16px', cursor: 'pointer', border: `2px solid ${topic.color}20`, boxShadow: '0 2px 6px rgba(0,0,0,0.06)', display: 'flex', alignItems: 'center', gap: '12px' }}>
                       <span style={{ fontSize: '28px' }}>{topic.icon}</span>
                       <div style={{ flex: 1 }}>
@@ -362,7 +362,7 @@ export default function MathsAI() {
                 <h2 style={{ color: '#dc2626', margin: '0 0 12px 0', fontSize: '16px' }}>{lang === 'hi' ? 'उच्च गणित विषय' : 'Advanced Topics'}</h2>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
                   {advancedTopics.map(topic => (
-                    <div key={topic.id} onClick={() => { setSelectedTopic(topic.id); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(); }}
+                    <div key={topic.id} onClick={() => { setSelectedTopic(topic.id); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(topic.id); }}
                       style={{ backgroundColor: 'white', borderRadius: '12px', padding: '16px', cursor: 'pointer', border: `2px solid ${topic.color}20`, boxShadow: '0 2px 6px rgba(0,0,0,0.06)', display: 'flex', alignItems: 'center', gap: '12px' }}>
                       <span style={{ fontSize: '28px' }}>{topic.icon}</span>
                       <div style={{ flex: 1 }}>
@@ -488,7 +488,7 @@ export default function MathsAI() {
                 </div>
               ))}
             </div>
-            <button onClick={() => { setSelectedTopic('percentage'); setActiveTab('topics'); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(); }}
+            <button onClick={() => { setSelectedTopic('percentage'); setActiveTab('topics'); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(topic.id); }}
               style={{ width: '100%', backgroundColor: '#0f766e', color: 'white', padding: '16px', borderRadius: '10px', border: 'none', fontSize: '16px', fontWeight: '800', cursor: 'pointer' }}>
               {c.startMock}
             </button>
@@ -508,7 +508,7 @@ export default function MathsAI() {
             </div>
             <div style={{ backgroundColor: '#f0fdf4', borderRadius: '10px', padding: '20px', textAlign: 'center' }}>
               <p style={{ color: '#0f766e', fontWeight: '700', fontSize: '16px', margin: '0 0 8px 0' }}>{selectedExam} {lang === 'hi' ? 'गणित PYQ' : 'Maths PYQ'} — {selectedYear}</p>
-              <button onClick={() => { setSelectedTopic('percentage'); setActiveTab('topics'); fetchQuestions(); }}
+              <button onClick={() => { setSelectedTopic('percentage'); setActiveTab('topics'); fetchQuestions(topic.id); }}
                 style={{ backgroundColor: '#0f766e', color: 'white', padding: '12px 24px', borderRadius: '8px', border: 'none', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>
                 {c.startPYQ}
               </button>

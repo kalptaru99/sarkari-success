@@ -318,7 +318,7 @@ export default function EnglishAI() {
               <h2 style={{ color: '#1e3a8a', fontSize: '16px', margin: '0 0 16px 0', fontWeight: '800' }}>🎯 {c.quickStart}</h2>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px' }}>
                 {topics.map(topic => (
-                  <div key={topic.id} onClick={() => { setSelectedTopic(topic.id); setActiveTab('topics'); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(); }}
+                  <div key={topic.id} onClick={() => { setSelectedTopic(topic.id); setActiveTab('topics'); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(topic.id); }}
                     style={{ backgroundColor: '#f8fafc', borderRadius: '10px', padding: '14px', cursor: 'pointer', border: '1px solid #e2e8f0', textAlign: 'center' }}>
                     <div style={{ fontSize: '24px', marginBottom: '6px' }}>{topic.icon}</div>
                     <p style={{ color: topic.color, fontWeight: '700', fontSize: '12px', margin: '0 0 2px 0' }}>{topic.name}</p>
@@ -342,7 +342,7 @@ export default function EnglishAI() {
                     <div style={{ backgroundColor: '#1e3a8a', height: '100%', width: '48%', borderRadius: '4px' }} />
                   </div>
                 </div>
-                <button onClick={() => { setSelectedTopic('error'); setActiveTab('topics'); fetchQuestions(); }}
+                <button onClick={() => { setSelectedTopic('error'); setActiveTab('topics'); fetchQuestions(topic.id); }}
                   style={{ backgroundColor: '#1e3a8a', color: 'white', padding: '10px 20px', borderRadius: '8px', border: 'none', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>
                   {c.resume}
                 </button>
@@ -356,7 +356,7 @@ export default function EnglishAI() {
             {!selectedTopic ? (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '14px' }}>
                 {topics.map(topic => (
-                  <div key={topic.id} onClick={() => { setSelectedTopic(topic.id); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(); }}
+                  <div key={topic.id} onClick={() => { setSelectedTopic(topic.id); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(topic.id); }}
                     style={{ backgroundColor: 'white', borderRadius: '12px', padding: '20px', cursor: 'pointer', border: `2px solid ${topic.color}20`, boxShadow: '0 2px 8px rgba(0,0,0,0.06)', display: 'flex', alignItems: 'center', gap: '16px' }}>
                     <span style={{ fontSize: '36px' }}>{topic.icon}</span>
                     <div style={{ flex: 1 }}>
@@ -462,7 +462,7 @@ export default function EnglishAI() {
                     </div>
                     <p style={{ color: '#64748b', fontSize: '13px', margin: 0 }}>{item.tip}</p>
                   </div>
-                  <button onClick={() => { setSelectedTopic('error'); setActiveTab('topics'); fetchQuestions(); }}
+                  <button onClick={() => { setSelectedTopic('error'); setActiveTab('topics'); fetchQuestions(topic.id); }}
                     style={{ backgroundColor: '#1e3a8a', color: 'white', padding: '6px 14px', borderRadius: '6px', border: 'none', fontSize: '12px', fontWeight: '700', cursor: 'pointer', flexShrink: 0 }}>
                     {c.practiceBtn}
                   </button>
@@ -491,7 +491,7 @@ export default function EnglishAI() {
                 </div>
               ))}
             </div>
-            <button onClick={() => { setSelectedTopic('error'); setActiveTab('topics'); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(); }}
+            <button onClick={() => { setSelectedTopic('error'); setActiveTab('topics'); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(topic.id); }}
               style={{ width: '100%', backgroundColor: '#1e3a8a', color: 'white', padding: '16px', borderRadius: '10px', border: 'none', fontSize: '16px', fontWeight: '800', cursor: 'pointer' }}>
               {c.startMock} — {selectedExam}
             </button>
@@ -511,7 +511,7 @@ export default function EnglishAI() {
             </div>
             <div style={{ backgroundColor: '#eff6ff', borderRadius: '10px', padding: '20px', textAlign: 'center' }}>
               <p style={{ color: '#1e3a8a', fontWeight: '700', fontSize: '16px', margin: '0 0 8px 0' }}>{selectedExam} {lang === 'hi' ? 'अंग्रेज़ी PYQ' : 'English PYQ'} — {selectedYear}</p>
-              <button onClick={() => { setSelectedTopic('error'); setActiveTab('topics'); fetchQuestions(); }}
+              <button onClick={() => { setSelectedTopic('error'); setActiveTab('topics'); fetchQuestions(topic.id); }}
                 style={{ backgroundColor: '#1e3a8a', color: 'white', padding: '12px 24px', borderRadius: '8px', border: 'none', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>
                 {c.startPYQ}
               </button>

@@ -310,7 +310,7 @@ export default function ReasoningAI() {
               <h2 style={{ color: '#7c3aed', fontSize: '16px', margin: '0 0 16px 0', fontWeight: '800' }}>🎯 {c.verbal}</h2>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', marginBottom: '20px' }}>
                 {verbalTopics.map(topic => (
-                  <div key={topic.id} onClick={() => { setSelectedTopic(topic.id); setActiveTab('topics'); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(); }}
+                  <div key={topic.id} onClick={() => { setSelectedTopic(topic.id); setActiveTab('topics'); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(topic.id); }}
                     style={{ backgroundColor: '#f8fafc', borderRadius: '10px', padding: '14px', cursor: 'pointer', border: '1px solid #e2e8f0', textAlign: 'center' }}>
                     <div style={{ fontSize: '24px', marginBottom: '6px' }}>{topic.icon}</div>
                     <p style={{ color: topic.color, fontWeight: '700', fontSize: '12px', margin: '0 0 2px 0' }}>{topic.name}</p>
@@ -322,7 +322,7 @@ export default function ReasoningAI() {
               <h2 style={{ color: '#dc2626', fontSize: '16px', margin: '0 0 16px 0', fontWeight: '800' }}>🧠 {c.nonverbal}</h2>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px' }}>
                 {nonVerbalTopics.map(topic => (
-                  <div key={topic.id} onClick={() => { setSelectedTopic(topic.id); setActiveTab('topics'); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(); }}
+                  <div key={topic.id} onClick={() => { setSelectedTopic(topic.id); setActiveTab('topics'); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(topic.id); }}
                     style={{ backgroundColor: '#f8fafc', borderRadius: '10px', padding: '14px', cursor: 'pointer', border: '1px solid #e2e8f0', textAlign: 'center' }}>
                     <div style={{ fontSize: '24px', marginBottom: '6px' }}>{topic.icon}</div>
                     <p style={{ color: topic.color, fontWeight: '700', fontSize: '12px', margin: '0 0 2px 0' }}>{topic.name}</p>
@@ -341,7 +341,7 @@ export default function ReasoningAI() {
                 <h2 style={{ color: '#7c3aed', margin: '0 0 12px 0', fontSize: '16px' }}>{lang === 'hi' ? 'मौखिक तर्कशक्ति' : 'Verbal Reasoning'}</h2>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px', marginBottom: '20px' }}>
                   {verbalTopics.map(topic => (
-                    <div key={topic.id} onClick={() => { setSelectedTopic(topic.id); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(); }}
+                    <div key={topic.id} onClick={() => { setSelectedTopic(topic.id); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(topic.id); }}
                       style={{ backgroundColor: 'white', borderRadius: '12px', padding: '16px', cursor: 'pointer', border: `2px solid ${topic.color}20`, boxShadow: '0 2px 6px rgba(0,0,0,0.06)', display: 'flex', alignItems: 'center', gap: '12px' }}>
                       <span style={{ fontSize: '28px' }}>{topic.icon}</span>
                       <div style={{ flex: 1 }}>
@@ -357,7 +357,7 @@ export default function ReasoningAI() {
                 <h2 style={{ color: '#dc2626', margin: '0 0 12px 0', fontSize: '16px' }}>{lang === 'hi' ? 'अमौखिक विषय' : 'Non-Verbal Topics'}</h2>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
                   {nonVerbalTopics.map(topic => (
-                    <div key={topic.id} onClick={() => { setSelectedTopic(topic.id); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(); }}
+                    <div key={topic.id} onClick={() => { setSelectedTopic(topic.id); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(topic.id); }}
                       style={{ backgroundColor: 'white', borderRadius: '12px', padding: '16px', cursor: 'pointer', border: `2px solid ${topic.color}20`, boxShadow: '0 2px 6px rgba(0,0,0,0.06)', display: 'flex', alignItems: 'center', gap: '12px' }}>
                       <span style={{ fontSize: '28px' }}>{topic.icon}</span>
                       <div style={{ flex: 1 }}>
@@ -483,7 +483,7 @@ export default function ReasoningAI() {
                 </div>
               ))}
             </div>
-            <button onClick={() => { setSelectedTopic('analogy'); setActiveTab('topics'); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(); }}
+            <button onClick={() => { setSelectedTopic('analogy'); setActiveTab('topics'); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(topic.id); }}
               style={{ width: '100%', backgroundColor: '#7c3aed', color: 'white', padding: '16px', borderRadius: '10px', border: 'none', fontSize: '16px', fontWeight: '800', cursor: 'pointer' }}>
               {c.startMock}
             </button>
@@ -503,7 +503,7 @@ export default function ReasoningAI() {
             </div>
             <div style={{ backgroundColor: '#faf5ff', borderRadius: '10px', padding: '20px', textAlign: 'center' }}>
               <p style={{ color: '#7c3aed', fontWeight: '700', fontSize: '16px', margin: '0 0 8px 0' }}>{selectedExam} {lang === 'hi' ? 'तर्कशक्ति PYQ' : 'Reasoning PYQ'} — {selectedYear}</p>
-              <button onClick={() => { setSelectedTopic('analogy'); setActiveTab('topics'); fetchQuestions(); }}
+              <button onClick={() => { setSelectedTopic('analogy'); setActiveTab('topics'); fetchQuestions(topic.id); }}
                 style={{ backgroundColor: '#7c3aed', color: 'white', padding: '12px 24px', borderRadius: '8px', border: 'none', fontSize: '14px', fontWeight: '700', cursor: 'pointer' }}>
                 {c.startPYQ}
               </button>

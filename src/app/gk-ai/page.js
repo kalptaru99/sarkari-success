@@ -312,7 +312,7 @@ export default function GKAI() {
               <h2 style={{ color: '#ea580c', fontSize: '16px', margin: '0 0 16px 0', fontWeight: '800' }}>📚 {c.staticTitle}</h2>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px' }}>
                 {staticTopics.map(topic => (
-                  <div key={topic.id} onClick={() => { setSelectedTopic(topic.id); setActiveTab('static'); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(topic.name); }}
+                  <div key={topic.id} onClick={() => { setSelectedTopic(topic.id); setActiveTab('static'); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(topic.id); }}
                     style={{ backgroundColor: '#f8fafc', borderRadius: '10px', padding: '14px', cursor: 'pointer', border: `1px solid ${topic.color}30`, textAlign: 'center' }}>
                     <div style={{ fontSize: '24px', marginBottom: '6px' }}>{topic.icon}</div>
                     <p style={{ color: topic.color, fontWeight: '700', fontSize: '12px', margin: '0 0 2px 0' }}>{topic.name}</p>
@@ -380,7 +380,7 @@ export default function GKAI() {
             {!selectedTopic ? (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
                 {staticTopics.map(topic => (
-                  <div key={topic.id} onClick={() => { setSelectedTopic(topic.id); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(topic.name); }}
+                  <div key={topic.id} onClick={() => { setSelectedTopic(topic.id); setCurrentQuestion(0); setSelectedAnswer(null); setShowExplanation(false); fetchQuestions(topic.id); }}
                     style={{ backgroundColor: 'white', borderRadius: '12px', padding: '16px', cursor: 'pointer', border: `2px solid ${topic.color}20`, boxShadow: '0 2px 6px rgba(0,0,0,0.06)', display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <span style={{ fontSize: '32px' }}>{topic.icon}</span>
                     <div style={{ flex: 1 }}>
