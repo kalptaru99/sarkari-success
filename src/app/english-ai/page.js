@@ -200,7 +200,7 @@ export default function EnglishAI() {
         body: JSON.stringify({
           message: lang === 'hi'
             ? `आप SSC/बैंकिंग परीक्षा के लिए एक विशेषज्ञ अंग्रेज़ी शिक्षक हैं। इस प्रश्न को शुद्ध हिंदी (देवनागरी लिपि) में समझाएं:\n\nप्रश्न: ${question}\n\n1. नियम (शुद्ध हिंदी में)\n2. शॉर्टकट/ट्रिक (शुद्ध हिंदी में)\n3. इसी तरह के प्रश्नों में यह नियम कैसे लागू होगा\n4. सामान्य गलतियाँ जो बचनी चाहिए\n\nशुद्ध देवनागरी हिंदी में उत्तर दें।`
-            : `You are an expert English teacher for SSC/Banking exam aspirants. Explain this question in clear English:\n\nQuestion: ${question}\n\n1. Rule/Grammar concept\n2. Shortcut trick\n3. How to apply in similar questions\n4. Common mistakes to avoid\n\nKeep it clear and practical. Respond in pure English only. No Hindi or Hinglish words whatsoever.`,,
+            : `You are an expert English teacher for SSC/Banking exam aspirants. Explain this question in clear English:\n\nQuestion: ${question}\n\n1. Rule/Grammar concept\n2. Shortcut trick\n3. How to apply in similar questions\n4. Common mistakes to avoid\n\nKeep it clear and practical. Respond in pure English only. No Hindi or Hinglish words whatsoever.`,
           history: [],
           preferredLanguage: lang === 'hi' ? "Hindi" : "English",
         }),
