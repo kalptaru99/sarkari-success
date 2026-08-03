@@ -167,7 +167,7 @@ export default function GKAI() {
         books: 'Books & Authors', sports: 'Sports'
       };
       const chapter = chapterMap[chapterName] || chapterName;
-      const res = await fetch('/api/questions?exam=' + encodeURIComponent(selectedExam) + '&topic=General Awareness&chapter=' + encodeURIComponent(chapter) + '&limit=20');
+      const res = await fetch('/api/questions?exam=' + encodeURIComponent(selectedExam) + '&topic=General Awareness&chapter=' + encodeURIComponent(chapter) + '&limit=50');
       const data = await res.json();
       if (data.questions && data.questions.length > 0) {
         setDbQuestions(data.questions.map(q => ({
