@@ -40,7 +40,7 @@ export default function Home() {
           <h1 style={{ fontSize: '28px', fontWeight: 'bold', color: '#1e3a8a', margin: 0 }}>
             Sarkari <span style={{ color: '#dc2626' }}>Success</span>
           </h1>
-          <p style={{ color: '#374151', fontSize: '12px', margin: '2px 0 0 0' }}>AI-Powered Sarkari Naukri, Results and Exam Updates</p>
+          <p style={{ color: '#374151', fontSize: '12px', margin: '2px 0 0 0' }}>AI-Powered Government Jobs, Results and Exam Updates</p>
         </div>
         <div style={{ display: 'flex', gap: '10px' }}>
           <a href="/login" style={{ padding: '8px 16px', border: '2px solid #1e3a8a', borderRadius: '6px', color: '#1e3a8a', textDecoration: 'none', fontSize: '13px', fontWeight: 'bold' }}>Login</a>
