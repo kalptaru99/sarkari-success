@@ -22,6 +22,10 @@ const states = [
   { code: "OD", name: "Odisha", nameLocal: "ଓଡ଼ିଶା", language: "Odia", flag: "🏛️", color: "#9C27B0" },
   { code: "PB", name: "Punjab", nameLocal: "ਪੰਜਾਬ", language: "Punjabi", flag: "🏛️", color: "#F44336" },
   { code: "AS", name: "Assam", nameLocal: "অসম", language: "Assamese", flag: "🏛️", color: "#3F51B5" },
+  { code: "GA", name: "Goa", nameLocal: "गोवा", language: "Konkani", flag: "🏛️", color: "#00BCD4" },
+  { code: "JK", name: "Jammu & Kashmir", nameLocal: "जम्मू और कश्मीर", language: "Urdu", flag: "🏛️", color: "#3F51B5" },
+  { code: "PY", name: "Puducherry", nameLocal: "புதுச்சேரி", language: "Tamil", flag: "🏛️", color: "#FF9800" },
+  { code: "DL", name: "Delhi", nameLocal: "दिल्ली", language: "Hindi", flag: "🏛️", color: "#F44336" },
 ];
 
 const examsByState = {
@@ -45,6 +49,10 @@ const examsByState = {
   OD: ["OPSC", "Odisha Police", "OTET", "OSSSC"],
   PB: ["PPSC", "Punjab Police", "Punjab TET", "PSSSB"],
   AS: ["APSC", "Assam Police", "Assam TET", "SLPRB"],
+  GA: ["GPSC Goa", "Goa Police", "Goa TET"],
+  JK: ["JKPSC", "JK Police", "JKSSB", "JK TET"],
+  PY: ["PSCPB", "Puducherry Police", "Puducherry TET"],
+  DL: ["DSSSB", "Delhi Police", "Delhi TET", "UPSC CMS"],
 };
 
 export default function StatesPage() {
