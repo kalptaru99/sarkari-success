@@ -4,14 +4,14 @@ import { useState, useEffect } from "react";
 const exams = ["SSC CGL", "SSC CHSL", "RRB NTPC", "RRB Group D", "UPSC Civil Services", "IBPS PO", "IBPS Clerk", "SBI PO"];
 
 const topicsByExam = {
-  "SSC CGL": ["All", "General Intelligence", "English Language", "Quantitative Aptitude", "General Awareness"],
-  "SSC CHSL": ["All", "General Intelligence", "English Language", "Quantitative Aptitude", "General Awareness"],
-  "RRB NTPC": ["All", "Mathematics", "General Intelligence", "General Awareness", "English Language"],
-  "RRB Group D": ["All", "Mathematics", "General Intelligence", "General Science", "General Awareness"],
-  "UPSC Civil Services": ["All", "History", "Geography", "Polity", "Economy", "Science & Technology", "Environment", "Current Affairs"],
-  "IBPS PO": ["All", "Reasoning", "English Language", "Quantitative Aptitude", "General Awareness", "Computer Knowledge"],
-  "IBPS Clerk": ["All", "Reasoning", "English Language", "Numerical Ability", "General Awareness", "Computer Knowledge"],
-  "SBI PO": ["All", "Reasoning", "English Language", "Data Analysis", "General Awareness", "Computer Knowledge"],
+  "SSC CGL": ["All", "Quantitative Aptitude", "English Language", "General Intelligence", "General Awareness"],
+  "SSC CHSL": ["All", "Quantitative Aptitude", "English Language", "General Intelligence", "General Awareness"],
+  "RRB NTPC": ["All", "Quantitative Aptitude", "English Language", "General Intelligence", "General Awareness"],
+  "RRB Group D": ["All", "Quantitative Aptitude", "General Intelligence", "General Awareness"],
+  "UPSC Civil Services": ["All", "General Awareness", "English Language", "General Intelligence", "History", "Geography", "Polity", "Economics", "Science & Tech"],
+  "IBPS PO": ["All", "Quantitative Aptitude", "English Language", "General Intelligence", "General Awareness", "Computer Knowledge"],
+  "IBPS Clerk": ["All", "Quantitative Aptitude", "English Language", "General Intelligence", "General Awareness", "Computer Knowledge"],
+  "SBI PO": ["All", "Quantitative Aptitude", "English Language", "General Intelligence", "General Awareness", "Computer Knowledge"],
 };
 
 export default function QuestionsPage() {
@@ -29,9 +29,16 @@ export default function QuestionsPage() {
     setLoading(true);
     setSelectedAnswers({});
     try {
-      let url = `/api/questions?exam=${encodeURIComponent(selectedExam)}&limit=20`;
+      const chapterTopics = ["History", "Geography", "Polity", "Economics", "Science & Tech"];
+      let url = `/api/questions?limit=20`;
       if (selectedTopic !== "All") {
-        url += `&topic=${encodeURIComponent(selectedTopic)}`;
+        if (chapterTopics.includes(selectedTopic)) {
+          url += `&topic=General Awareness&chapter=${encodeURIComponent(selectedTopic)}`;
+        } else if (selectedTopic === "Computer Knowledge") {
+          url += `&topic=General Awareness`;
+        } else {
+          url += `&topic=${encodeURIComponent(selectedTopic)}`;
+        }
       }
       const response = await fetch(url);
       const data = await response.json();
@@ -65,6 +72,7 @@ export default function QuestionsPage() {
 
   return (
     <main style={{ minHeight: '100vh', backgroundColor: '#f4f6f9', fontFamily: 'Arial, sans-serif' }}>
+
 
       {/* Header */}
       <div style={{ backgroundColor: '#1e3a8a', padding: '16px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
