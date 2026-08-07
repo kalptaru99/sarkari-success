@@ -19,6 +19,8 @@ export default function QuestionsPage() {
   const [selectedTopic, setSelectedTopic] = useState("All");
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadCount, setLoadCount] = useState(0);
+const [showUpgrade, setShowUpgrade] = useState(false);
   const [selectedAnswers, setSelectedAnswers] = useState({});
 
   useEffect(() => {
@@ -115,11 +117,27 @@ export default function QuestionsPage() {
             </div>
           </div>
           <button
-            onClick={fetchQuestions}
+            onClick={() => {
+  if (loadCount >= 1) {
+    setShowUpgrade(true);
+  } else {
+    setLoadCount(prev => prev + 1);
+    fetchQuestions();
+  }
+}}
             style={{ marginTop: '16px', width: '100%', padding: '10px', backgroundColor: '#1e3a8a', color: 'white', border: 'none', borderRadius: '6px', fontSize: '14px', fontWeight: 'bold', cursor: 'pointer' }}
           >
             🔄 Load New Random Questions
           </button>
+          {showUpgrade && (
+            <div style={{ backgroundColor: '#fef9c3', border: '2px solid #ca8a04', borderRadius: '12px', padding: '20px', textAlign: 'center', marginTop: '16px' }}>
+              <p style={{ color: '#92400e', fontWeight: '800', fontSize: '16px', margin: '0 0 8px 0' }}>🔒 Free limit reached!</p>
+              <p style={{ color: '#92400e', fontSize: '13px', margin: '0 0 16px 0' }}>You've used your 2 free question sets. Upgrade to Topper's Plan for unlimited practice.</p>
+              <a href="/toppers-plan" style={{ backgroundColor: '#ca8a04', color: 'white', padding: '12px 24px', borderRadius: '8px', textDecoration: 'none', fontWeight: '700', fontSize: '14px' }}>
+                🚀 Upgrade to Topper's Plan
+              </a>
+            </div>
+          )}
         </div>
 
         {/* Questions */}
