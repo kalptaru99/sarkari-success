@@ -9,9 +9,9 @@ const topicsByExam = {
   "RRB NTPC": ["All", "Quantitative Aptitude", "English Language", "General Intelligence", "General Awareness"],
   "RRB Group D": ["All", "Quantitative Aptitude", "General Intelligence", "General Awareness"],
   "UPSC Civil Services": ["All", "General Awareness", "English Language", "General Intelligence", "History", "Geography", "Polity", "Economics", "Science & Tech"],
-  "IBPS PO": ["All", "Quantitative Aptitude", "English Language", "General Intelligence", "General Awareness", "Computer Knowledge"],
-  "IBPS Clerk": ["All", "Quantitative Aptitude", "English Language", "General Intelligence", "General Awareness", "Computer Knowledge"],
-  "SBI PO": ["All", "Quantitative Aptitude", "English Language", "General Intelligence", "General Awareness", "Computer Knowledge"],
+  "IBPS PO": ["All", "Quantitative Aptitude", "English Language", "General Intelligence", "General Awareness"],
+  "IBPS Clerk": ["All", "Quantitative Aptitude", "English Language", "General Intelligence", "General Awareness"],
+  "SBI PO": ["All", "Quantitative Aptitude", "English Language", "General Intelligence", "General Awareness"],
 };
 
 export default function QuestionsPage() {
