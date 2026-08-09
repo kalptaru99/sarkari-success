@@ -390,7 +390,7 @@ function AutoGenerateQuestions() {
   const [selectedSubject, setSelectedSubject] = useState('Maths');
 
   const subjects = ['Maths', 'English', 'Reasoning', 'GK'];
-  const batchCounts = { Maths: 5, English: 5, Reasoning: 5, GK: 5 };
+  const batchCounts = { Maths: 11, English: 11, Reasoning: 11, GK: 11 };
   const chapterCounts = { Maths: 14, English: 8, Reasoning: 12, GK: 8 };
 
   const addLog = (msg, type = 'info') => {

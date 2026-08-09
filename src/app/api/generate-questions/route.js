@@ -7,7 +7,7 @@ const client = new Anthropic({
 
 const questionPlan = {
   "Maths": {
-    exams: ["SSC CGL", "SSC CHSL", "RRB NTPC", "IBPS PO", "Bank Clerk"],
+    exams: ["SSC CGL", "SSC CHSL", "RRB NTPC", "IBPS PO", "Bank Clerk", "SSC MTS", "SSC CPO", "SSC GD Constable", "RRB ALP", "RRB Technician", "RRB Group D"],
     topic: "Quantitative Aptitude",
     chapters: [
       { id: "Percentage", count: 40 },
@@ -27,7 +27,7 @@ const questionPlan = {
     ]
   },
   "English": {
-    exams: ["SSC CGL", "SSC CHSL", "RRB NTPC", "IBPS PO", "Bank Clerk"],
+    exams: ["SSC CGL", "SSC CHSL", "RRB NTPC", "IBPS PO", "Bank Clerk", "SSC MTS", "SSC CPO", "SSC GD Constable", "RRB ALP", "RRB Technician", "RRB Group D"],
     topic: "English Language",
     chapters: [
       { id: "Reading Comprehension", count: 57 },
@@ -41,7 +41,7 @@ const questionPlan = {
     ]
   },
   "Reasoning": {
-    exams: ["SSC CGL", "SSC CHSL", "RRB NTPC", "IBPS PO", "Bank Clerk"],
+    exams: ["SSC CGL", "SSC CHSL", "RRB NTPC", "IBPS PO", "Bank Clerk", "SSC MTS", "SSC CPO", "SSC GD Constable", "RRB ALP", "RRB Technician", "RRB Group D"],
     topic: "General Intelligence",
     chapters: [
       { id: "Analogy", count: 36 },
@@ -59,7 +59,7 @@ const questionPlan = {
     ]
   },
   "GK": {
-    exams: ["SSC CGL", "SSC CHSL", "RRB NTPC", "IBPS PO", "Bank Clerk"],
+    exams: ["SSC CGL", "SSC CHSL", "RRB NTPC", "IBPS PO", "Bank Clerk", "SSC MTS", "SSC CPO", "SSC GD Constable", "RRB ALP", "RRB Technician", "RRB Group D"],
     topic: "General Awareness",
     chapters: [
       { id: "History", count: 54 },
