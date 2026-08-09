@@ -98,7 +98,17 @@ async function extractWithClaude(results, type, org) {
     const clean = text.replace(/```json|```/g, '').trim();
     const jsonMatch = clean.match(/\{[\s\S]*\}/);
     if (!jsonMatch) return null;
-    return JSON.parse(jsonMatch[0]);
+    try {
+      return JSON.parse(jsonMatch[0]);
+    } catch(e) {
+      const lastBrace = jsonMatch[0].lastIndexOf('}');
+      const fixed = jsonMatch[0].substring(0, lastBrace + 1);
+      try {
+        return JSON.parse(fixed);
+      } catch(e2) {
+        return null;
+      }
+    }
   } catch (error) {
     console.error('Claude extraction error:', error);
     return null;
