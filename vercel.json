@@ -5,7 +5,7 @@
       "schedule": "0 6 * * *"
     },
     {
-      "path": "/api/auto-fetch-states?secret=sarkari_success_cron_secret_2026",
+      "path": "/api/auto-fetch-states",
       "schedule": "0 7 * * *"
     }
   ]
