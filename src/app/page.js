@@ -138,8 +138,8 @@ export default function Home() {
         {[
           { value: '1000+', label: 'Active Jobs' },
           { value: '30,000+', label: 'Practice Questions' },
-          { value: '5', label: 'AI Subject Pages' },
-          { value: '14+', label: 'AI Features' },
+          { value: '24', label: 'States Covered' },
+          { value: '20+', label: 'AI Features' },
         ].map((stat, i) => (
           <div key={i} style={{ textAlign: 'center' }}>
             <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#1e3a8a' }}>{stat.value}</div>
