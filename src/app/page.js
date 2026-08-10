@@ -282,7 +282,9 @@ export default function Home() {
             <div style={{ textAlign: 'center', flex: 1 }}>
               <p style={{ color: '#93c5fd', fontSize: '12px', margin: '0 0 8px 0' }}>2026 Sarkari Success. All rights reserved. sarkarisuccess.com</p>
               <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap' }}>
-                <a href="/privacy" style={{ color: 'white', textDecoration: 'none', fontSize: '12px', fontWeight: '700' }}>Privacy Policy</a>
+                <a href="/contact" style={{ color: 'white', textDecoration: 'none', fontSize: '12px', fontWeight: '700' }}>Contact Us</a>
+<span style={{ color: '#64748b' }}>•</span>
+<a href="/privacy" style={{ color: 'white', textDecoration: 'none', fontSize: '12px', fontWeight: '700' }}>Privacy Policy</a>
                 <a href="/terms" style={{ color: 'white', textDecoration: 'none', fontSize: '12px', fontWeight: '700' }}>Terms of Service</a>
                 <a href="/disclaimer" style={{ color: 'white', textDecoration: 'none', fontSize: '12px', fontWeight: '700' }}>Disclaimer</a>
                 <a href="/refund-policy" style={{ color: 'white', textDecoration: 'none', fontSize: '12px', fontWeight: '700' }}>Refund Policy</a>
