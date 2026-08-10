@@ -136,9 +136,9 @@ export default function Home() {
 
       <div style={{ backgroundColor: 'white', padding: '16px 20px', display: 'flex', justifyContent: 'center', gap: '40px', flexWrap: 'wrap', borderBottom: '1px solid #e5e7eb' }}>
         {[
-          { value: '50,000+', label: 'Active Jobs' },
-          { value: '1,00,000+', label: 'Students' },
-          { value: '800+', label: 'Practice Questions' },
+          { value: '1000+', label: 'Active Jobs' },
+          { value: '30,000+', label: 'Practice Questions' },
+          { value: '5', label: 'AI Subject Pages' },
           { value: '14+', label: 'AI Features' },
         ].map((stat, i) => (
           <div key={i} style={{ textAlign: 'center' }}>
