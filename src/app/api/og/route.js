@@ -30,8 +30,8 @@ export async function GET() {
   <!-- Features -->
   <text x="60" y="290" font-family="Arial, sans-serif" font-size="22" fill="#93c5fd">🎯 SSC • Railway • UPSC • Banking • State PSC</text>
   <text x="60" y="340" font-family="Arial, sans-serif" font-size="22" fill="#93c5fd">🤖 SarkariGPT — AI Career Guide in Hindi &amp; English</text>
-  <text x="60" y="390" font-family="Arial, sans-serif" font-size="22" fill="#93c5fd">📚 21,960+ Practice Questions with AI Explanation</text>
-  <text x="60" y="440" font-family="Arial, sans-serif" font-size="22" fill="#93c5fd">🏛️ 24+ States • Latest Job Notifications Daily</text>
+  <text x="60" y="390" font-family="Arial, sans-serif" font-size="22" fill="#93c5fd">📚 30,000+ Practice Questions with AI Explanation</text>
+  <text x="60" y="440" font-family="Arial, sans-serif" font-size="22" fill="#93c5fd">🏛️ 24 States • Latest Job Notifications Daily</text>
   
   <!-- Bottom bar -->
   <rect x="0" y="570" width="1200" height="60" fill="#ffffff" fill-opacity="0.1"/>
