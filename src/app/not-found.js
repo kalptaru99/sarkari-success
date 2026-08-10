@@ -14,7 +14,7 @@ export default function NotFound() {
         </h2>
         
         <p style={{ color: '#64748b', fontSize: '16px', margin: '0 0 32px 0', lineHeight: '1.6' }}>
-          यह page मौजूद नहीं है। शायद यह हटा दिया गया हो या URL गलत हो।
+          This page doesn't exist or has been removed. Please check the URL or go back to homepage.
         </p>
 
         <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
