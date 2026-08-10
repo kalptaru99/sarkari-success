@@ -1,6 +1,7 @@
 import "./globals.css";
 import Providers from "./providers";
 import Script from "next/script";
+import CookieConsent from "@/components/CookieConsent";
 
 export const metadata = {
   title: "Sarkari Success — India's First AI-Powered Sarkari Career Companion",
@@ -80,6 +81,7 @@ export default function RootLayout({ children }) {
         <Providers>
           {children}
         </Providers>
+        <CookieConsent />
       </body>
     </html>
   );
