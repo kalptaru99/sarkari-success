@@ -38,12 +38,6 @@ export default function ToppersPlan() {
     { emoji: '🤖', title: 'Unlimited SarkariGPT', desc: 'Unlimited AI career guidance in Hindi, English and 10 more languages — ask anything', href: '/sarkarigpt', color: '#dc2626' },
   ];
 
-  const testimonials = [
-    { name: 'Rahul Kumar', state: 'Bihar', exam: 'BPSC 72nd CCE', text: 'Maths AI ne meri Percentage aur Profit-Loss ki problems solve kar di. Hindi mein explanation bahut helpful tha!', score: '⭐⭐⭐⭐⭐' },
-    { name: 'Priya Singh', state: 'UP', exam: 'SSC CGL 2026', text: 'AI Daily Mission ne mujhe pata chala ki mujhe kya padhna chahiye. Pehle main confused rehti thi.', score: '⭐⭐⭐⭐⭐' },
-    { name: 'Amit Sharma', state: 'Rajasthan', exam: 'RRB NTPC', text: 'Reasoning AI mein 5000+ questions — GK AI ek alag level ka hai. Exam Intelligence Report ne meri strategy change kar di.', score: '⭐⭐⭐⭐⭐' },
-  ];
-
   return (
     <main style={{ minHeight: '100vh', backgroundColor: '#f8fafc', fontFamily: 'Arial, sans-serif' }}>
 
@@ -64,7 +58,7 @@ export default function ToppersPlan() {
           India का सबसे Powerful<br />AI Exam Preparation Plan
         </h1>
         <p style={{ color: '#bfdbfe', fontSize: '18px', margin: '0 0 8px 0' }}>
-          13 AI Features • 30,000+ • Hindi & English • 11 Exams
+          20+ AI Features • 30,000+ Questions • Hindi & English • 11 Exams
         </p>
         <p style={{ color: '#fde68a', fontSize: '14px', margin: '0 0 32px 0', fontWeight: '700' }}>
           ⚡ Jo other platforms नहीं दे सकते — वो सब यहाँ है
@@ -72,7 +66,7 @@ export default function ToppersPlan() {
         <a href="#pricing" style={{ backgroundColor: '#fca5a5', color: '#1e3a8a', padding: '16px 40px', borderRadius: '50px', textDecoration: 'none', fontSize: '18px', fontWeight: '900', display: 'inline-block' }}>
           👑 Get Topper's Plan — ₹99/month
         </a>
-        <p style={{ color: '#93c5fd', fontSize: '12px', marginTop: '12px' }}>🔒 Secure payment • Cancel anytime • Instant access</p>
+        <p style={{ color: '#93c5fd', fontSize: '12px', marginTop: '12px' }}>🔒 Secure payment via Razorpay • Instant access</p>
       </div>
 
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: '0 20px' }}>
@@ -97,11 +91,11 @@ export default function ToppersPlan() {
         {/* Features */}
         <div style={{ padding: '40px 0' }}>
           <h2 style={{ color: '#1e3a8a', fontSize: '28px', fontWeight: '900', margin: '0 0 8px 0', textAlign: 'center' }}>Topper's Plan में क्या मिलेगा?</h2>
-          <p style={{ color: '#64748b', fontSize: '16px', margin: '0 0 32px 0', textAlign: 'center' }}>13 AI Features जो कोई दूसरा platform नहीं देता</p>
+          <p style={{ color: '#64748b', fontSize: '16px', margin: '0 0 32px 0', textAlign: 'center' }}>20+ AI Features जो कोई दूसरा platform नहीं देता</p>
 
-          {/* Subject AI Pages - Highlighted */}
+          {/* Subject AI Pages */}
           <div style={{ backgroundColor: '#eff6ff', borderRadius: '16px', padding: '24px', marginBottom: '20px', border: '2px solid #bfdbfe' }}>
-            <h3 style={{ color: '#1e3a8a', fontSize: '18px', fontWeight: '800', margin: '0 0 4px 0' }}>📚 Subject AI Pages — 30,000+</h3>
+            <h3 style={{ color: '#1e3a8a', fontSize: '18px', fontWeight: '800', margin: '0 0 4px 0' }}>📚 Subject AI Pages — 30,000+ Questions</h3>
             <p style={{ color: '#64748b', fontSize: '13px', margin: '0 0 16px 0' }}>Pure Hindi या English में — आप choose करो। हर topic के लिए AI explanation + shortcuts</p>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
               {features.slice(0, 5).map((f, i) => (
@@ -137,8 +131,8 @@ export default function ToppersPlan() {
             {[
               { emoji: '🤖', title: 'AI-Powered', desc: 'सिर्फ content नहीं — AI analyze करता है और बताता है क्या करना है' },
               { emoji: '🗣️', title: 'Hindi & English', desc: 'Pure Hindi या Pure English — दोनों में पूरा platform available' },
-              { emoji: '📊', title: '30,000+', desc: 'SSC, Railway, UPSC, Banking — सभी exams के लिए chapter-wise questions' },
-              { emoji: '🏛️', title: '24 States', desc: 'Central + State govt jobs — सब एक जगह, daily update' },
+              { emoji: '📊', title: '30,000+ Questions', desc: 'SSC, Railway, UPSC, Banking — सभी exams के लिए chapter-wise questions' },
+              { emoji: '🏛️', title: '24+ States', desc: 'Central + State govt jobs — सब एक जगह, daily update' },
               { emoji: '💰', title: 'सिर्फ ₹42/month', desc: 'Coaching center का ₹5,000/month vs हमारा ₹42/month — choose करो' },
               { emoji: '⚡', title: 'Instant Access', desc: 'Payment के बाद तुरंत access — कोई wait नहीं' },
             ].map((item, i) => (
@@ -146,21 +140,6 @@ export default function ToppersPlan() {
                 <div style={{ fontSize: '28px', marginBottom: '8px' }}>{item.emoji}</div>
                 <p style={{ color: 'white', fontWeight: '700', fontSize: '13px', margin: '0 0 4px 0' }}>{item.title}</p>
                 <p style={{ color: '#bfdbfe', fontSize: '11px', margin: 0, lineHeight: '1.4' }}>{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Testimonials */}
-        <div style={{ marginBottom: '40px' }}>
-          <h2 style={{ color: '#1e3a8a', fontSize: '24px', fontWeight: '900', margin: '0 0 24px 0', textAlign: 'center' }}>Students क्या कह रहे हैं?</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
-            {testimonials.map((t, i) => (
-              <div key={i} style={{ backgroundColor: 'white', borderRadius: '12px', padding: '20px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', border: '1px solid #e2e8f0' }}>
-                <p style={{ color: '#1e293b', fontSize: '13px', lineHeight: '1.6', margin: '0 0 12px 0', fontStyle: 'italic' }}>"{t.text}"</p>
-                <div style={{ fontSize: '14px', marginBottom: '4px' }}>{t.score}</div>
-                <p style={{ color: '#1e3a8a', fontWeight: '700', fontSize: '13px', margin: '0 0 2px 0' }}>{t.name}</p>
-                <p style={{ color: '#64748b', fontSize: '11px', margin: 0 }}>{t.state} • {t.exam}</p>
               </div>
             ))}
           </div>
@@ -198,7 +177,7 @@ export default function ToppersPlan() {
 
             <div style={{ backgroundColor: '#f0fdf4', borderRadius: '10px', padding: '16px', marginBottom: '24px', textAlign: 'left' }}>
               <p style={{ color: '#16a34a', fontWeight: '700', fontSize: '13px', margin: '0 0 8px 0' }}>✅ What you get:</p>
-              {['13 AI Features', '21,960+ Chapter-wise Questions', 'Hindi & English toggle', '11 Exams covered', '24 States job notifications', 'Unlimited SarkariGPT', 'Cancel anytime'].map((item, i) => (
+              {['20+ AI Features', '30,000+ Chapter-wise Questions', 'Hindi & English toggle', '11 Exams covered', '24+ States job notifications', 'Unlimited SarkariGPT'].map((item, i) => (
                 <p key={i} style={{ color: '#1e293b', fontSize: '13px', margin: '0 0 4px 0' }}>✓ {item}</p>
               ))}
             </div>
@@ -208,7 +187,7 @@ export default function ToppersPlan() {
               style={{ width: '100%', backgroundColor: '#1e3a8a', color: 'white', padding: '18px', borderRadius: '12px', border: 'none', fontSize: '18px', fontWeight: '900', cursor: 'pointer', marginBottom: '12px' }}>
               👑 Get Topper's Plan — {plans[selectedPlan].total}
             </button>
-            <p style={{ color: '#64748b', fontSize: '12px', margin: 0 }}>🔒 Secure payment via Razorpay • Cancel anytime • Instant access after payment</p>
+            <p style={{ color: '#64748b', fontSize: '12px', margin: 0 }}>🔒 Secure payment via Razorpay • Instant access after payment</p>
           </div>
         </div>
 
@@ -240,7 +219,7 @@ export default function ToppersPlan() {
         <a href="#pricing" style={{ backgroundColor: '#fca5a5', color: '#1e3a8a', padding: '16px 40px', borderRadius: '50px', textDecoration: 'none', fontSize: '18px', fontWeight: '900', display: 'inline-block', marginBottom: '12px' }}>
           👑 Get Topper's Plan — Starting ₹42/month
         </a>
-        <p style={{ color: '#93c5fd', fontSize: '12px', margin: 0 }}>🔒 Secure payment via Razorpay • Cancel anytime • Instant access</p>
+        <p style={{ color: '#93c5fd', fontSize: '12px', margin: 0 }}>🔒 Secure payment via Razorpay • Instant access</p>
       </div>
 
       <footer style={{ backgroundColor: '#0f172a', color: 'white', textAlign: 'center', padding: '16px', fontSize: '13px' }}>
