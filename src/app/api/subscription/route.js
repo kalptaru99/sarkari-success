@@ -1,10 +1,9 @@
 import pool from '@/lib/db.js';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route.js';
 
 export async function GET(request) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await getServerSession();
     
     if (!session?.user?.email) {
       return Response.json({ hasSubscription: false, reason: 'not_logged_in' });
