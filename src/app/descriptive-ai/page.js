@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-
+import ProGuard from "@/components/ProGuard";
 const essayTopics = [
   { title: "Digital India: Transforming Governance and Economy", type: "Essay", words: 250, tag: "Asked in 3 recent exams", color: "#0891b2" },
   { title: "Climate Change and India's Role in Global Action", type: "Essay", words: 250, tag: "Asked in 2 recent exams", color: "#16a34a" },
@@ -145,6 +145,7 @@ Be honest and constructive. Response in Hindi/Hinglish.`,
   }
 
   return (
+     <ProGuard>
     <main style={{ minHeight: '100vh', backgroundColor: '#f0fdfa', fontFamily: 'Arial, sans-serif' }}>
 
       <div style={{ background: 'linear-gradient(135deg, #0e7490, #06b6d4)', padding: '16px 24px' }}>
@@ -392,6 +393,7 @@ Be honest and constructive. Response in Hindi/Hinglish.`,
       <footer style={{ backgroundColor: '#0e7490', color: 'white', textAlign: 'center', padding: '16px', fontSize: '13px', marginTop: '40px' }}>
         2026 Sarkari Success. All rights reserved. sarkarisuccess.com
       </footer>
-    </main>
+   </main>
+    </ProGuard>
   );
 }

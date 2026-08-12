@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import ProGuard from "@/components/ProGuard";
 
 const exams = ["SSC CGL", "IBPS PO", "SSC CHSL", "RRB NTPC", "Bank Clerk", "SSC MTS", "SSC CPO", "SSC GD Constable", "RRB ALP", "RRB Technician", "RRB Group D"];
 
@@ -244,6 +245,7 @@ export default function MathsAI() {
   }
 
   return (
+    <ProGuard>
     <main style={{ minHeight: '100vh', backgroundColor: '#f0fdf4', fontFamily: 'Arial, sans-serif' }}>
 
       <div style={{ background: 'linear-gradient(135deg, #0f766e, #14b8a6)', padding: '16px 24px' }}>
@@ -544,5 +546,6 @@ export default function MathsAI() {
         2026 Sarkari Success. All rights reserved. sarkarisuccess.com
       </footer>
     </main>
+    </ProGuard>
   );
 }
