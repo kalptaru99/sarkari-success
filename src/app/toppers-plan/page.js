@@ -19,7 +19,7 @@ export default function ToppersPlan() {
     en: {
       hero_badge: '👑 LIMITED TIME — Starting at ₹42/month',
       hero_title: "India's Most Powerful AI Exam Preparation Plan",
-      hero_sub: '20+ AI Features • 30,000+ Questions • Hindi & English • 11 Exams',
+      hero_sub: '20+ AI Features • 25,000+ Questions • Hindi & English • 11 Exams',
       hero_tag: '⚡ Everything other platforms cannot give — all here',
       hero_btn: 'See What You Get →',
       prob_title: 'Are You Facing These Problems?',
@@ -49,7 +49,7 @@ export default function ToppersPlan() {
       why: [
         { emoji: '🤖', title: 'AI-Powered', desc: 'Not just content — AI analyzes your performance and tells you exactly what to do' },
         { emoji: '🗣️', title: 'Hindi & English', desc: 'Pure Hindi or Pure English — entire platform available in both languages' },
-        { emoji: '📊', title: '30,000+ Questions', desc: 'SSC, Railway, UPSC, Banking — chapter-wise questions for all exams' },
+        { emoji: '📊', title: '25,000+ Questions', desc: 'SSC, Railway, UPSC, Banking — chapter-wise questions for all exams' },
         { emoji: '🏛️', title: '24+ States', desc: 'Central + State govt jobs — everything in one place, updated daily' },
         { emoji: '💰', title: 'Only ₹42/month', desc: 'Coaching center charges ₹5,000/month — we charge ₹42/month' },
         { emoji: '⚡', title: 'Instant Access', desc: 'Immediate access after payment — no waiting, no delay' },
@@ -61,7 +61,7 @@ export default function ToppersPlan() {
         { q: 'Which languages are supported?', a: 'Hindi, English, Tamil, Telugu, Malayalam, Kannada, Marathi, Bengali, Gujarati, Odia, Punjabi, Assamese — 12 languages.' },
         { q: 'Does it work on mobile?', a: 'Yes — the website works perfectly on mobile, tablet and desktop.' },
       ],
-      getlist: ['20+ AI Features', '25,000+ Chapter-wise Questions', 'Hindi & English toggle', '11 Exams covered', '24 States job notifications', 'Full Access to SarkariGPT'],
+      getlist: ['20+ AI Features', '25,000+ Chapter-wise Questions', 'Hindi & English toggle', '11 Exams covered', '24+ States job notifications', 'Unlimited SarkariGPT'],
     },
     hi: {
       hero_badge: '👑 सीमित समय — केवल ₹42/महीना',
@@ -112,13 +112,14 @@ export default function ToppersPlan() {
     }
   };
 
+
   const c = content[lang];
 
   const features = [
-    { emoji: '📘', title: 'English AI', desc: lang === 'en' ? '6,000+ Questions — Error Detection, Vocabulary, RC, Cloze Test with Hindi explanation' : '6,000+ प्रश्न — Error Detection, Vocabulary, RC, Cloze Test हिंदी explanation के साथ', href: '/english-ai', color: '#1e3a8a' },
-    { emoji: '📗', title: 'Maths AI', desc: lang === 'en' ? '6,000+ Questions — Percentage, Profit/Loss, Geometry, DI with Hindi shortcuts' : '6,000+ प्रश्न — Percentage, Profit/Loss, Geometry, DI हिंदी shortcuts के साथ', href: '/maths-ai', color: '#0f766e' },
-    { emoji: '🧩', title: 'Reasoning AI', desc: lang === 'en' ? '6,000+ Questions — Analogy, Syllogism, Puzzle, Coding with Hindi tricks' : '6,000+ प्रश्न — Analogy, Syllogism, Puzzle, Coding हिंदी tricks के साथ', href: '/reasoning-ai', color: '#7c3aed' },
-    { emoji: '🌍', title: 'GK/GS AI', desc: lang === 'en' ? '6,000+ Questions — History, Polity, Geography, Science with AI explanation' : '6,000+ प्रश्न — History, Polity, Geography, Science AI explanation के साथ', href: '/gk-ai', color: '#ea580c' },
+    { emoji: '📘', title: 'English AI', desc: lang === 'en' ? '6,000+ Questions — Error Detection, Vocabulary, RC, Cloze Test with Hindi explanation' : '5,000+ प्रश्न — Error Detection, Vocabulary, RC, Cloze Test हिंदी explanation के साथ', href: '/english-ai', color: '#1e3a8a' },
+    { emoji: '📗', title: 'Maths AI', desc: lang === 'en' ? '6,000+ Questions — Percentage, Profit/Loss, Geometry, DI with Hindi shortcuts' : '5,990+ प्रश्न — Percentage, Profit/Loss, Geometry, DI हिंदी shortcuts के साथ', href: '/maths-ai', color: '#0f766e' },
+    { emoji: '🧩', title: 'Reasoning AI', desc: lang === 'en' ? '6,000+ Questions — Analogy, Syllogism, Puzzle, Coding with Hindi tricks' : '5,279+ प्रश्न — Analogy, Syllogism, Puzzle, Coding हिंदी tricks के साथ', href: '/reasoning-ai', color: '#7c3aed' },
+    { emoji: '🌍', title: 'GK/GS AI', desc: lang === 'en' ? '6,000+ Questions — History, Polity, Geography, Science with AI explanation' : '5,697+ प्रश्न — History, Polity, Geography, Science AI explanation के साथ', href: '/gk-ai', color: '#ea580c' },
     { emoji: '✍️', title: 'Descriptive AI', desc: lang === 'en' ? 'Essay + Letter Writing with AI Evaluation — SSC CGL Tier 3 pattern' : 'Essay + Letter Writing AI Evaluation के साथ — SSC CGL Tier 3 pattern', href: '/descriptive-ai', color: '#0e7490' },
     { emoji: '📅', title: lang === 'en' ? 'AI Daily Mission' : 'AI दैनिक मिशन', desc: lang === 'en' ? 'Personalized 4-5 study tasks every morning based on your weak topics' : 'हर सुबह आपकी कमज़ोरियों के आधार पर 4-5 personalized study tasks', href: '/mission', color: '#dc2626' },
     { emoji: '🎯', title: lang === 'en' ? 'AI Selection Coach' : 'AI Selection Coach', desc: lang === 'en' ? 'Finds the exact 20% weaknesses causing 80% of your lost marks' : 'वो exact 20% कमज़ोरियां ढूंढता है जो 80% marks खा जाती हैं', href: '/coach', color: '#ca8a04' },

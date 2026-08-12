@@ -137,7 +137,7 @@ export default function Home() {
       <div style={{ backgroundColor: 'white', padding: '16px 20px', display: 'flex', justifyContent: 'center', gap: '40px', flexWrap: 'wrap', borderBottom: '1px solid #e5e7eb' }}>
         {[
           { value: '1000+', label: 'Active Jobs' },
-          { value: '30,000+', label: 'Practice Questions' },
+          { value: '25,000+', label: 'Practice Questions' },
           { value: '24', label: 'States Covered' },
           { value: '20+', label: 'AI Features' },
         ].map((stat, i) => (
