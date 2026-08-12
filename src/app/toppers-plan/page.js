@@ -61,7 +61,7 @@ export default function ToppersPlan() {
         { q: 'Which languages are supported?', a: 'Hindi, English, Tamil, Telugu, Malayalam, Kannada, Marathi, Bengali, Gujarati, Odia, Punjabi, Assamese — 12 languages.' },
         { q: 'Does it work on mobile?', a: 'Yes — the website works perfectly on mobile, tablet and desktop.' },
       ],
-      getlist: ['20+ AI Features', '30,000+ Chapter-wise Questions', 'Hindi & English toggle', '11 Exams covered', '24+ States job notifications', 'Unlimited SarkariGPT'],
+      getlist: ['20+ AI Features', '25,000+ Chapter-wise Questions', 'Hindi & English toggle', '11 Exams covered', '24 States job notifications', 'Full Access to SarkariGPT'],
     },
     hi: {
       hero_badge: '👑 सीमित समय — केवल ₹42/महीना',
