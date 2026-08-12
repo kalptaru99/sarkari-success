@@ -55,14 +55,14 @@ export default function ProGuard({ children }) {
           <div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '24px', marginBottom: '24px', boxShadow: '0 4px 16px rgba(0,0,0,0.08)', textAlign: 'left' }}>
             <p style={{ color: '#16a34a', fontWeight: '700', fontSize: '14px', margin: '0 0 12px 0' }}>✅ What you get with Topper's Plan:</p>
             {[
-              '📘 English AI — 5,000+ Questions',
-              '📗 Maths AI — 5,990+ Questions',
-              '🧩 Reasoning AI — 5,279+ Questions',
-              '🌍 GK/GS AI — 5,697+ Questions',
+              '📘 English AI — 6,000+ Questions',
+              '📗 Maths AI — 6,000+ Questions',
+              '🧩 Reasoning AI — 6,000+ Questions',
+              '🌍 GK/GS AI — 6,000+ Questions',
               '✍️ Descriptive AI — Essay + Letter',
-              '🤖 Unlimited SarkariGPT',
+              '🤖 Full Access to SarkariGPT',
               '📊 Exam Intelligence Report',
-              '🎯 AI Selection Coach + 13 more features',
+              '🎯 AI Selection Coach + 20 more features',
             ].map((item, i) => (
               <p key={i} style={{ color: '#1e293b', fontSize: '13px', margin: '0 0 6px 0' }}>✓ {item}</p>
             ))}
