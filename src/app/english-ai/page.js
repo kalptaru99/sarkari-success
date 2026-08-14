@@ -303,7 +303,7 @@ export default function EnglishAI() {
           <div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '12px', marginBottom: '24px' }}>
               {[
-                { value: '5,000', label: c.totalQ, color: '#1e3a8a' },
+                { value: '6,000', label: c.totalQ, color: '#1e3a8a' },
                 { value: '20', label: c.yearsQ, color: '#7c3aed' },
                 { value: '500+', label: c.mostImp, color: '#dc2626' },
                 { value: '8', label: c.topicsCount, color: '#16a34a' },

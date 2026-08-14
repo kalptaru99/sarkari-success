@@ -295,7 +295,7 @@ export default function ReasoningAI() {
           <div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '12px', marginBottom: '24px' }}>
               {[
-                { value: '5,000', label: c.totalQ, color: '#7c3aed' },
+                { value: '6,000', label: c.totalQ, color: '#7c3aed' },
                 { value: '20', label: c.yearsQ, color: '#dc2626' },
                 { value: '200+', label: c.mostImp, color: '#ca8a04' },
                 { value: '12', label: c.topicsCount, color: '#16a34a' },
