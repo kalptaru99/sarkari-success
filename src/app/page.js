@@ -72,7 +72,39 @@ export default function Home() {
         <span style={{ color: '#991b1b', fontSize: '13px' }}>SSC CGL 2026 — 12,256 Vacancies | RRB NTPC 2026 — 8,868 Vacancies | UPSC Civil Services 2026 — 933 Vacancies | IBPS PO 2026 — 6,715 Vacancies</span>
       </div>
 
-      <div style={{ background: 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #dc2626 100%)', padding: '50px 20px', textAlign: 'center' }}>
+      <div style={{ background: 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #dc2626 100%)', padding: '50px 20px' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', alignItems: 'center' }}>
+        
+        {/* Left Column - Why Topper's Plan Teaser */}
+        <div style={{ backgroundColor: 'rgba(255,255,255,0.95)', borderRadius: '16px', padding: '28px', textAlign: 'left' }}>
+          <div style={{ display: 'inline-block', backgroundColor: '#dc2626', borderRadius: '6px', padding: '4px 12px', marginBottom: '12px' }}>
+            <span style={{ color: 'white', fontSize: '11px', fontWeight: '800' }}>🚨 READ THIS</span>
+          </div>
+          <h3 style={{ color: '#1e3a8a', fontSize: '17px', fontWeight: '900', margin: '0 0 10px 0', lineHeight: '1.3' }}>
+            ATTENTION ASPIRANTS — The Mantra That 90% of Candidates Ignore
+          </h3>
+          <p style={{ color: '#374151', fontSize: '13px', lineHeight: '1.6', margin: '0 0 6px 0' }}>
+            The Govt. Job system is <strong style={{ color: '#dc2626' }}>NOT designed to reward hard work.</strong> It rewards <strong style={{ color: '#16a34a' }}>Strategic Preparation.</strong>
+          </p>
+          <p style={{ color: '#6b7280', fontSize: '12px', margin: '0 0 16px 0' }}>
+            Every year 2.3 crore students apply. Only 0.8% get selected...
+          </p>
+          <a href="/why-toppers-plan" style={{ display: 'inline-block', backgroundColor: '#fbbf24', color: '#0f172a', padding: '10px 20px', borderRadius: '8px', textDecoration: 'none', fontSize: '13px', fontWeight: '800', marginBottom: '12px' }}>
+            Read Full Story →
+          </a>
+          <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '12px', marginTop: '4px' }}>
+            <p style={{ color: '#374151', fontSize: '12px', margin: '0 0 8px 0', fontWeight: '700' }}>✅ What happens when you join:</p>
+            {['Stop fearing negative marking', 'Decode the right exam pattern', 'Know exactly what to study & skip'].map((item, i) => (
+              <p key={i} style={{ color: '#6b7280', fontSize: '12px', margin: '0 0 4px 0' }}>✓ {item}</p>
+            ))}
+            <a href="/toppers-plan#pricing" style={{ display: 'inline-block', marginTop: '10px', backgroundColor: '#1e3a8a', color: 'white', padding: '8px 16px', borderRadius: '6px', textDecoration: 'none', fontSize: '12px', fontWeight: '800' }}>
+              👑 Get Topper's Plan — ₹99/month
+            </a>
+          </div>
+        </div>
+
+        {/* Right Column - Original Hero Content */}
+        <div style={{ textAlign: 'center' }}></div>
         <div style={{ display: 'inline-block', backgroundColor: 'rgba(255,255,255,0.15)', borderRadius: '30px', padding: '6px 20px', marginBottom: '16px', border: '1px solid rgba(255,255,255,0.3)' }}>
           <span style={{ color: '#fbbf24', fontSize: '14px', fontWeight: 'bold' }}>🤖 India's First AI-Powered Sarkari Career Companion</span>
         </div>
@@ -149,6 +181,39 @@ export default function Home() {
       </div>
 
       <div style={{ maxWidth: '960px', margin: '0 auto', padding: '30px 20px' }}>
+
+        {/* Why Topper's Plan Teaser */}
+        <div style={{ backgroundColor: '#fffbeb', borderRadius: '16px', padding: '24px', marginBottom: '24px', border: '2px solid #fbbf24' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
+            <div style={{ flex: 1 }}>
+              <div style={{ display: 'inline-block', backgroundColor: '#dc2626', borderRadius: '6px', padding: '4px 12px', marginBottom: '10px' }}>
+                <span style={{ color: 'white', fontSize: '11px', fontWeight: '800' }}>🚨 READ THIS BEFORE YOU STUDY ANOTHER DAY</span>
+              </div>
+              <h3 style={{ color: '#1e3a8a', fontSize: '18px', fontWeight: '900', margin: '0 0 8px 0', lineHeight: '1.3' }}>
+                ATTENTION ASPIRANTS — The Mantra That 90% of Candidates Ignore…Until It's Too Late
+              </h3>
+              <p style={{ color: '#374151', fontSize: '14px', lineHeight: '1.6', margin: '0 0 4px 0' }}>
+                The Govt. Job system is <strong style={{ color: '#dc2626' }}>NOT designed to reward hard work.</strong> It rewards <strong style={{ color: '#16a34a' }}>Strategic Preparation.</strong>
+              </p>
+              <p style={{ color: '#6b7280', fontSize: '13px', margin: '0 0 16px 0' }}>
+                Every year 2.3 crore students apply. Only <strong style={{ color: '#1e3a8a' }}>0.8% get selected.</strong> The rest waste 3-5 years...
+              </p>
+              <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                <a href="/why-toppers-plan" style={{ display: 'inline-block', backgroundColor: '#fbbf24', color: '#0f172a', padding: '10px 20px', borderRadius: '8px', textDecoration: 'none', fontSize: '13px', fontWeight: '800' }}>
+                  Read Full Story →
+                </a>
+                <a href="/toppers-plan#pricing" style={{ display: 'inline-block', backgroundColor: '#1e3a8a', color: 'white', padding: '10px 20px', borderRadius: '8px', textDecoration: 'none', fontSize: '13px', fontWeight: '800' }}>
+                  👑 Get Topper's Plan — ₹99/month
+                </a>
+              </div>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', minWidth: '160px' }}>
+              {['✅ Stop fearing negative marking', '✅ Decode the right pattern', '✅ Know what to study & skip', '✅ One Goal. One System.'].map((item, i) => (
+                <p key={i} style={{ color: '#374151', fontSize: '12px', margin: 0, fontWeight: '600' }}>{item}</p>
+              ))}
+            </div>
+          </div>
+        </div>
 
         <div id="jobs" style={{ marginBottom: '40px' }}>
           <h2 style={{ fontSize: '22px', color: '#1e3a8a', margin: '0 0 16px 0' }}>Latest Sarkari Jobs</h2>
