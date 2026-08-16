@@ -150,6 +150,26 @@ export default function Home() {
 
       <div style={{ maxWidth: '960px', margin: '0 auto', padding: '30px 20px' }}>
 
+        {/* Why Topper's Plan Teaser */}
+        <div style={{ backgroundColor: '#fffbeb', borderRadius: '12px', padding: '20px 24px', marginBottom: '24px', border: '2px solid #fbbf24', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+          <div style={{ flex: 1 }}>
+            <div style={{ display: 'inline-block', backgroundColor: '#dc2626', borderRadius: '4px', padding: '3px 10px', marginBottom: '8px' }}>
+              <span style={{ color: 'white', fontSize: '11px', fontWeight: '800' }}>🚨 READ THIS</span>
+            </div>
+            <h3 style={{ color: '#1e3a8a', fontSize: '16px', fontWeight: '900', margin: '0 0 6px 0' }}>ATTENTION ASPIRANTS — The Mantra That 90% of Candidates Ignore</h3>
+            <p style={{ color: '#374151', fontSize: '13px', lineHeight: '1.6', margin: '0 0 4px 0' }}>The Govt. Job system is <strong style={{ color: '#dc2626' }}>NOT designed to reward hard work.</strong> It rewards <strong style={{ color: '#16a34a' }}>Strategic Preparation.</strong> Every year 2.3 crore students apply — only <strong>0.8% get selected.</strong></p>
+            <p style={{ color: '#6b7280', fontSize: '12px', margin: 0 }}>The rest waste 3-5 years buying books and watching YouTube videos...</p>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-end' }}>
+            <a href="/why-toppers-plan" style={{ display: 'inline-block', backgroundColor: '#fbbf24', color: '#0f172a', padding: '10px 20px', borderRadius: '8px', textDecoration: 'none', fontSize: '13px', fontWeight: '800', whiteSpace: 'nowrap' }}>
+              Read Full Story →
+            </a>
+            <a href="/toppers-plan#pricing" style={{ display: 'inline-block', backgroundColor: '#1e3a8a', color: 'white', padding: '8px 16px', borderRadius: '8px', textDecoration: 'none', fontSize: '12px', fontWeight: '700', whiteSpace: 'nowrap' }}>
+              👑 Get Topper's Plan — ₹99/month
+            </a>
+          </div>
+        </div>
+
         <div id="jobs" style={{ marginBottom: '40px' }}>
           <h2 style={{ fontSize: '22px', color: '#1e3a8a', margin: '0 0 16px 0' }}>Latest Sarkari Jobs</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '14px' }}>
