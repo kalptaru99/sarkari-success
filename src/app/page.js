@@ -177,6 +177,25 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Why Topper's Plan Teaser */}
+        <div style={{ backgroundColor: '#0f172a', borderRadius: '16px', padding: '24px', marginBottom: '24px', border: '1px solid #1e293b' }}>
+          <div style={{ display: 'inline-block', backgroundColor: '#dc2626', borderRadius: '6px', padding: '4px 12px', marginBottom: '12px' }}>
+            <span style={{ color: 'white', fontSize: '11px', fontWeight: '800' }}>🚨 READ THIS</span>
+          </div>
+          <h3 style={{ color: '#fbbf24', fontSize: '18px', fontWeight: '900', margin: '0 0 8px 0', lineHeight: '1.3' }}>
+            ATTENTION ASPIRANTS — The Mantra That 90% of Candidates Ignore
+          </h3>
+          <p style={{ color: '#94a3b8', fontSize: '14px', lineHeight: '1.6', margin: '0 0 4px 0' }}>
+            The Govt. Job system is <strong style={{ color: '#dc2626' }}>NOT designed to reward hard work.</strong> It rewards <strong style={{ color: '#4ade80' }}>Strategic Preparation.</strong>
+          </p>
+          <p style={{ color: '#64748b', fontSize: '13px', margin: '0 0 16px 0' }}>
+            Every year 2.3 crore students apply. Only 0.8% get selected...
+          </p>
+          <a href="/why-toppers-plan" style={{ display: 'inline-block', backgroundColor: '#fbbf24', color: '#0f172a', padding: '10px 24px', borderRadius: '8px', textDecoration: 'none', fontSize: '14px', fontWeight: '800' }}>
+            Read Full Story →
+          </a>
+        </div>
+
         <div id="calendar" style={{ marginBottom: '40px' }}>
           <h2 style={{ fontSize: '22px', color: '#1e3a8a', margin: '0 0 16px 0' }}>Upcoming Exam Calendar</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
