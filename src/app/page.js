@@ -72,10 +72,7 @@ export default function Home() {
         <span style={{ color: '#991b1b', fontSize: '13px' }}>SSC CGL 2026 — 12,256 Vacancies | RRB NTPC 2026 — 8,868 Vacancies | UPSC Civil Services 2026 — 933 Vacancies | IBPS PO 2026 — 6,715 Vacancies</span>
       </div>
 
-      <div style={{ background: 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #dc2626 100%)', padding: '50px 20px' }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', alignItems: 'center' }}>
-        
-        {/* Left Column - Why Topper's Plan Teaser */}
+      <div style={{ background: 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #dc2626 100%)', padding: '50px 20px', textAlign: 'center' }}>
         <div style={{ backgroundColor: 'rgba(255,255,255,0.95)', borderRadius: '16px', padding: '28px', textAlign: 'left' }}>
           <div style={{ display: 'inline-block', backgroundColor: '#dc2626', borderRadius: '6px', padding: '4px 12px', marginBottom: '12px' }}>
             <span style={{ color: 'white', fontSize: '11px', fontWeight: '800' }}>🚨 READ THIS</span>
