@@ -72,8 +72,7 @@ export default function Home() {
         <span style={{ color: '#991b1b', fontSize: '13px' }}>SSC CGL 2026 — 12,256 Vacancies | RRB NTPC 2026 — 8,868 Vacancies | UPSC Civil Services 2026 — 933 Vacancies | IBPS PO 2026 — 6,715 Vacancies</span>
       </div>
 
-      <div style={{ background: 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #dc2626 100%)', padding: '50px 20px', textAlign: 'center' }}>
-        <div style={{ backgroundColor: 'rgba(255,255,255,0.95)', borderRadius: '16px', padding: '28px', textAlign: 'left' }}>
+      <div style={{ background: 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #dc2626 100%)', padding: '50px 20px', textAlign: 'center' }}></div>
           <div style={{ display: 'inline-block', backgroundColor: '#dc2626', borderRadius: '6px', padding: '4px 12px', marginBottom: '12px' }}>
             <span style={{ color: 'white', fontSize: '11px', fontWeight: '800' }}>🚨 READ THIS</span>
           </div>
@@ -97,12 +96,7 @@ export default function Home() {
             <a href="/toppers-plan#pricing" style={{ display: 'inline-block', marginTop: '10px', backgroundColor: '#1e3a8a', color: 'white', padding: '8px 16px', borderRadius: '6px', textDecoration: 'none', fontSize: '12px', fontWeight: '800' }}>
               👑 Get Topper's Plan — ₹99/month
             </a>
-          </div>
-        </div>
-
-        {/* Right Column - Original Hero Content */}
-        <div style={{ textAlign: 'center' }}></div>
-        <div style={{ display: 'inline-block', backgroundColor: 'rgba(255,255,255,0.15)', borderRadius: '30px', padding: '6px 20px', marginBottom: '16px', border: '1px solid rgba(255,255,255,0.3)' }}>
+          <div style={{ display: 'inline-block', backgroundColor: 'rgba(255,255,255,0.15)', borderRadius: '30px', padding: '6px 20px', marginBottom: '16px', border: '1px solid rgba(255,255,255,0.3)' }}>
           <span style={{ color: '#fbbf24', fontSize: '14px', fontWeight: 'bold' }}>🤖 India's First AI-Powered Sarkari Career Companion</span>
         </div>
         <h2 style={{ color: 'white', fontSize: '36px', fontWeight: '800', margin: '0 0 8px 0', lineHeight: '1.2' }}>
