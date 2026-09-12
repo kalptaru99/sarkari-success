@@ -38,7 +38,7 @@ export default function Home() {
       <header style={{ backgroundColor: 'white', padding: '16px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '3px solid #1e3a8a', flexWrap: 'wrap', gap: '10px' }}>
         <div>
           <h1 style={{ fontSize: '28px', fontWeight: 'bold', color: '#1e3a8a', margin: 0 }}>
-            Sarkari <span style={{ color: '#dc2626' }}>Success</span>
+            Sarkari <span style={{ color: '#dc2626' }}>Success™</span>
           </h1>
           <p style={{ color: '#374151', fontSize: '12px', margin: '2px 0 0 0' }}>AI-Powered Government Jobs, Results and Exam Updates</p>
         </div>
