@@ -5,7 +5,7 @@ import CookieConsent from "@/components/CookieConsent";
 
 export const metadata = {
   title: "Sarkari Success — India's First AI-Powered Sarkari Career Companion",
-  description: "Get latest SSC, Railway, UPSC, Banking government job notifications, results, admit cards. Free mock tests, 30,000+ practice questions and SarkariGPT AI chatbot in Hindi and English.",
+  description: "Get latest SSC, Railway, UPSC, Banking government job notifications, results, admit cards. Free mock tests, 25,000+ practice questions and SarkariGPT AI chatbot in Hindi and English.",
   openGraph: {
       title: "Sarkari Success — India's First AI-Powered Sarkari Career Companion",
       description: "Get latest SSC, Railway, UPSC, Banking government job notifications with AI-powered mock tests and SarkariGPT chatbot.",
