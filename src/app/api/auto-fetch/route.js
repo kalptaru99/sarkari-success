@@ -20,7 +20,7 @@ const searchQueries = [
   { query: 'site:ssc.gov.in admit card hall ticket 2026', type: 'admit_card', org: 'SSC' },
   { query: 'site:rrbapply.gov.in admit card 2026', type: 'admit_card', org: 'RRB' },
   // State Govt
-  { query: 'site:bpsc.bih.nic.in new notification 2026', type: 'job', org: 'BPSC' },
+  { query: 'site:bpscpat.bihar.gov.in new notification 2026', type: 'job', org: 'BPSC' },
   { query: 'site:uppsc.up.nic.in new notification 2026', type: 'job', org: 'UPPSC' },
   { query: 'site:tnpsc.gov.in new notification 2026', type: 'job', org: 'TNPSC' },
   { query: 'site:keralapsc.gov.in new notification 2026', type: 'job', org: 'Kerala PSC' },
@@ -32,7 +32,16 @@ const searchQueries = [
   { query: 'site:tspsc.gov.in new notification 2026', type: 'job', org: 'TSPSC' },
   { query: 'site:rpsc.rajasthan.gov.in new notification 2026', type: 'job', org: 'RPSC' },
   { query: 'site:mppsc.mp.gov.in new notification 2026', type: 'job', org: 'MPPSC' },
-  { query: 'site:opsc.gov.in new notification 2026', type: 'job', org: 'OPSC' },
+    { query: 'site:opsc.gov.in new notification 2026', type: 'job', org: 'OPSC' },
+  { query: 'employmentnews.gov.in recruitment 2026 latest jobs', type: 'job', org: 'Employment News' },
+  { query: 'NTA recruitment notification 2026 site:nta.ac.in', type: 'job', org: 'NTA' },
+  { query: 'DRDO recruitment 2026 notification vacancies', type: 'job', org: 'DRDO' },
+  { query: 'HAL recruitment 2026 notification vacancies', type: 'job', org: 'HAL' },
+  { query: 'ISRO recruitment 2026 notification vacancies', type: 'job', org: 'ISRO' },
+  { query: 'High Court recruitment 2026 notification vacancies', type: 'job', org: 'High Court' },
+  { query: 'site:nta.ac.in admit card 2026', type: 'admit_card', org: 'NTA' },
+  { query: 'SSC CGL CHSL result 2026 declared', type: 'result', org: 'SSC' },
+  { query: 'RRB NTPC Group D result 2026 declared', type: 'result', org: 'RRB' },
 ];
 
 async function searchSerper(query) {
