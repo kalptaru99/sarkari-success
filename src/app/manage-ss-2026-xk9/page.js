@@ -343,7 +343,7 @@ function StateJobForm() {
 
         <div style={{ gridColumn: '1 / -1' }}>
           <label style={{ fontSize: '13px', color: '#666', display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Apply Link</label>
-          <input type="text" placeholder="e.g. https://bpsc.bih.nic.in"
+          <input type="text" placeholder="e.g. https://bpsc.bihar.gov.in"
             value={form.apply_link}
             onChange={(e) => setForm(prev => ({ ...prev, apply_link: e.target.value }))}
             style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', color: '#1a1a1a', boxSizing: 'border-box' }}
