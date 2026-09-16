@@ -141,9 +141,12 @@ async function saveToDatabase(data, type) {
       if (!data.last_date || data.last_date === null || data.last_date === 'null') {
         return { saved: false, reason: 'no last date' };
       }
-      const vacancyNum = parseInt(data.vacancies.toString().replace(/,/g, '').replace(/\+/g, '').replace(/[^0-9]/g, ''));
-      if (isNaN(vacancyNum) || vacancyNum < 10) {
-        return { saved: false, reason: 'vacancy number too low or invalid' };
+      const vacancyStr = data.vacancies.toString().toLowerCase();
+      if (!vacancyStr.includes('check') && !vacancyStr.includes('official') && !vacancyStr.includes('various')) {
+        const vacancyNum = parseInt(data.vacancies.toString().replace(/,/g, '').replace(/\+/g, '').replace(/[^0-9]/g, ''));
+        if (!isNaN(vacancyNum) && vacancyNum < 10) {
+          return { saved: false, reason: 'vacancy number too low or invalid' };
+        }
       }
       if (!data.title || data.title.length < 10) {
         return { saved: false, reason: 'invalid title' };
