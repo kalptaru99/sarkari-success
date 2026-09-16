@@ -78,8 +78,8 @@ async function extractWithClaude(results, type, org) {
     + '  "found": true/false,\n'
     + '  "title": "exact notification title",\n'
     + '  "org": "organization name",\n'
-    + '  "vacancies": "exact number only like 1234 or null if not found",\n'
-    + '  "last_date": "exact date only like 25 June 2026 or null if not found",\n'
+    + '  "vacancies": "number if found, or Check official website if not mentioned",\n'
+    + '  "last_date": "date if found, or Check official website if not mentioned",\n'
     + '  "exam_date": "exam date if mentioned",\n'
     + '  "salary": "salary if mentioned",\n'
     + '  "eligibility": "eligibility if mentioned",\n'
@@ -138,7 +138,7 @@ async function saveToDatabase(data, type) {
       if (data.vacancies.toLowerCase().includes('tba') && !data.vacancies.match(/\d/)) {
         return { saved: false, reason: 'no vacancy data' };
       }
-      if (!data.last_date || data.last_date === 'TBA' || data.last_date === 'See notification' || data.last_date === 'null' || data.last_date === null || data.last_date.toLowerCase().includes('tba')) {
+      if (!data.last_date || data.last_date === null || data.last_date === 'null') {
         return { saved: false, reason: 'no last date' };
       }
       const vacancyNum = parseInt(data.vacancies.toString().replace(/,/g, '').replace(/\+/g, '').replace(/[^0-9]/g, ''));
