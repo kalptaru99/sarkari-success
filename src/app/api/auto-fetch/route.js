@@ -132,7 +132,10 @@ async function saveToDatabase(data, type) {
       const existing = await pool.query('SELECT id FROM jobs WHERE slug = $1', [data.slug]);
       if (existing.rows.length > 0) return { saved: false, reason: 'already exists' };
 
-      if (!data.vacancies || data.vacancies === 'TBA' || data.vacancies === 'See notification' || data.vacancies === 'null' || data.vacancies === null || data.vacancies.toLowerCase().includes('tba')) {
+      if (!data.vacancies || data.vacancies === null || data.vacancies === 'null') {
+        return { saved: false, reason: 'no vacancy data' };
+      }
+      if (data.vacancies.toLowerCase().includes('tba') && !data.vacancies.match(/\d/)) {
         return { saved: false, reason: 'no vacancy data' };
       }
       if (!data.last_date || data.last_date === 'TBA' || data.last_date === 'See notification' || data.last_date === 'null' || data.last_date === null || data.last_date.toLowerCase().includes('tba')) {
