@@ -1,24 +1,12 @@
 {
   "crons": [
     {
-      "path": "/api/auto-fetch?batch=0",
-      "schedule": "0 */2 * * *"
-    },
-    {
-      "path": "/api/auto-fetch?batch=1",
-      "schedule": "15 */2 * * *"
-    },
-    {
-      "path": "/api/auto-fetch?batch=2",
-      "schedule": "30 */2 * * *"
-    },
-    {
-      "path": "/api/auto-fetch?batch=3",
-      "schedule": "45 */2 * * *"
+      "path": "/api/auto-fetch",
+      "schedule": "0 6 * * *"
     },
     {
       "path": "/api/auto-fetch-states",
-      "schedule": "0 8 * * *"
+      "schedule": "0 7 * * *"
     }
   ]
 }
