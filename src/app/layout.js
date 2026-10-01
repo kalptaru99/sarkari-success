@@ -55,6 +55,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <meta name="msvalidate.01" content="DAB8F593C55D42274BEC143203AD8380" />
+      </head>
       <body>
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-RK6LW3C9V4"
