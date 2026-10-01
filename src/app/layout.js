@@ -6,9 +6,10 @@ import CookieConsent from "@/components/CookieConsent";
 export const metadata = {
   title: "Sarkari Success — India's First AI-Powered Sarkari Career Companion",
   verification: {
-    other: {
-      'msvalidate.01': 'DAB8F593C55D42274BEC143203AD8380',
-    },
+    me: ['DAB8F593C55D42274BEC143203AD8380'],
+  },
+  other: {
+    'msvalidate.01': 'DAB8F593C55D42274BEC143203AD8380',
   },
   description: "Get latest SSC, Railway, UPSC, Banking government job notifications, results, admit cards. Free mock tests, 25,000+ practice questions and SarkariGPT AI chatbot in Hindi and English.",
   openGraph: {
