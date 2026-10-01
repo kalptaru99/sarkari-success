@@ -52,6 +52,9 @@ export default function Home() {
         {[
          { label: 'Home', href: '/' },
           { label: 'Jobs', href: '#jobs' },
+          { label: 'SSC', href: '/ssc' },
+          { label: 'Railway', href: '/rrb' },
+          { label: 'Banking', href: '/banking' },
           { label: 'Results', href: '#results' },
           { label: 'Admit Cards', href: '/admit-card' },
           { label: 'State Jobs', href: '/states' },
