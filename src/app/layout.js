@@ -5,35 +5,7 @@ import CookieConsent from "@/components/CookieConsent";
 
 export const metadata = {
   title: "Sarkari Success — India's First AI-Powered Sarkari Career Companion",
-  verification: {
-    me: ['DAB8F593C55D42274BEC143203AD8380'],
-  },
-  other: {
-    'msvalidate.01': 'DAB8F593C55D42274BEC143203AD8380',
-  },
   description: "Get latest SSC, Railway, UPSC, Banking government job notifications, results, admit cards. Free mock tests, 25,000+ practice questions and SarkariGPT AI chatbot in Hindi and English.",
-  openGraph: {
-      title: "Sarkari Success — India's First AI-Powered Sarkari Career Companion",
-      description: "Get latest SSC, Railway, UPSC, Banking government job notifications with AI-powered mock tests and SarkariGPT chatbot.",
-      url: "https://sarkarisuccess.com",
-      siteName: "Sarkari Success",
-      images: [
-        {
-          url: "https://sarkarisuccess.com/api/og",
-          width: 1200,
-          height: 630,
-          alt: "Sarkari Success — AI-Powered Government Jobs Portal",
-        },
-      ],
-      locale: "en_IN",
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: "Sarkari Success — India's First AI-Powered Sarkari Career Companion",
-      description: "Get latest SSC, Railway, UPSC, Banking government job notifications with AI-powered mock tests.",
-      images: ["https://sarkarisuccess.com/api/og"],
-    },
   keywords: "sarkari naukri, sarkari result, SSC CGL 2026, RRB NTPC 2026, UPSC 2026, IBPS PO 2026, government jobs 2026, sarkari job, admit card, exam result",
   authors: [{ name: "Sarkari Success" }],
   creator: "Sarkari Success",
@@ -47,6 +19,14 @@ export const metadata = {
     description: "Latest SSC, Railway, UPSC, Banking job notifications with AI-powered mock tests and SarkariGPT chatbot.",
     url: "https://sarkarisuccess.com",
     siteName: "Sarkari Success",
+    images: [
+      {
+        url: "https://sarkarisuccess.com/api/og",
+        width: 1200,
+        height: 630,
+        alt: "Sarkari Success — AI-Powered Government Jobs Portal",
+      },
+    ],
     locale: "en_IN",
     type: "website",
   },
@@ -54,6 +34,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Sarkari Success — India's First AI-Powered Sarkari Career Companion",
     description: "Latest SSC, Railway, UPSC, Banking job notifications with AI-powered mock tests and SarkariGPT chatbot.",
+    images: ["https://sarkarisuccess.com/api/og"],
   },
   robots: {
     index: true,
@@ -65,6 +46,9 @@ export const metadata = {
   },
   verification: {
     google: "35nM2-Nu0pDv-3_xcWujMHIHnNT4s7yqKhCdpbvhNYI",
+  },
+  other: {
+    'msvalidate.01': 'DAB8F593C55D42274BEC143203AD8380',
   },
 };
 
