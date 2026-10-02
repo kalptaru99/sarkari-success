@@ -268,8 +268,8 @@ export default function JobPage() {
           </>
         )}
 
-        {/* Eligibility */}
-        {job.eligibility && (
+        {/* Eligibility - only show if no seo_content */}
+        {job.eligibility && !job.seo_content && (
           <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '20px' }}>
             <h3 style={{ color: '#1e3a8a', margin: '0 0 12px 0' }}>📋 Eligibility Criteria</h3>
             <p style={{ color: '#444', fontSize: '14px', lineHeight: '1.6', margin: 0 }}>{job.eligibility}</p>
@@ -298,8 +298,8 @@ export default function JobPage() {
           <h3 style={{ color: '#1e3a8a', fontSize: '18px', fontWeight: '800', margin: '0 0 20px 0' }}>Frequently Asked Questions</h3>
           {[
             { q: `What is the last date to apply for ${job.title}?`, a: `The last date to apply for ${job.title} is ${job.last_date}. Apply before the deadline through the official website.` },
-            { q: `How many vacancies are there in ${job.title}?`, a: `There are ${job.vacancies} vacancies in ${job.title} by ${job.org}.` },
-            { q: `What is the salary for ${job.title}?`, a: job.salary && job.salary !== 'TBA' ? `The salary for ${job.title} is ${job.salary}.` : `Salary details are mentioned in the official notification for ${job.title}. Visit the official website for exact pay scale.` },
+            { q: `How many vacancies are there in ${job.title}?`, a: job.vacancies && !job.vacancies.toLowerCase().includes('check') ? `There are ${job.vacancies} vacancies in ${job.title} by ${job.org}.` : `Vacancy details are available in the official notification for ${job.title} by ${job.org}.` },
+            { q: `What is the salary for ${job.title}?`, a: job.salary && job.salary !== 'TBA' && !job.salary.toLowerCase().includes('check') ? `The salary for ${job.title} is ${job.salary}.` : `Salary details are mentioned in the official notification for ${job.title}. Visit the official website for exact pay scale.` },
             { q: `What is the eligibility for ${job.title}?`, a: job.eligibility ? job.eligibility : `Check the official notification for ${job.title} eligibility criteria including age limit and educational qualification.` },
             { q: `How to apply for ${job.title}?`, a: `To apply for ${job.title}, visit the official website of ${job.org}, register with your details, fill the application form, upload required documents and pay the application fee before ${job.last_date}.` },
           ].map((faq, i) => (

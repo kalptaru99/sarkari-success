@@ -1,10 +1,7 @@
 import pool from './src/lib/db.js';
 
-const result = await pool.query(`
-  ALTER TABLE jobs 
-  ADD COLUMN IF NOT EXISTS seo_title TEXT,
-  ADD COLUMN IF NOT EXISTS seo_description TEXT,
-  ADD COLUMN IF NOT EXISTS seo_content JSONB
-`);
-console.log('Columns added:', result.command);
+const result = await pool.query(
+  `SELECT id, slug, title FROM jobs WHERE seo_content IS NOT NULL LIMIT 5`
+);
+result.rows.forEach(r => console.log(r.id, '|', r.slug));
 process.exit(0);
