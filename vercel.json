@@ -5,8 +5,8 @@
       "schedule": "0 6 * * *"
     },
     {
-      "path": "/api/auto-fetch-states",
-      "schedule": "0 7 * * *"
+      "path": "/api/generate-job-content",
+      "schedule": "0 8 * * *"
     }
   ]
 }
