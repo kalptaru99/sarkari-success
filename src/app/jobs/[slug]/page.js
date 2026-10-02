@@ -200,6 +200,74 @@ export default function JobPage() {
           </div>
         </div>
 
+        {/* AI Generated Rich Content */}
+        {job.seo_content && (
+          <>
+            {/* Intro */}
+            {job.seo_content.intro && (
+              <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '20px' }}>
+                <p style={{ color: '#374151', fontSize: '15px', lineHeight: '1.8', margin: 0 }}>{job.seo_content.intro}</p>
+              </div>
+            )}
+
+            {/* Important Dates */}
+            {job.seo_content.important_dates && (
+              <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '20px' }}>
+                <h3 style={{ color: '#1e3a8a', margin: '0 0 12px 0', fontSize: '16px', fontWeight: '800' }}>📅 Important Dates</h3>
+                <p style={{ color: '#374151', fontSize: '14px', lineHeight: '1.8', margin: 0, whiteSpace: 'pre-line' }}>{job.seo_content.important_dates}</p>
+              </div>
+            )}
+
+            {/* Eligibility */}
+            {job.seo_content.eligibility_summary && (
+              <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '20px' }}>
+                <h3 style={{ color: '#1e3a8a', margin: '0 0 12px 0', fontSize: '16px', fontWeight: '800' }}>📋 Eligibility Criteria</h3>
+                <p style={{ color: '#374151', fontSize: '14px', lineHeight: '1.8', margin: 0, whiteSpace: 'pre-line' }}>{job.seo_content.eligibility_summary}</p>
+              </div>
+            )}
+
+            {/* Age Limit */}
+            {job.seo_content.age_limit && (
+              <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '20px' }}>
+                <h3 style={{ color: '#1e3a8a', margin: '0 0 12px 0', fontSize: '16px', fontWeight: '800' }}>🎂 Age Limit</h3>
+                <p style={{ color: '#374151', fontSize: '14px', lineHeight: '1.8', margin: 0, whiteSpace: 'pre-line' }}>{job.seo_content.age_limit}</p>
+              </div>
+            )}
+
+            {/* Application Fee */}
+            {job.seo_content.application_fee && (
+              <div style={{ backgroundColor: '#fef9c3', borderRadius: '12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '20px', border: '1px solid #fde68a' }}>
+                <h3 style={{ color: '#92400e', margin: '0 0 12px 0', fontSize: '16px', fontWeight: '800' }}>💳 Application Fee</h3>
+                <p style={{ color: '#374151', fontSize: '14px', lineHeight: '1.8', margin: 0, whiteSpace: 'pre-line' }}>{job.seo_content.application_fee}</p>
+              </div>
+            )}
+
+            {/* Selection Process */}
+            {job.seo_content.selection_process && (
+              <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '20px' }}>
+                <h3 style={{ color: '#1e3a8a', margin: '0 0 12px 0', fontSize: '16px', fontWeight: '800' }}>🎯 Selection Process</h3>
+                <p style={{ color: '#374151', fontSize: '14px', lineHeight: '1.8', margin: 0, whiteSpace: 'pre-line' }}>{job.seo_content.selection_process}</p>
+              </div>
+            )}
+
+            {/* Salary */}
+            {job.seo_content.salary_details && (
+              <div style={{ backgroundColor: '#f0fdf4', borderRadius: '12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '20px', border: '1px solid #bbf7d0' }}>
+                <h3 style={{ color: '#166534', margin: '0 0 12px 0', fontSize: '16px', fontWeight: '800' }}>💰 Salary Details</h3>
+                <p style={{ color: '#374151', fontSize: '14px', lineHeight: '1.8', margin: 0, whiteSpace: 'pre-line' }}>{job.seo_content.salary_details}</p>
+              </div>
+            )}
+
+            {/* How to Apply */}
+            {job.seo_content.how_to_apply && (
+              <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '20px' }}>
+                <h3 style={{ color: '#1e3a8a', margin: '0 0 12px 0', fontSize: '16px', fontWeight: '800' }}>📝 How to Apply</h3>
+                <p style={{ color: '#374151', fontSize: '14px', lineHeight: '1.8', margin: 0, whiteSpace: 'pre-line' }}>{job.seo_content.how_to_apply}</p>
+              </div>
+            )}
+          </>
+        )}
+
         {/* Eligibility */}
         {job.eligibility && (
           <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '20px' }}>
