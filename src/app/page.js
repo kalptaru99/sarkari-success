@@ -58,6 +58,7 @@ export default function Home() {
           { label: 'SSC', href: '/ssc' },
           { label: 'Railway', href: '/rrb' },
           { label: 'Banking', href: '/banking' },
+{ label: 'UPSC', href: '/upsc' },
           { label: 'Results', href: '#results' },
           { label: 'Admit Cards', href: '/admit-card' },
           { label: 'State Jobs', href: '/states' },
