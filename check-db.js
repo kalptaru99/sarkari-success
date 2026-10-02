@@ -1,7 +1,10 @@
 import pool from './src/lib/db.js';
 
-const result = await pool.query(
-  `SELECT category, COUNT(*) as count FROM jobs GROUP BY category ORDER BY count DESC`
-);
-result.rows.forEach(r => console.log(r.category, ':', r.count));
+const result = await pool.query(`
+  ALTER TABLE jobs 
+  ADD COLUMN IF NOT EXISTS seo_title TEXT,
+  ADD COLUMN IF NOT EXISTS seo_description TEXT,
+  ADD COLUMN IF NOT EXISTS seo_content JSONB
+`);
+console.log('Columns added:', result.command);
 process.exit(0);
