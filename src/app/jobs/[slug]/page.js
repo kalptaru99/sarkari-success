@@ -225,6 +225,23 @@ export default function JobPage() {
           </a>
         </div>
 
+        {/* FAQ Section */}
+        <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '20px' }}>
+          <h3 style={{ color: '#1e3a8a', fontSize: '18px', fontWeight: '800', margin: '0 0 20px 0' }}>Frequently Asked Questions</h3>
+          {[
+            { q: `What is the last date to apply for ${job.title}?`, a: `The last date to apply for ${job.title} is ${job.last_date}. Apply before the deadline through the official website.` },
+            { q: `How many vacancies are there in ${job.title}?`, a: `There are ${job.vacancies} vacancies in ${job.title} by ${job.org}.` },
+            { q: `What is the salary for ${job.title}?`, a: job.salary && job.salary !== 'TBA' ? `The salary for ${job.title} is ${job.salary}.` : `Salary details are mentioned in the official notification for ${job.title}. Visit the official website for exact pay scale.` },
+            { q: `What is the eligibility for ${job.title}?`, a: job.eligibility ? job.eligibility : `Check the official notification for ${job.title} eligibility criteria including age limit and educational qualification.` },
+            { q: `How to apply for ${job.title}?`, a: `To apply for ${job.title}, visit the official website of ${job.org}, register with your details, fill the application form, upload required documents and pay the application fee before ${job.last_date}.` },
+          ].map((faq, i) => (
+            <div key={i} style={{ borderBottom: i < 4 ? '1px solid #e2e8f0' : 'none', paddingBottom: '16px', marginBottom: '16px' }}>
+              <h4 style={{ color: '#1e3a8a', fontSize: '14px', fontWeight: '700', margin: '0 0 6px 0' }}>Q: {faq.q}</h4>
+              <p style={{ color: '#374151', fontSize: '13px', margin: 0, lineHeight: '1.6' }}>A: {faq.a}</p>
+            </div>
+          ))}
+        </div>
+
         {/* Mock Test CTA */}
         <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '24px', textAlign: 'center', border: '2px solid #1e3a8a' }}>
           <h3 style={{ color: '#1e3a8a', fontSize: '18px', margin: '0 0 8px 0' }}>📝 Prepare for {job.category} Exam</h3>
