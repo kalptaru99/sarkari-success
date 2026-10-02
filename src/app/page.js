@@ -61,6 +61,8 @@ export default function Home() {
 { label: 'UPSC', href: '/upsc' },
 { label: 'Defence', href: '/defence' },
 { label: 'State PSC', href: '/state-psc' },
+{ label: 'PSU', href: '/psu' },
+{ label: 'Teaching', href: '/teaching' },
           { label: 'Results', href: '#results' },
           { label: 'Admit Cards', href: '/admit-card' },
           { label: 'State Jobs', href: '/states' },
