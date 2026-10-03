@@ -67,6 +67,7 @@ export default function Home() {
           { label: 'Admit Cards', href: '/admit-card' },
           { label: 'State Jobs', href: '/states' },
           { label: 'Mock Test', href: '/mocktest' },
+{ label: '📅 Exam Calendar', href: '/exam-calendar' },
           { label: 'SarkariGPT', href: '/sarkarigpt' },
           { label: 'AI Coach', href: '/coach', color: '#4ade80' },
           { label: "👑 Topper's Plan", href: '/toppers-plan', color: '#fbbf24' },
