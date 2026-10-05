@@ -73,7 +73,7 @@ const tools = [
     color: '#0891b2',
     items: [
       { name: 'हिंदी गाइड', desc: 'SSC, Railway, UPSC, Bank — सब हिंदी में', link: '/hindi-guide', icon: '🇮🇳', badge: '' },
-      { name: 'বাংলা গাইড', desc: 'সরকারি চাকরি গাইড বাংলায়', link: '/bengali-guide', icon: '🇧🇩', badge: '' },
+      { name: 'বাংলা গাইড', desc: 'West Bengal — সরকারি চাকরি গাইড বাংলায়', link: '/bengali-guide', icon: '📚', badge: '' },
       { name: 'தமிழ் வழிகாட்டி', desc: 'அரசு வேலை வழிகாட்டி தமிழில்', link: '/tamil-guide', icon: '🌟', badge: '' },
       { name: 'తెలుగు గైడ్', desc: 'ప్రభుత్వ ఉద్యోగ గైడ్ తెలుగులో', link: '/telugu-guide', icon: '🌟', badge: '' },
       { name: 'मराठी मार्गदर्शन', desc: 'सरकारी नोकरी मार्गदर्शन मराठीत', link: '/marathi-guide', icon: '🌟', badge: '' },
