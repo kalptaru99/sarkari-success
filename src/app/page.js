@@ -317,6 +317,12 @@ export default function Home() {
                   { label: 'Admit Cards', href: '/admit-card' },
                   { label: 'Mock Test', href: '/mocktest' },
                   { label: 'SarkariGPT', href: '/sarkarigpt' },
+                  { label: '🛠️ All Tools', href: '/tools' },
+                  { label: '📅 Exam Calendar', href: '/exam-calendar' },
+                  { label: '✅ Eligibility Checker', href: '/eligibility-checker' },
+                  { label: '💰 Salary Compare', href: '/salary-comparison' },
+                  { label: '📊 Vacancy Database', href: '/vacancy-database' },
+                  { label: '🔍 Competition Report', href: '/competition-report' },
                 ].map((link, i) => (
                   <a key={i} href={link.href} style={{ display: 'block', color: 'white', textDecoration: 'none', fontSize: '13px', marginBottom: '4px' }}>{link.label}</a>
                 ))}
@@ -328,6 +334,13 @@ export default function Home() {
                   { label: 'Register Free', href: '/register' },
                   { label: 'Dashboard', href: '/dashboard' },
                   { label: 'Question Bank', href: '/questions' },
+                  { label: 'SSC Jobs', href: '/ssc' },
+                  { label: 'Railway Jobs', href: '/rrb' },
+                  { label: 'Banking Jobs', href: '/banking' },
+                  { label: 'UPSC Jobs', href: '/upsc' },
+                  { label: 'Bihar Jobs', href: '/jobs/bihar' },
+                  { label: 'UP Jobs', href: '/jobs/uttar-pradesh' },
+                  { label: 'हिंदी गाइड', href: '/hindi-guide' },
                 ].map((link, i) => (
                   <a key={i} href={link.href} style={{ display: 'block', color: 'white', textDecoration: 'none', fontSize: '13px', marginBottom: '4px' }}>{link.label}</a>
                 ))}
