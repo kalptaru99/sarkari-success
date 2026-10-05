@@ -67,7 +67,8 @@ export default function Home() {
           { label: 'Admit Cards', href: '/admit-card' },
           { label: 'State Jobs', href: '/states' },
           { label: 'Mock Test', href: '/mocktest' },
-{ label: '📅 Exam Calendar', href: '/exam-calendar' },
+{ label: '🛠️ Tools', href: '/tools' },
+          { label: '📅 Exam Calendar', href: '/exam-calendar' },
 { label: '💰 Salary Compare', href: '/salary-comparison' },
 { label: '✅ Eligibility Check', href: '/eligibility-checker' },
           { label: 'SarkariGPT', href: '/sarkarigpt' },
@@ -163,7 +164,28 @@ export default function Home() {
       </div>
 
       <div style={{ maxWidth: '960px', margin: '0 auto', padding: '30px 20px' }}>
-
+        {/* Tools Section */}
+        <div style={{ marginBottom: '24px' }}>
+          <h2 style={{ fontSize: '22px', color: '#1e3a8a', margin: '0 0 16px 0' }}>🛠️ Free Tools & Resources</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
+            {[
+              { name: '✅ Eligibility Checker', desc: 'Find your eligible exams', link: '/eligibility-checker', color: '#1e3a8a' },
+              { name: '💰 Salary Comparison', desc: 'Compare govt job salaries', link: '/salary-comparison', color: '#0f766e' },
+              { name: '📅 Exam Calendar', desc: 'All exam dates 2026-27', link: '/exam-calendar', color: '#7c3aed' },
+              { name: '📊 Vacancy Database', desc: 'Previous year data', link: '/vacancy-database', color: '#dc2626' },
+              { name: '🔍 Competition Report', desc: 'Selection rates & difficulty', link: '/competition-report', color: '#ca8a04' },
+              { name: '📋 Document Checklist', desc: 'Never miss a document', link: '/document-checklist', color: '#16a34a' },
+            ].map((tool, i) => (
+              <a key={i} href={tool.link} style={{ backgroundColor: 'white', borderRadius: '10px', padding: '14px', textDecoration: 'none', border: `1px solid ${tool.color}20`, boxShadow: '0 2px 6px rgba(0,0,0,0.04)', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <p style={{ color: tool.color, fontWeight: '800', fontSize: '13px', margin: 0 }}>{tool.name}</p>
+                <p style={{ color: '#64748b', fontSize: '11px', margin: 0 }}>{tool.desc}</p>
+              </a>
+            ))}
+          </div>
+          <div style={{ textAlign: 'center', marginTop: '12px' }}>
+            <a href="/tools" style={{ color: '#1e3a8a', fontSize: '13px', fontWeight: '700', textDecoration: 'none' }}>View All 50+ Tools & Resources →</a>
+          </div>
+        </div>
         {/* Why Topper's Plan Teaser */}
         <div style={{ backgroundColor: '#fffbeb', borderRadius: '12px', padding: '20px 24px', marginBottom: '24px', border: '2px solid #fbbf24', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
           <div style={{ flex: 1 }}>
