@@ -201,7 +201,7 @@ export default function Home() {
               Read Full Story →
             </a>
             <a href="/toppers-plan#pricing" style={{ display: 'inline-block', backgroundColor: '#1e3a8a', color: 'white', padding: '8px 16px', borderRadius: '8px', textDecoration: 'none', fontSize: '12px', fontWeight: '700', whiteSpace: 'nowrap' }}>
-              👑 Get Topper's Plan — ₹99/month
+              👑 Get Topper's Plan — Starting ₹42/month
             </a>
           </div>
         </div>
