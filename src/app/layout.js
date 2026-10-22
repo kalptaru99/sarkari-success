@@ -4,33 +4,28 @@ import Script from "next/script";
 import CookieConsent from "@/components/CookieConsent";
 
 export const metadata = {
-  title: "Sarkari Result 2026 : Latest Sarkari Naukri, Job Notification, Admit Card & Result | Sarkari Success",
-  icons: {
+  title: "Sarkari Success — India's First AI-Powered Sarkari Career Companion",
+    icons: {
     icon: '/logo.png',
     apple: '/logo.png',
   },
-  description: "Sarkari Success brings the latest sarkari naukri notifications 2026, online forms, admit cards, results & answer keys for SSC, Railway, UPSC, Banking & State PSC — plus free AI mock tests in Hindi & English.",
-  keywords: "sarkari result 2026, sarkari naukri, sarkari job, govt job notification, admit card, ssc, railway, upsc, banking jobs india",
-  authors: [{ name: "Sarkari Success Editorial Team" }],
+  description: "Get latest SSC, Railway, UPSC, Banking government job notifications, results, admit cards. Free mock tests, 25,000+ practice questions and SarkariGPT AI chatbot in Hindi and English.",
+  keywords: "sarkari naukri, sarkari result, SSC CGL 2026, RRB NTPC 2026, UPSC 2026, IBPS PO 2026, government jobs 2026, sarkari job, admit card, exam result",
+  authors: [{ name: "Sarkari Success" }],
   creator: "Sarkari Success",
   publisher: "Sarkari Success",
-  metadataBase: new URL("https://www.sarkarisuccess.com"),
+  metadataBase: new URL("https://sarkarisuccess.com"),
   alternates: {
-    canonical: "https://www.sarkarisuccess.com",
-    languages: {
-      'en-IN': 'https://www.sarkarisuccess.com',
-      'hi': 'https://www.sarkarisuccess.com',
-      'x-default': 'https://www.sarkarisuccess.com',
-    },
+    canonical: "/",
   },
   openGraph: {
-    title: "Sarkari Result 2026 : Latest Sarkari Naukri, Job Notification, Admit Card & Result | Sarkari Success",
-    description: "Sarkari Success brings the latest sarkari naukri notifications 2026, online forms, admit cards, results & answer keys for SSC, Railway, UPSC, Banking & State PSC — plus free AI mock tests in Hindi & English.",
-    url: "https://www.sarkarisuccess.com",
+    title: "Sarkari Success — India's First AI-Powered Sarkari Career Companion",
+    description: "Latest SSC, Railway, UPSC, Banking job notifications with AI-powered mock tests and SarkariGPT chatbot.",
+    url: "https://sarkarisuccess.com",
     siteName: "Sarkari Success",
     images: [
       {
-        url: "https://www.sarkarisuccess.com/api/og",
+        url: "https://sarkarisuccess.com/api/og",
         width: 1200,
         height: 630,
         alt: "Sarkari Success — AI-Powered Government Jobs Portal",
@@ -41,9 +36,9 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sarkari Result 2026 : Latest Sarkari Naukri & Job Notifications | Sarkari Success",
-    description: "Sarkari Success brings the latest sarkari naukri notifications 2026, online forms, admit cards, results & answer keys for SSC, Railway, UPSC, Banking & State PSC.",
-    images: ["https://www.sarkarisuccess.com/api/og"],
+    title: "Sarkari Success — India's First AI-Powered Sarkari Career Companion",
+    description: "Latest SSC, Railway, UPSC, Banking job notifications with AI-powered mock tests and SarkariGPT chatbot.",
+    images: ["https://sarkarisuccess.com/api/og"],
   },
   robots: {
     index: true,

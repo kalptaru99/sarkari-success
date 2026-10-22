@@ -1,189 +1,127 @@
-import { notFound } from "next/navigation";
+"use client";
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 
-export const revalidate = 300;
+export default function JobPage() {
+  const { slug } = useParams();
+  const [job, setJob] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-async function getJob(slug) {
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://www.sarkarisuccess.com";
-    const res = await fetch(`${baseUrl}/api/jobs?slug=${slug}`, {
-      next: { revalidate: 300 },
-    });
-    if (!res.ok) return null;
-    const data = await res.json();
-    return data.job || null;
-  } catch {
-    return null;
-  }
-}
+  useEffect(() => {
+    fetchJob();
+  }, [slug]);
 
-export async function generateStaticParams() {
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://www.sarkarisuccess.com";
-    const res = await fetch(`${baseUrl}/api/jobs?limit=200`, {
-      next: { revalidate: 300 },
-    });
-    if (!res.ok) return [];
-    const data = await res.json();
-    return (data.jobs || []).map((job) => ({ slug: job.slug }));
-  } catch {
-    return [];
-  }
-}
-
-export async function generateMetadata({ params }) {
-  const job = await getJob(params.slug);
-  if (!job) {
-    return { title: "Job Not Found | Sarkari Success" };
-  }
-  const title = `${job.title} Recruitment 2026: Apply Online, Eligibility & Last Date`;
-  const description = `Apply for ${job.title} by ${job.org}. Total vacancies: ${job.vacancies || "Check notice"}. Last date: ${job.last_date || "Check notice"}. Salary: ${job.salary || "As per norms"}. Check eligibility, application fee & selection process.`;
-  return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      url: `https://www.sarkarisuccess.com/jobs/${params.slug}`,
-      siteName: "Sarkari Success",
-      locale: "en_IN",
-      type: "article",
-    },
-    alternates: {
-      canonical: `https://www.sarkarisuccess.com/jobs/${params.slug}`,
-    },
+  const fetchJob = async () => {
+    try {
+      const response = await fetch(`/api/jobs?slug=${slug}`);
+      const data = await response.json();
+      setJob(data.job);
+    } catch (error) {
+      console.error("Error fetching job:", error);
+    }
+    setLoading(false);
   };
-}
 
-export default async function JobPage({ params }) {
-  const job = await getJob(params.slug);
-
-  if (!job) {
-    notFound();
+  if (loading) {
+    return (
+      <main style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Arial, sans-serif' }}>
+        <p style={{ color: '#1e3a8a', fontSize: '18px' }}>Loading...</p>
+      </main>
+    );
   }
 
-  const datePosted = job.created_at
-    ? new Date(job.created_at).toISOString().split("T")[0]
-    : new Date().toISOString().split("T")[0];
+  if (!job) {
+    return (
+      <main style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Arial, sans-serif' }}>
+        <div style={{ textAlign: 'center' }}>
+          <h2 style={{ color: '#1e3a8a' }}>Job not found</h2>
+          <a href="/" style={{ color: '#dc2626', textDecoration: 'none' }}>← Back to Home</a>
+        </div>
+      </main>
+    );
+  }
 
   const jobSchema = {
     "@context": "https://schema.org",
     "@type": "JobPosting",
-    title: job.title,
-    description:
-      job.description ||
-      `${job.title} recruitment notification by ${job.org}. Check eligibility, vacancies, salary and apply online.`,
-    datePosted,
-    validThrough: job.last_date || "",
-    employmentType: "FULL_TIME",
-    hiringOrganization: {
+    "title": job.title,
+    "description": job.description || job.title + " recruitment notification by " + job.org,
+    "datePosted": job.created_at ? new Date(job.created_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+    "validThrough": job.last_date ? job.last_date : "",
+    "hiringOrganization": {
       "@type": "Organization",
-      name: job.org,
-      sameAs: job.official_link || "https://www.sarkarisuccess.com",
+      "name": job.org,
+      "sameAs": job.official_link || "https://sarkarisuccess.com"
     },
-    jobLocation: {
+    "jobLocation": {
       "@type": "Place",
-      address: {
+      "address": {
         "@type": "PostalAddress",
-        addressCountry: "IN",
-        addressRegion: "All India",
-      },
+        "addressCountry": "IN",
+        "addressRegion": "All India"
+      }
     },
-    baseSalary: {
+    "baseSalary": {
       "@type": "MonetaryAmount",
-      currency: "INR",
-      value: {
+      "currency": "INR",
+      "value": {
         "@type": "QuantitativeValue",
-        minValue: 25500,
-        maxValue: 151100,
-        unitText: "MONTH",
-      },
+        "minValue": 25500,
+        "maxValue": 151100,
+        "unitText": "MONTH"
+      }
     },
-    educationRequirements: "Bachelor's Degree",
-    experienceRequirements: "Freshers eligible",
-    applicantLocationRequirements: {
+    "employmentType": "FULL_TIME",
+    "educationRequirements": "Bachelor's Degree",
+    "experienceRequirements": "Freshers eligible",
+    "applicantLocationRequirements": {
       "@type": "Country",
-      name: "India",
-    },
+      "name": "India"
+    }
   };
-
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: "https://www.sarkarisuccess.com",
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Jobs",
-        item: "https://www.sarkarisuccess.com/#jobs",
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: job.title,
-        item: `https://www.sarkarisuccess.com/jobs/${params.slug}`,
-      },
-    ],
-  };
-
-  const faqItems = [
-    {
-      q: `What is the last date to apply for ${job.title}?`,
-      a: `The last date to apply for ${job.title} is ${job.last_date}. Apply before the deadline through the official website.`,
-    },
-    {
-      q: `How many vacancies are there in ${job.title}?`,
-      a:
-        job.vacancies && !job.vacancies.toLowerCase().includes("check")
-          ? `There are ${job.vacancies} vacancies in ${job.title} by ${job.org}.`
-          : `Vacancy details are available in the official notification for ${job.title} by ${job.org}.`,
-    },
-    {
-      q: `What is the salary for ${job.title}?`,
-      a:
-        job.salary && job.salary !== "TBA" && !job.salary.toLowerCase().includes("check")
-          ? `The salary for ${job.title} is ${job.salary}.`
-          : `Salary details are mentioned in the official notification for ${job.title}. Visit the official website for exact pay scale.`,
-    },
-    {
-      q: `What is the eligibility for ${job.title}?`,
-      a: job.eligibility
-        ? job.eligibility
-        : `Check the official notification for ${job.title} eligibility criteria including age limit and educational qualification.`,
-    },
-    {
-      q: `How to apply for ${job.title}?`,
-      a: `To apply for ${job.title}, visit the official website of ${job.org}, register with your details, fill the application form, upload required documents and pay the application fee before ${job.last_date}.`,
-    },
-  ];
 
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: faqItems.map((faq) => ({
-      "@type": "Question",
-      name: faq.q,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: faq.a,
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is the last date to apply for " + job.title + "?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The last date to apply for " + job.title + " is " + job.last_date + ". Apply through the official website."
+        }
       },
-    })),
+      {
+        "@type": "Question",
+        "name": "How many vacancies are there in " + job.title + "?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "There are " + job.vacancies + " vacancies in " + job.title + " by " + job.org + "."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the salary for " + job.title + "?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": job.salary || "Salary details are available in the official notification for " + job.title + "."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the eligibility for " + job.title + "?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": job.eligibility || "Check the official notification for " + job.title + " eligibility criteria."
+        }
+      }
+    ]
   };
-
   return (
-    <main style={{ minHeight: "100vh", backgroundColor: "#f4f6f9", fontFamily: "Arial, sans-serif" }}>
-      <script
+    <main style={{ minHeight: '100vh', backgroundColor: '#f4f6f9', fontFamily: 'Arial, sans-serif' }}> <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jobSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <script
         type="application/ld+json"
@@ -191,82 +129,60 @@ export default async function JobPage({ params }) {
       />
 
       {/* Header */}
-      <div style={{ backgroundColor: "#1e3a8a", padding: "16px 24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <a href="/" style={{ textDecoration: "none" }}>
-          <h1 style={{ color: "white", fontSize: "22px", fontWeight: "bold", margin: 0 }}>
-            Sarkari <span style={{ color: "#fca5a5" }}>Success</span>
-          </h1>
-        </a>
-        <a href="/" style={{ color: "white", fontSize: "13px", textDecoration: "none" }}>← Back to Home</a>
+      <div style={{ backgroundColor: '#1e3a8a', padding: '16px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h1 style={{ color: 'white', fontSize: '22px', fontWeight: 'bold', margin: 0 }}>
+          Sarkari <span style={{ color: '#fca5a5' }}>Success</span>
+        </h1>
+        <a href="/" style={{ color: 'white', fontSize: '13px', textDecoration: 'none' }}>← Back to Home</a>
       </div>
 
-      <div style={{ maxWidth: "900px", margin: "30px auto", padding: "0 20px" }}>
+      <div style={{ maxWidth: '900px', margin: '30px auto', padding: '0 20px' }}>
 
         {/* Breadcrumb */}
-        <p style={{ color: "#666", fontSize: "13px", marginBottom: "16px" }}>
-          <a href="/" style={{ color: "#1e3a8a", textDecoration: "none" }}>Home</a>{" › "}
-          <a href="/#jobs" style={{ color: "#1e3a8a", textDecoration: "none" }}>Jobs</a>{" › "}
+        <p style={{ color: '#666', fontSize: '13px', marginBottom: '16px' }}>
+          <a href="/" style={{ color: '#1e3a8a', textDecoration: 'none' }}>Home</a> {' › '}
+          <a href="/#jobs" style={{ color: '#1e3a8a', textDecoration: 'none' }}>Jobs</a> {' › '}
           {job.title}
         </p>
 
-        {/* Last verified line — E-E-A-T */}
-        <p style={{ color: "#6b7280", fontSize: "12px", marginBottom: "16px", display: "flex", alignItems: "center", gap: "6px" }}>
-          <span>✅</span>
-          <span>Last verified against official notification on {new Date().toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })} by Sarkari Success editorial team.</span>
-        </p>
-
         {/* Job Header */}
-        <div style={{ backgroundColor: "white", borderRadius: "12px", padding: "28px", boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: "20px" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "10px", marginBottom: "16px" }}>
+        <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '28px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '20px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '10px', marginBottom: '16px' }}>
             <div>
-              <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
-                <h2 style={{ fontSize: "24px", color: "#1e3a8a", margin: 0 }}>{job.title}</h2>
-                {job.is_new && (
-                  <span style={{ backgroundColor: "#dc2626", color: "white", fontSize: "11px", padding: "3px 8px", borderRadius: "4px", fontWeight: "bold" }}>NEW</span>
-                )}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                <h2 style={{ fontSize: '24px', color: '#1e3a8a', margin: 0 }}>{job.title}</h2>
+                {job.is_new && <span style={{ backgroundColor: '#dc2626', color: 'white', fontSize: '11px', padding: '3px 8px', borderRadius: '4px', fontWeight: 'bold' }}>NEW</span>}
               </div>
-              <p style={{ color: "#666", fontSize: "15px", margin: 0 }}>{job.org}</p>
+              <p style={{ color: '#666', fontSize: '15px', margin: 0 }}>{job.org}</p>
             </div>
-            <span style={{ backgroundColor: "#dbeafe", color: "#1e3a8a", padding: "6px 14px", borderRadius: "20px", fontSize: "13px", fontWeight: "bold" }}>
+            <span style={{ backgroundColor: '#dbeafe', color: '#1e3a8a', padding: '6px 14px', borderRadius: '20px', fontSize: '13px', fontWeight: 'bold' }}>
               {job.category}
             </span>
           </div>
 
           {/* Key Details Grid */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "12px", marginBottom: "20px" }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px', marginBottom: '20px' }}>
             {[
-              { label: "Total Vacancies", value: job.vacancies, icon: "👥" },
-              { label: "Last Date", value: job.last_date, icon: "📅", urgent: true },
-              { label: "Exam Date", value: job.exam_date, icon: "📝" },
-              { label: "Salary", value: job.salary, icon: "💰" },
-            ]
-              .filter(
-                (item) =>
-                  item.value &&
-                  item.value !== "TBA" &&
-                  item.value !== "See notification" &&
-                  !item.value.toLowerCase().includes("tba")
-              )
-              .map((item, i) => (
-                <div key={i} style={{ backgroundColor: "#f8fafc", borderRadius: "8px", padding: "14px", border: "1px solid #e5e7eb" }}>
-                  <p style={{ color: "#888", fontSize: "12px", margin: "0 0 4px 0" }}>
-                    {item.icon} {item.label}
-                  </p>
-                  <p style={{ color: item.urgent ? "#dc2626" : "#1e3a8a", fontSize: "15px", fontWeight: "bold", margin: 0 }}>
-                    {item.value}
-                  </p>
-                </div>
-              ))}
+              { label: 'Total Vacancies', value: job.vacancies, icon: '👥' },
+              { label: 'Last Date', value: job.last_date, icon: '📅', urgent: true },
+              { label: 'Exam Date', value: job.exam_date, icon: '📝' },
+              { label: 'Salary', value: job.salary, icon: '💰' },
+            ].filter(item => item.value && item.value !== 'TBA' && item.value !== 'See notification' && !item.value.toLowerCase().includes('tba')).map((item, i) => (
+              <div key={i} style={{ backgroundColor: '#f8fafc', borderRadius: '8px', padding: '14px', border: '1px solid #e5e7eb' }}>
+                <p style={{ color: '#888', fontSize: '12px', margin: '0 0 4px 0' }}>{item.icon} {item.label}</p>
+                <p style={{ color: item.urgent ? '#dc2626' : '#1e3a8a', fontSize: '15px', fontWeight: 'bold', margin: 0 }}>{item.value}</p>
+              </div>
+            ))}
           </div>
 
           {/* Action Buttons */}
-          <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
             {job.apply_link && (
               <a
                 href={job.apply_link}
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ backgroundColor: "#dc2626", color: "white", padding: "12px 24px", borderRadius: "8px", textDecoration: "none", fontWeight: "bold", fontSize: "14px" }}
+                style={{ backgroundColor: '#dc2626', color: 'white', padding: '12px 24px', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold', fontSize: '14px' }}
               >
                 Apply Online →
               </a>
@@ -276,7 +192,7 @@ export default async function JobPage({ params }) {
                 href={job.notification_link}
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ backgroundColor: "#1e3a8a", color: "white", padding: "12px 24px", borderRadius: "8px", textDecoration: "none", fontWeight: "bold", fontSize: "14px" }}
+                style={{ backgroundColor: '#1e3a8a', color: 'white', padding: '12px 24px', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold', fontSize: '14px' }}
               >
                 📄 Official Notification
               </a>
@@ -287,115 +203,122 @@ export default async function JobPage({ params }) {
         {/* AI Generated Rich Content */}
         {job.seo_content && (
           <>
+            {/* Intro */}
             {job.seo_content.intro && (
-              <div style={{ backgroundColor: "white", borderRadius: "12px", padding: "24px", boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: "20px" }}>
-                <p style={{ color: "#374151", fontSize: "15px", lineHeight: "1.8", margin: 0 }}>{job.seo_content.intro}</p>
+              <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '20px' }}>
+                <p style={{ color: '#374151', fontSize: '15px', lineHeight: '1.8', margin: 0 }}>{job.seo_content.intro}</p>
               </div>
             )}
+
+            {/* Important Dates */}
             {job.seo_content.important_dates && (
-              <div style={{ backgroundColor: "white", borderRadius: "12px", padding: "24px", boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: "20px" }}>
-                <h3 style={{ color: "#1e3a8a", margin: "0 0 12px 0", fontSize: "16px", fontWeight: "800" }}>📅 Important Dates</h3>
-                <p style={{ color: "#374151", fontSize: "14px", lineHeight: "1.8", margin: 0, whiteSpace: "pre-line" }}>{job.seo_content.important_dates}</p>
+              <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '20px' }}>
+                <h3 style={{ color: '#1e3a8a', margin: '0 0 12px 0', fontSize: '16px', fontWeight: '800' }}>📅 Important Dates</h3>
+                <p style={{ color: '#374151', fontSize: '14px', lineHeight: '1.8', margin: 0, whiteSpace: 'pre-line' }}>{job.seo_content.important_dates}</p>
               </div>
             )}
+
+            {/* Eligibility */}
             {job.seo_content.eligibility_summary && (
-              <div style={{ backgroundColor: "white", borderRadius: "12px", padding: "24px", boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: "20px" }}>
-                <h3 style={{ color: "#1e3a8a", margin: "0 0 12px 0", fontSize: "16px", fontWeight: "800" }}>📋 Eligibility Criteria</h3>
-                <p style={{ color: "#374151", fontSize: "14px", lineHeight: "1.8", margin: 0, whiteSpace: "pre-line" }}>{job.seo_content.eligibility_summary}</p>
+              <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '20px' }}>
+                <h3 style={{ color: '#1e3a8a', margin: '0 0 12px 0', fontSize: '16px', fontWeight: '800' }}>📋 Eligibility Criteria</h3>
+                <p style={{ color: '#374151', fontSize: '14px', lineHeight: '1.8', margin: 0, whiteSpace: 'pre-line' }}>{job.seo_content.eligibility_summary}</p>
               </div>
             )}
+
+            {/* Age Limit */}
             {job.seo_content.age_limit && (
-              <div style={{ backgroundColor: "white", borderRadius: "12px", padding: "24px", boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: "20px" }}>
-                <h3 style={{ color: "#1e3a8a", margin: "0 0 12px 0", fontSize: "16px", fontWeight: "800" }}>🎂 Age Limit</h3>
-                <p style={{ color: "#374151", fontSize: "14px", lineHeight: "1.8", margin: 0, whiteSpace: "pre-line" }}>{job.seo_content.age_limit}</p>
+              <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '20px' }}>
+                <h3 style={{ color: '#1e3a8a', margin: '0 0 12px 0', fontSize: '16px', fontWeight: '800' }}>🎂 Age Limit</h3>
+                <p style={{ color: '#374151', fontSize: '14px', lineHeight: '1.8', margin: 0, whiteSpace: 'pre-line' }}>{job.seo_content.age_limit}</p>
               </div>
             )}
+
+            {/* Application Fee */}
             {job.seo_content.application_fee && (
-              <div style={{ backgroundColor: "#fef9c3", borderRadius: "12px", padding: "24px", boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: "20px", border: "1px solid #fde68a" }}>
-                <h3 style={{ color: "#92400e", margin: "0 0 12px 0", fontSize: "16px", fontWeight: "800" }}>💳 Application Fee</h3>
-                <p style={{ color: "#374151", fontSize: "14px", lineHeight: "1.8", margin: 0, whiteSpace: "pre-line" }}>{job.seo_content.application_fee}</p>
+              <div style={{ backgroundColor: '#fef9c3', borderRadius: '12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '20px', border: '1px solid #fde68a' }}>
+                <h3 style={{ color: '#92400e', margin: '0 0 12px 0', fontSize: '16px', fontWeight: '800' }}>💳 Application Fee</h3>
+                <p style={{ color: '#374151', fontSize: '14px', lineHeight: '1.8', margin: 0, whiteSpace: 'pre-line' }}>{job.seo_content.application_fee}</p>
               </div>
             )}
+
+            {/* Selection Process */}
             {job.seo_content.selection_process && (
-              <div style={{ backgroundColor: "white", borderRadius: "12px", padding: "24px", boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: "20px" }}>
-                <h3 style={{ color: "#1e3a8a", margin: "0 0 12px 0", fontSize: "16px", fontWeight: "800" }}>🎯 Selection Process</h3>
-                <p style={{ color: "#374151", fontSize: "14px", lineHeight: "1.8", margin: 0, whiteSpace: "pre-line" }}>{job.seo_content.selection_process}</p>
+              <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '20px' }}>
+                <h3 style={{ color: '#1e3a8a', margin: '0 0 12px 0', fontSize: '16px', fontWeight: '800' }}>🎯 Selection Process</h3>
+                <p style={{ color: '#374151', fontSize: '14px', lineHeight: '1.8', margin: 0, whiteSpace: 'pre-line' }}>{job.seo_content.selection_process}</p>
               </div>
             )}
+
+            {/* Salary */}
             {job.seo_content.salary_details && (
-              <div style={{ backgroundColor: "#f0fdf4", borderRadius: "12px", padding: "24px", boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: "20px", border: "1px solid #bbf7d0" }}>
-                <h3 style={{ color: "#166534", margin: "0 0 12px 0", fontSize: "16px", fontWeight: "800" }}>💰 Salary Details</h3>
-                <p style={{ color: "#374151", fontSize: "14px", lineHeight: "1.8", margin: 0, whiteSpace: "pre-line" }}>{job.seo_content.salary_details}</p>
+              <div style={{ backgroundColor: '#f0fdf4', borderRadius: '12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '20px', border: '1px solid #bbf7d0' }}>
+                <h3 style={{ color: '#166534', margin: '0 0 12px 0', fontSize: '16px', fontWeight: '800' }}>💰 Salary Details</h3>
+                <p style={{ color: '#374151', fontSize: '14px', lineHeight: '1.8', margin: 0, whiteSpace: 'pre-line' }}>{job.seo_content.salary_details}</p>
               </div>
             )}
+
+            {/* How to Apply */}
             {job.seo_content.how_to_apply && (
-              <div style={{ backgroundColor: "white", borderRadius: "12px", padding: "24px", boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: "20px" }}>
-                <h3 style={{ color: "#1e3a8a", margin: "0 0 12px 0", fontSize: "16px", fontWeight: "800" }}>📝 How to Apply</h3>
-                <p style={{ color: "#374151", fontSize: "14px", lineHeight: "1.8", margin: 0, whiteSpace: "pre-line" }}>{job.seo_content.how_to_apply}</p>
+              <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '20px' }}>
+                <h3 style={{ color: '#1e3a8a', margin: '0 0 12px 0', fontSize: '16px', fontWeight: '800' }}>📝 How to Apply</h3>
+                <p style={{ color: '#374151', fontSize: '14px', lineHeight: '1.8', margin: 0, whiteSpace: 'pre-line' }}>{job.seo_content.how_to_apply}</p>
               </div>
             )}
           </>
         )}
 
-        {/* Eligibility — only show if no seo_content */}
+        {/* Eligibility - only show if no seo_content */}
         {job.eligibility && !job.seo_content && (
-          <div style={{ backgroundColor: "white", borderRadius: "12px", padding: "24px", boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: "20px" }}>
-            <h3 style={{ color: "#1e3a8a", margin: "0 0 12px 0" }}>📋 Eligibility Criteria</h3>
-            <p style={{ color: "#444", fontSize: "14px", lineHeight: "1.6", margin: 0 }}>{job.eligibility}</p>
+          <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '20px' }}>
+            <h3 style={{ color: '#1e3a8a', margin: '0 0 12px 0' }}>📋 Eligibility Criteria</h3>
+            <p style={{ color: '#444', fontSize: '14px', lineHeight: '1.6', margin: 0 }}>{job.eligibility}</p>
           </div>
         )}
 
         {/* Description */}
         {job.description && (
-          <div style={{ backgroundColor: "white", borderRadius: "12px", padding: "24px", boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: "20px" }}>
-            <h3 style={{ color: "#1e3a8a", margin: "0 0 12px 0" }}>ℹ️ About This Recruitment</h3>
-            <p style={{ color: "#444", fontSize: "14px", lineHeight: "1.6", margin: 0 }}>{job.description}</p>
+          <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '20px' }}>
+            <h3 style={{ color: '#1e3a8a', margin: '0 0 12px 0' }}>ℹ️ About This Recruitment</h3>
+            <p style={{ color: '#444', fontSize: '14px', lineHeight: '1.6', margin: 0 }}>{job.description}</p>
           </div>
         )}
 
         {/* SarkariGPT CTA */}
-        <div style={{ backgroundColor: "#1e3a8a", borderRadius: "12px", padding: "24px", textAlign: "center", marginBottom: "20px" }}>
-          <h3 style={{ color: "white", fontSize: "18px", margin: "0 0 8px 0" }}>🤖 Have questions about this exam?</h3>
-          <p style={{ color: "#93c5fd", margin: "0 0 16px 0", fontSize: "14px" }}>Ask SarkariGPT — AI-powered answers in Hindi & English</p>
-          <a
-            href="/sarkarigpt"
-            style={{ backgroundColor: "#dc2626", color: "white", padding: "10px 24px", borderRadius: "8px", textDecoration: "none", fontWeight: "bold", fontSize: "14px" }}
-          >
+        <div style={{ backgroundColor: '#1e3a8a', borderRadius: '12px', padding: '24px', textAlign: 'center', marginBottom: '20px' }}>
+          <h3 style={{ color: 'white', fontSize: '18px', margin: '0 0 8px 0' }}>🤖 Have questions about this exam?</h3>
+          <p style={{ color: '#93c5fd', margin: '0 0 16px 0', fontSize: '14px' }}>Ask SarkariGPT — AI-powered answers in Hindi & English</p>
+          <a href="/sarkarigpt" style={{ backgroundColor: '#dc2626', color: 'white', padding: '10px 24px', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold', fontSize: '14px' }}>
             Ask SarkariGPT →
           </a>
         </div>
 
         {/* FAQ Section */}
-        <div style={{ backgroundColor: "white", borderRadius: "12px", padding: "24px", boxShadow: "0 2px 8px rgba(0,0,0,0.06)", marginBottom: "20px" }}>
-          <h3 style={{ color: "#1e3a8a", fontSize: "18px", fontWeight: "800", margin: "0 0 20px 0" }}>
-            Frequently Asked Questions
-          </h3>
-          {faqItems.map((faq, i) => (
-            <div
-              key={i}
-              style={{ borderBottom: i < faqItems.length - 1 ? "1px solid #e2e8f0" : "none", paddingBottom: "16px", marginBottom: "16px" }}
-            >
-              <h4 style={{ color: "#1e3a8a", fontSize: "14px", fontWeight: "700", margin: "0 0 6px 0" }}>Q: {faq.q}</h4>
-              <p style={{ color: "#374151", fontSize: "13px", margin: 0, lineHeight: "1.6" }}>A: {faq.a}</p>
+        <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '20px' }}>
+          <h3 style={{ color: '#1e3a8a', fontSize: '18px', fontWeight: '800', margin: '0 0 20px 0' }}>Frequently Asked Questions</h3>
+          {[
+            { q: `What is the last date to apply for ${job.title}?`, a: `The last date to apply for ${job.title} is ${job.last_date}. Apply before the deadline through the official website.` },
+            { q: `How many vacancies are there in ${job.title}?`, a: job.vacancies && !job.vacancies.toLowerCase().includes('check') ? `There are ${job.vacancies} vacancies in ${job.title} by ${job.org}.` : `Vacancy details are available in the official notification for ${job.title} by ${job.org}.` },
+            { q: `What is the salary for ${job.title}?`, a: job.salary && job.salary !== 'TBA' && !job.salary.toLowerCase().includes('check') ? `The salary for ${job.title} is ${job.salary}.` : `Salary details are mentioned in the official notification for ${job.title}. Visit the official website for exact pay scale.` },
+            { q: `What is the eligibility for ${job.title}?`, a: job.eligibility ? job.eligibility : `Check the official notification for ${job.title} eligibility criteria including age limit and educational qualification.` },
+            { q: `How to apply for ${job.title}?`, a: `To apply for ${job.title}, visit the official website of ${job.org}, register with your details, fill the application form, upload required documents and pay the application fee before ${job.last_date}.` },
+          ].map((faq, i) => (
+            <div key={i} style={{ borderBottom: i < 4 ? '1px solid #e2e8f0' : 'none', paddingBottom: '16px', marginBottom: '16px' }}>
+              <h4 style={{ color: '#1e3a8a', fontSize: '14px', fontWeight: '700', margin: '0 0 6px 0' }}>Q: {faq.q}</h4>
+              <p style={{ color: '#374151', fontSize: '13px', margin: 0, lineHeight: '1.6' }}>A: {faq.a}</p>
             </div>
           ))}
         </div>
 
         {/* Mock Test CTA */}
-        <div style={{ backgroundColor: "white", borderRadius: "12px", padding: "24px", textAlign: "center", border: "2px solid #1e3a8a" }}>
-          <h3 style={{ color: "#1e3a8a", fontSize: "18px", margin: "0 0 8px 0" }}>📝 Prepare for {job.category} Exam</h3>
-          <p style={{ color: "#666", margin: "0 0 16px 0", fontSize: "14px" }}>Take a free mock test and practice questions</p>
-          <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
-            <a
-              href="/mocktest"
-              style={{ backgroundColor: "#1e3a8a", color: "white", padding: "10px 20px", borderRadius: "8px", textDecoration: "none", fontWeight: "bold", fontSize: "13px" }}
-            >
+        <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '24px', textAlign: 'center', border: '2px solid #1e3a8a' }}>
+          <h3 style={{ color: '#1e3a8a', fontSize: '18px', margin: '0 0 8px 0' }}>📝 Prepare for {job.category} Exam</h3>
+          <p style={{ color: '#666', margin: '0 0 16px 0', fontSize: '14px' }}>Take a free mock test and practice questions</p>
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+            <a href="/mocktest" style={{ backgroundColor: '#1e3a8a', color: 'white', padding: '10px 20px', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold', fontSize: '13px' }}>
               Start Mock Test →
             </a>
-            <a
-              href="/questions"
-              style={{ backgroundColor: "white", color: "#1e3a8a", padding: "10px 20px", borderRadius: "8px", textDecoration: "none", fontWeight: "bold", fontSize: "13px", border: "2px solid #1e3a8a" }}
-            >
+            <a href="/questions" style={{ backgroundColor: 'white', color: '#1e3a8a', padding: '10px 20px', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold', fontSize: '13px', border: '2px solid #1e3a8a' }}>
               Practice Questions →
             </a>
           </div>
@@ -404,7 +327,7 @@ export default async function JobPage({ params }) {
       </div>
 
       {/* Footer */}
-      <footer style={{ backgroundColor: "#1e3a8a", color: "white", textAlign: "center", padding: "16px", fontSize: "13px", marginTop: "40px" }}>
+      <footer style={{ backgroundColor: '#1e3a8a', color: 'white', textAlign: 'center', padding: '16px', fontSize: '13px', marginTop: '40px' }}>
         © 2026 Sarkari Success. All rights reserved. | sarkarisuccess.com
       </footer>
     </main>
