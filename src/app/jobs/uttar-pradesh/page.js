@@ -1,9 +1,20 @@
 import pool from '@/lib/db.js';
 
 export const metadata = {
-  title: 'Uttar Pradesh Government Jobs 2026 — Latest UPPSC, UP Police, UPSSSC Recruitment | Sarkari Success',
-  description: 'Get latest UP government job notifications 2026. UPPSC, UP Police, UPSSSC, UP TET recruitment. Check vacancies, eligibility and apply online.',
-  keywords: 'UP government jobs 2026, UPPSC 2026, UP Police recruitment 2026, UPSSSC 2026, Uttar Pradesh sarkari naukri 2026',
+  title: 'UP Sarkari Naukri 2026 (यूपी सरकारी नौकरी): Latest UPPSC, UP Police, UPSSSC Recruitment | Sarkari Success',
+  description: 'UP sarkari naukri 2026 — UPPSC PCS, UP Police Constable, UPSSSC Lekhpal, VDO recruitment notifications. Vacancies, eligibility, last date. यूपी सरकारी नौकरी की जानकारी हिंदी में।',
+  keywords: 'UP sarkari naukri 2026, UPPSC 2026, UP police recruitment 2026, UPSSSC 2026, यूपी सरकारी नौकरी, Uttar Pradesh government jobs 2026',
+  alternates: {
+    canonical: 'https://www.sarkarisuccess.com/jobs/uttar-pradesh',
+  },
+  openGraph: {
+    title: 'UP Sarkari Naukri 2026 (यूपी सरकारी नौकरी) | Sarkari Success',
+    description: 'Latest UPPSC, UP Police, UPSSSC recruitment notifications 2026. Complete UP job tracker.',
+    url: 'https://www.sarkarisuccess.com/jobs/uttar-pradesh',
+    siteName: 'Sarkari Success',
+    locale: 'en_IN',
+    type: 'website',
+  },
 };
 
 export default async function UPJobsPage() {
@@ -25,8 +36,13 @@ export default async function UPJobsPage() {
         <a href="/states" style={{ color: 'white', fontSize: '13px', textDecoration: 'none' }}>← State Jobs</a>
       </div>
       <div style={{ backgroundColor: '#4CAF50', padding: '40px 24px', textAlign: 'center' }}>
-        <h1 style={{ color: 'white', fontSize: '32px', fontWeight: '900', margin: '0 0 8px 0' }}>Uttar Pradesh Government Jobs 2026</h1>
-        <p style={{ color: '#f0fff0', fontSize: '16px', margin: 0 }}>UPPSC • UP Police • UPSSSC • UPSESSB — Complete UP Job Tracker</p>
+        <h1 style={{ color: 'white', fontSize: '32px', fontWeight: '900', margin: '0 0 8px 0' }}>
+          UP Sarkari Naukri 2026 <span style={{ fontSize: '22px', fontWeight: '700' }}>(यूपी सरकारी नौकरी)</span>
+        </h1>
+        <p style={{ color: '#f0fff0', fontSize: '16px', margin: '0 0 12px 0' }}>UPPSC • UP Police • UPSSSC • UPSESSB — Complete UP Job Tracker | उत्तर प्रदेश भर्ती 2026</p>
+        <p style={{ color: '#e0ffe0', fontSize: '14px', margin: 0, maxWidth: '700px', marginLeft: 'auto', marginRight: 'auto' }}>
+          Uttar Pradesh is India's largest state by population with the highest number of government job aspirants. UPPSC PCS, UP Police Constable and UPSSSC Lekhpal are the most-applied exams. This page tracks all UP sarkari bharti 2026 notifications from official sources — updated daily.
+        </p>
       </div>
       <div style={{ maxWidth: '960px', margin: '0 auto', padding: '30px 20px' }}>
         <h2 style={{ color: '#1e3a8a', fontSize: '22px', fontWeight: '800', margin: '0 0 16px 0' }}>UP Recruitment Bodies 2026</h2>

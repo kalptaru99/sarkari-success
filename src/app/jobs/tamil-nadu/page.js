@@ -1,5 +1,11 @@
 import pool from '@/lib/db.js';
-export const metadata = { title: 'Tamil Nadu Government Jobs 2026 — TNPSC, TN Police Recruitment | Sarkari Success', description: 'Latest Tamil Nadu government job notifications 2026. TNPSC Group 1, 2, 4, TN Police recruitment.' };
+export const metadata = {
+  title: 'Tamil Nadu Sarkari Naukri 2026 (தமிழ்நாடு அரசு வேலை): TNPSC, TN Police Recruitment | Sarkari Success',
+  description: 'Tamil Nadu government jobs 2026 — TNPSC Group 1, Group 2, Group 4, TN Police SI, Constable recruitment notifications. தமிழ்நாடு அரசு வேலை 2026 விவரங்கள்.',
+  keywords: 'tamil nadu government jobs 2026, TNPSC 2026, TN police recruitment 2026, தமிழ்நாடு அரசு வேலை, TN sarkari naukri',
+  alternates: { canonical: 'https://www.sarkarisuccess.com/jobs/tamil-nadu' },
+  openGraph: { title: 'Tamil Nadu Government Jobs 2026 | Sarkari Success', url: 'https://www.sarkarisuccess.com/jobs/tamil-nadu', siteName: 'Sarkari Success', locale: 'en_IN', type: 'website' },
+};
 export default async function TNJobsPage() {
   const stateJobs = await pool.query(`SELECT * FROM state_jobs WHERE state_code = 'TN' AND is_active = true ORDER BY created_at DESC`);
   return (

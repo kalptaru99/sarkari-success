@@ -1,5 +1,11 @@
 import pool from '@/lib/db.js';
-export const metadata = { title: 'Madhya Pradesh Government Jobs 2026 — MPPSC, MP Police Recruitment | Sarkari Success', description: 'Latest Madhya Pradesh government job notifications 2026. MPPSC, MP Police, MPESB recruitment.' };
+export const metadata = {
+  title: 'MP Sarkari Naukri 2026 (मध्यप्रदेश सरकारी नौकरी): MPPSC, MP Police, MPESB Recruitment | Sarkari Success',
+  description: 'MP sarkari naukri 2026 — MPPSC State Service, MP Police Constable, MPESB recruitment notifications. मध्यप्रदेश सरकारी नौकरी 2026 की जानकारी।',
+  keywords: 'MP sarkari naukri 2026, MPPSC 2026, MP police recruitment 2026, मध्यप्रदेश सरकारी नौकरी, madhya pradesh government jobs',
+  alternates: { canonical: 'https://www.sarkarisuccess.com/jobs/madhya-pradesh' },
+  openGraph: { title: 'MP Sarkari Naukri 2026 | Sarkari Success', url: 'https://www.sarkarisuccess.com/jobs/madhya-pradesh', siteName: 'Sarkari Success', locale: 'en_IN', type: 'website' },
+};
 export default async function MPJobsPage() {
   const stateJobs = await pool.query(`SELECT * FROM state_jobs WHERE state_code = 'MP' AND is_active = true ORDER BY created_at DESC`);
   return (

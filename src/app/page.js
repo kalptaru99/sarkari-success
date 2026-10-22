@@ -1,5 +1,4 @@
-"use client";
-import { useState, useEffect } from "react";
+import HomeClient from "@/components/HomeClient";
 
 const examCalendar = [
   { exam: "SSC CGL Tier 1", date: "August 2026", daysLeft: 30 },
@@ -8,27 +7,68 @@ const examCalendar = [
   { exam: "UPSC Mains", date: "21 August 2026", daysLeft: 36 },
 ];
 
+export const metadata = {
+  title: 'Sarkari Result 2026 : Latest Sarkari Naukri, Job Notification, Admit Card & Result | Sarkari Success',
+  description: 'Sarkari Success brings the latest sarkari naukri notifications 2026, online forms, admit cards, results & answer keys for SSC, Railway, UPSC, Banking & State PSC — plus free AI mock tests in Hindi & English.',
+  keywords: 'sarkari result 2026, sarkari naukri, sarkari job, govt job notification, admit card, ssc, railway, upsc, banking jobs india',
+  alternates: {
+    canonical: 'https://www.sarkarisuccess.com',
+  },
+  openGraph: {
+    title: 'Sarkari Result 2026 : Latest Sarkari Naukri & Job Notifications | Sarkari Success',
+    description: 'Sarkari Success brings the latest sarkari naukri notifications 2026, online forms, admit cards, results & answer keys for SSC, Railway, UPSC, Banking & State PSC.',
+    url: 'https://www.sarkarisuccess.com',
+    siteName: 'Sarkari Success',
+    locale: 'en_IN',
+    type: 'website',
+  },
+};
+
+const homepageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Sarkari Success",
+  "url": "https://www.sarkarisuccess.com",
+  "description": "India's First AI-Powered Sarkari Career Companion. Latest government job notifications, results, admit cards for SSC, Railway, UPSC, Banking & State PSC.",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://www.sarkarisuccess.com/search?q={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+};
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Sarkari Success",
+  "url": "https://www.sarkarisuccess.com",
+  "logo": "https://www.sarkarisuccess.com/logo.png",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer support",
+    "email": "contact.sarkarisuccess@gmail.com",
+    "availableLanguage": ["English", "Hindi"]
+  },
+  "sameAs": [
+    "https://t.me/sarkarisuccess",
+    "https://www.youtube.com/@sarkarisuccess"
+  ]
+};
+
 export default function Home() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [jobs, setJobs] = useState([]);
-  const [results, setResults] = useState([]);
-
-  useEffect(() => {
-    fetch('/api/jobs?limit=50')
-      .then(res => res.json())
-      .then(data => setJobs(data.jobs || []));
-    fetch('/api/results?limit=10')
-      .then(res => res.json())
-      .then(data => setResults(data.results || []));
-  }, []);
-
-  const filteredJobs = jobs.filter(job =>
-    job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    job.org.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   return (
     <main style={{ minHeight: '100vh', backgroundColor: '#f4f6f9', fontFamily: 'Arial, sans-serif' }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
 
       <div style={{ backgroundColor: '#1e3a8a', color: 'white', padding: '8px 20px', textAlign: 'center', fontSize: '13px' }}>
         India's First AI-Powered Sarkari Career Companion —{' '}
@@ -39,9 +79,9 @@ export default function Home() {
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <img src="/logo.png" alt="Sarkari Success Logo" style={{ height: '45px', width: 'auto' }} />
-            <h1 style={{ fontSize: '28px', fontWeight: 'bold', color: '#1e3a8a', margin: 0 }}>
+            <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#1e3a8a', margin: 0 }}>
               Sarkari <span style={{ color: '#dc2626' }}>Success™</span>
-            </h1>
+            </div>
           </div>
           <p style={{ color: '#374151', fontSize: '12px', margin: '2px 0 0 0' }}>AI-Powered Government Jobs, Results and Exam Updates</p>
         </div>
@@ -53,24 +93,24 @@ export default function Home() {
 
       <nav style={{ backgroundColor: '#1e3a8a', padding: '10px 20px', display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap' }}>
         {[
-         { label: 'Home', href: '/' },
+          { label: 'Home', href: '/' },
           { label: 'Jobs', href: '#jobs' },
           { label: 'SSC', href: '/ssc' },
           { label: 'Railway', href: '/rrb' },
           { label: 'Banking', href: '/banking' },
-{ label: 'UPSC', href: '/upsc' },
-{ label: 'Defence', href: '/defence' },
-{ label: 'State PSC', href: '/state-psc' },
-{ label: 'PSU', href: '/psu' },
-{ label: 'Teaching', href: '/teaching' },
+          { label: 'UPSC', href: '/upsc' },
+          { label: 'Defence', href: '/defence' },
+          { label: 'State PSC', href: '/state-psc' },
+          { label: 'PSU', href: '/psu' },
+          { label: 'Teaching', href: '/teaching' },
           { label: 'Results', href: '#results' },
           { label: 'Admit Cards', href: '/admit-card' },
           { label: 'State Jobs', href: '/states' },
           { label: 'Mock Test', href: '/mocktest' },
-{ label: '🛠️ Tools', href: '/tools' },
+          { label: '🛠️ Tools', href: '/tools' },
           { label: '📅 Exam Calendar', href: '/exam-calendar' },
-{ label: '💰 Salary Compare', href: '/salary-comparison' },
-{ label: '✅ Eligibility Check', href: '/eligibility-checker' },
+          { label: '💰 Salary Compare', href: '/salary-comparison' },
+          { label: '✅ Eligibility Check', href: '/eligibility-checker' },
           { label: 'SarkariGPT', href: '/sarkarigpt' },
           { label: 'AI Coach', href: '/coach', color: '#4ade80' },
           { label: "👑 Topper's Plan", href: '/toppers-plan', color: '#fbbf24' },
@@ -91,26 +131,16 @@ export default function Home() {
         <div style={{ display: 'inline-block', backgroundColor: 'rgba(255,255,255,0.15)', borderRadius: '30px', padding: '6px 20px', marginBottom: '16px', border: '1px solid rgba(255,255,255,0.3)' }}>
           <span style={{ color: '#fbbf24', fontSize: '14px', fontWeight: 'bold' }}>🤖 India's First AI-Powered Sarkari Career Companion</span>
         </div>
-        <h2 style={{ color: 'white', fontSize: '36px', fontWeight: '800', margin: '0 0 8px 0', lineHeight: '1.2' }}>
-          Find Your Sarkari Success with AI
-        </h2>
+
+        {/* SEO H1 — key target keyword */}
+        <h1 style={{ color: 'white', fontSize: '36px', fontWeight: '800', margin: '0 0 8px 0', lineHeight: '1.2' }}>
+          Sarkari Result 2026 — Latest Sarkari Naukri & Job Notifications
+        </h1>
         <p style={{ color: '#bfdbfe', fontSize: '18px', margin: '0 0 32px 0' }}>
           SSC • Railway • UPSC • Banking • State PSC
         </p>
 
-        <div style={{ maxWidth: '650px', margin: '0 auto 16px auto', display: 'flex', gap: '10px' }}>
-          <input
-            type="text"
-            placeholder="Search SSC, Railway, UPSC, Banking jobs..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && document.getElementById('jobs').scrollIntoView({ behavior: 'smooth' })}
-            style={{ flex: 1, padding: '14px 20px', borderRadius: '8px', border: '2px solid white', fontSize: '15px', outline: 'none', color: '#1a1a1a', backgroundColor: 'white' }}
-          />
-          <button onClick={() => document.getElementById('jobs').scrollIntoView({ behavior: 'smooth' })} style={{ padding: '14px 24px', backgroundColor: '#dc2626', color: 'white', border: 'none', borderRadius: '8px', fontSize: '14px', fontWeight: 'bold', cursor: 'pointer' }}>
-            Search
-          </button>
-        </div>
+        <HomeClient />
 
         <div style={{ maxWidth: '650px', margin: '0 auto 24px auto', backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: '16px', padding: '16px', border: '1px solid rgba(255,255,255,0.2)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px', justifyContent: 'space-between' }}>
@@ -186,6 +216,7 @@ export default function Home() {
             <a href="/tools" style={{ color: '#1e3a8a', fontSize: '13px', fontWeight: '700', textDecoration: 'none' }}>View All 50+ Tools & Resources →</a>
           </div>
         </div>
+
         {/* Why Topper's Plan Teaser */}
         <div style={{ backgroundColor: '#fffbeb', borderRadius: '12px', padding: '20px 24px', marginBottom: '24px', border: '2px solid #fbbf24', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
           <div style={{ flex: 1 }}>
@@ -206,35 +237,16 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Jobs Section */}
         <div id="jobs" style={{ marginBottom: '40px' }}>
-          <h2 style={{ fontSize: '22px', color: '#1e3a8a', margin: '0 0 16px 0' }}>Latest Sarkari Jobs</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '14px' }}>
-            {filteredJobs.length === 0 && searchQuery === '' && (
-              <div style={{ textAlign: 'center', padding: '40px', color: '#4B5563', backgroundColor: 'white', borderRadius: '8px', gridColumn: '1/-1' }}>Loading jobs...</div>
-            )}
-            {filteredJobs.length === 0 && searchQuery !== '' && (
-              <div style={{ textAlign: 'center', padding: '40px', color: '#888', backgroundColor: 'white', borderRadius: '8px', gridColumn: '1/-1' }}>No jobs found for "{searchQuery}"</div>
-            )}
-            {filteredJobs.map((job, index) => (
-              <a key={index} href={"/jobs/" + job.slug} style={{ backgroundColor: 'white', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '18px', textDecoration: 'none', display: 'flex', flexDirection: 'column', gap: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
-                <div style={{ fontSize: '28px' }}>🏛️</div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
-                  {job.is_new && <span style={{ backgroundColor: '#dc2626', color: 'white', fontSize: '9px', padding: '2px 6px', borderRadius: '4px', fontWeight: 'bold', flexShrink: 0 }}>NEW</span>}
-                  <p style={{ color: '#1e3a8a', fontWeight: '700', fontSize: '14px', margin: 0, lineHeight: '1.3' }}>{job.title}</p>
-                </div>
-                <p style={{ color: '#64748b', fontSize: '12px', margin: 0 }}>{job.org}</p>
-                <p style={{ color: '#1e3a8a', fontSize: '12px', fontWeight: '600', margin: 0 }}>Vacancies: {job.vacancies}</p>
-                <p style={{ color: '#dc2626', fontSize: '12px', fontWeight: '600', margin: 0 }}>Last Date: {job.last_date}</p>
-                <span style={{ backgroundColor: '#1e3a8a', color: 'white', padding: '6px 14px', borderRadius: '6px', fontSize: '12px', fontWeight: 'bold', textAlign: 'center', marginTop: 'auto' }}>
-                  View Details
-                </span>
-              </a>
-            ))}
-          </div>
+          <h2 style={{ fontSize: '22px', color: '#1e3a8a', margin: '0 0 16px 0' }}>Latest Sarkari Jobs 2026</h2>
+          {/* Job cards rendered by HomeClient above */}
+          <div id="jobs-placeholder" />
         </div>
 
+        {/* Exam Calendar */}
         <div id="calendar" style={{ marginBottom: '40px' }}>
-          <h2 style={{ fontSize: '22px', color: '#1e3a8a', margin: '0 0 16px 0' }}>Upcoming Exam Calendar</h2>
+          <h2 style={{ fontSize: '22px', color: '#1e3a8a', margin: '0 0 16px 0' }}>Upcoming Exam Calendar 2026</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
             {examCalendar.map((item, index) => (
               <div key={index} style={{ backgroundColor: 'white', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '14px 18px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
@@ -253,29 +265,11 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Results Section */}
         <div id="results" style={{ marginBottom: '40px' }}>
-          <h2 style={{ fontSize: '22px', color: '#1e3a8a', margin: '0 0 16px 0' }}>Latest Results</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '14px' }}>
-            {results.length === 0 && (
-              <div style={{ textAlign: 'center', padding: '40px', color: '#888', backgroundColor: 'white', borderRadius: '8px', gridColumn: '1/-1' }}>Loading results...</div>
-            )}
-            {results.map((item, index) => (
-              <a key={index} href={"/results/" + item.slug} style={{ backgroundColor: 'white', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '18px', textDecoration: 'none', display: 'flex', flexDirection: 'column', gap: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
-                <div style={{ fontSize: '28px' }}>📊</div>
-                <p style={{ color: '#1e3a8a', fontWeight: '700', fontSize: '14px', margin: 0, lineHeight: '1.3' }}>{item.exam}</p>
-                <p style={{ color: '#64748b', fontSize: '12px', margin: 0 }}>{item.org}</p>
-                <p style={{ color: '#374151', fontSize: '12px', margin: 0 }}>Result Date: <strong>{item.result_date}</strong></p>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
-                  <span style={{ backgroundColor: item.status === 'Declared' ? '#dcfce7' : '#fef9c3', color: item.status === 'Declared' ? '#16a34a' : '#ca8a04', padding: '3px 10px', borderRadius: '10px', fontSize: '11px', fontWeight: 'bold' }}>
-                    {item.status}
-                  </span>
-                  <span style={{ backgroundColor: '#16a34a', color: 'white', padding: '6px 12px', borderRadius: '6px', fontSize: '11px', fontWeight: 'bold' }}>
-                    Check Result
-                  </span>
-                </div>
-              </a>
-            ))}
-          </div>
+          <h2 style={{ fontSize: '22px', color: '#1e3a8a', margin: '0 0 16px 0' }}>Latest Sarkari Results 2026</h2>
+          {/* Results rendered by HomeClient above */}
+          <div id="results-placeholder" />
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '40px' }}>
@@ -290,6 +284,27 @@ export default function Home() {
             <h3 style={{ color: '#dc2626', margin: '0 0 8px 0' }}>Question Bank</h3>
             <p style={{ color: '#666', fontSize: '13px', margin: '0 0 16px 0' }}>Practice questions with explanations</p>
             <a href="/questions" style={{ backgroundColor: '#dc2626', color: 'white', padding: '10px 20px', borderRadius: '6px', textDecoration: 'none', fontSize: '13px', fontWeight: 'bold' }}>Practice Now</a>
+          </div>
+        </div>
+
+        {/* State Jobs Hub Links */}
+        <div style={{ marginBottom: '40px' }}>
+          <h2 style={{ fontSize: '22px', color: '#1e3a8a', margin: '0 0 16px 0' }}>State-wise Sarkari Naukri 2026</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px' }}>
+            {[
+              { name: 'Bihar Sarkari Naukri', href: '/jobs/bihar' },
+              { name: 'UP Sarkari Naukri', href: '/jobs/uttar-pradesh' },
+              { name: 'Rajasthan Bharti', href: '/jobs/rajasthan' },
+              { name: 'MP Sarkari Naukri', href: '/jobs/madhya-pradesh' },
+              { name: 'Tamil Nadu Jobs', href: '/jobs/tamil-nadu' },
+              { name: 'Gujarat Bharti', href: '/jobs/gujarat' },
+              { name: 'Haryana Sarkari Naukri', href: '/jobs/haryana' },
+              { name: 'Assam Sarkari Naukri', href: '/jobs/assam' },
+            ].map((s, i) => (
+              <a key={i} href={s.href} style={{ backgroundColor: 'white', border: '1px solid #dbeafe', borderRadius: '8px', padding: '10px 14px', textDecoration: 'none', color: '#1e3a8a', fontSize: '13px', fontWeight: '600', textAlign: 'center' }}>
+                {s.name}
+              </a>
+            ))}
           </div>
         </div>
 
@@ -312,8 +327,8 @@ export default function Home() {
               <div>
                 <p style={{ color: '#93c5fd', fontSize: '12px', margin: '0 0 8px 0', fontWeight: 'bold' }}>QUICK LINKS</p>
                 {[
-                  { label: 'Jobs', href: '#jobs' },
-                  { label: 'Results', href: '#results' },
+                  { label: 'Latest Jobs 2026', href: '/#jobs' },
+                  { label: 'Results', href: '/#results' },
                   { label: 'Admit Cards', href: '/admit-card' },
                   { label: 'Mock Test', href: '/mocktest' },
                   { label: 'SarkariGPT', href: '/sarkarigpt' },
@@ -349,22 +364,21 @@ export default function Home() {
           </div>
           <div style={{ borderTop: '1px solid rgba(255,255,255,0.2)', paddingTop: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
             <div style={{ textAlign: 'center', flex: 1 }}>
-              <p style={{ color: '#93c5fd', fontSize: '12px', margin: '0 0 8px 0' }}>2026 Sarkari Success. All rights reserved. sarkarisuccess.com</p>
+              <p style={{ color: '#93c5fd', fontSize: '12px', margin: '0 0 8px 0' }}>© 2026 Sarkari Success. All rights reserved. sarkarisuccess.com</p>
               <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap' }}>
                 <a href="/contact" style={{ color: 'white', textDecoration: 'none', fontSize: '12px', fontWeight: '700' }}>Contact Us</a>
-<span style={{ color: '#64748b' }}>•</span>
-<a href="/privacy" style={{ color: 'white', textDecoration: 'none', fontSize: '12px', fontWeight: '700' }}>Privacy Policy</a>
+                <span style={{ color: '#64748b' }}>•</span>
+                <a href="/privacy" style={{ color: 'white', textDecoration: 'none', fontSize: '12px', fontWeight: '700' }}>Privacy Policy</a>
                 <a href="/terms" style={{ color: 'white', textDecoration: 'none', fontSize: '12px', fontWeight: '700' }}>Terms of Service</a>
                 <a href="/disclaimer" style={{ color: 'white', textDecoration: 'none', fontSize: '12px', fontWeight: '700' }}>Disclaimer</a>
                 <a href="/refund-policy" style={{ color: 'white', textDecoration: 'none', fontSize: '12px', fontWeight: '700' }}>Refund Policy</a>
-                <a href="/cookie-policy" style={{ color: 'white', textDecoration: 'none', fontSize: '12px', fontWeight: '700' }}>Cookie Policy</a>
                 <a href="/sarkarigpt" style={{ color: 'white', textDecoration: 'none', fontSize: '12px', fontWeight: '700' }}>SarkariGPT</a>
               </div>
             </div>
             <div style={{ textAlign: 'center' }}>
-            <p style={{ color: 'white', fontSize: '12px', margin: '0 0 8px 0', fontWeight: '800' }}>Scan to open on mobile</p>
+              <p style={{ color: 'white', fontSize: '12px', margin: '0 0 8px 0', fontWeight: '800' }}>Scan to open on mobile</p>
               <img
-                src={"https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://sarkarisuccess.com&color=ffffff&bgcolor=1e3a8a"}
+                src={"https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://www.sarkarisuccess.com&color=ffffff&bgcolor=1e3a8a"}
                 alt="Sarkari Success QR Code"
                 style={{ width: '100px', height: '100px', borderRadius: '8px', border: '2px solid rgba(255,255,255,0.3)' }}
               />

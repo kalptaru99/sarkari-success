@@ -2,6 +2,15 @@ export const metadata = {
   title: 'Government Job Document Checklist 2026 — SSC, Railway, UPSC, Banking | Sarkari Success',
   description: 'Complete document checklist for government job applications 2026. SSC, RRB, UPSC, IBPS, SBI — know exactly which documents you need before applying.',
   keywords: 'government job documents list, SSC CGL documents required, RRB NTPC documents, UPSC documents checklist, IBPS PO documents 2026',
+  alternates: { canonical: 'https://www.sarkarisuccess.com/document-checklist' },
+  openGraph: {
+    title: 'Government Job Document Checklist 2026 | Sarkari Success',
+    description: 'Know exactly which documents you need for SSC, Railway, UPSC, Banking government job applications.',
+    url: 'https://www.sarkarisuccess.com/document-checklist',
+    siteName: 'Sarkari Success',
+    locale: 'en_IN',
+    type: 'website',
+  },
 };
 
 const commonDocs = [

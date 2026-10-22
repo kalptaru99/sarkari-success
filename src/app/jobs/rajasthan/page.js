@@ -1,5 +1,11 @@
 import pool from '@/lib/db.js';
-export const metadata = { title: 'Rajasthan Government Jobs 2026 — RPSC, Rajasthan Police Recruitment | Sarkari Success', description: 'Latest Rajasthan government job notifications 2026. RPSC, Rajasthan Police, RSMSSB recruitment.', keywords: 'Rajasthan government jobs 2026, RPSC 2026, Rajasthan Police 2026' };
+export const metadata = {
+  title: 'Rajasthan Sarkari Naukri 2026 (राजस्थान सरकारी नौकरी): RPSC, Rajasthan Police, RSMSSB Recruitment | Sarkari Success',
+  description: 'Rajasthan sarkari naukri 2026 — RPSC RAS, Rajasthan Police Constable, RSMSSB Patwari, LDC recruitment. राजस्थान सरकारी नौकरी की जानकारी हिंदी में।',
+  keywords: 'rajasthan sarkari naukri 2026, RPSC 2026, rajasthan police recruitment 2026, RSMSSB 2026, राजस्थान सरकारी नौकरी',
+  alternates: { canonical: 'https://www.sarkarisuccess.com/jobs/rajasthan' },
+  openGraph: { title: 'Rajasthan Sarkari Naukri 2026 | Sarkari Success', url: 'https://www.sarkarisuccess.com/jobs/rajasthan', siteName: 'Sarkari Success', locale: 'en_IN', type: 'website' },
+};
 export default async function RajasthanJobsPage() {
   const stateJobs = await pool.query(`SELECT * FROM state_jobs WHERE state_code = 'RJ' AND is_active = true ORDER BY created_at DESC`);
   const orgs = [

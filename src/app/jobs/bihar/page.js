@@ -1,9 +1,20 @@
 import pool from '@/lib/db.js';
 
 export const metadata = {
-  title: 'Bihar Government Jobs 2026 — Latest BPSC, Bihar Police, BTSC Recruitment | Sarkari Success',
-  description: 'Get latest Bihar government job notifications 2026. BPSC, Bihar Police, BTSC, BPSSC recruitment. Check vacancies, eligibility, last date and apply online.',
-  keywords: 'Bihar government jobs 2026, BPSC 2026, Bihar Police recruitment 2026, BTSC 2026, Bihar sarkari naukri 2026',
+  title: 'Bihar Sarkari Naukri 2026 (बिहार सरकारी नौकरी): Latest BPSC, Bihar Police, BTSC Recruitment | Sarkari Success',
+  description: 'Bihar sarkari naukri 2026 — BPSC CCE, Bihar Police SI, BTSC, BPSSC, BSSC recruitment notifications. Vacancies, eligibility, last date and apply online. बिहार सरकारी नौकरी की पूरी जानकारी हिंदी में।',
+  keywords: 'bihar sarkari naukri 2026, BPSC 2026, bihar police recruitment 2026, BTSC 2026, बिहार सरकारी नौकरी, bihar government jobs',
+  alternates: {
+    canonical: 'https://www.sarkarisuccess.com/jobs/bihar',
+  },
+  openGraph: {
+    title: 'Bihar Sarkari Naukri 2026 (बिहार सरकारी नौकरी) | Sarkari Success',
+    description: 'Latest BPSC, Bihar Police, BTSC, BPSSC, BSSC recruitment notifications 2026. Complete Bihar job tracker.',
+    url: 'https://www.sarkarisuccess.com/jobs/bihar',
+    siteName: 'Sarkari Success',
+    locale: 'en_IN',
+    type: 'website',
+  },
 };
 
 export default async function BiharJobsPage() {
@@ -36,8 +47,13 @@ export default async function BiharJobsPage() {
 
       <div style={{ backgroundColor: '#FF6B35', padding: '40px 24px', textAlign: 'center' }}>
         <p style={{ color: 'white', fontSize: '13px', margin: '0 0 8px 0' }}>🏛️ Home → State Jobs → Bihar</p>
-        <h1 style={{ color: 'white', fontSize: '32px', fontWeight: '900', margin: '0 0 8px 0' }}>Bihar Government Jobs 2026</h1>
-        <p style={{ color: '#fff3ee', fontSize: '16px', margin: '0 0 16px 0' }}>BPSC • Bihar Police • BTSC • BPSSC • BSSC — Complete Bihar Job Tracker</p>
+        <h1 style={{ color: 'white', fontSize: '32px', fontWeight: '900', margin: '0 0 8px 0' }}>
+          Bihar Sarkari Naukri 2026 <span style={{ fontSize: '22px', fontWeight: '700' }}>(बिहार सरकारी नौकरी)</span>
+        </h1>
+        <p style={{ color: '#fff3ee', fontSize: '16px', margin: '0 0 16px 0' }}>BPSC • Bihar Police • BTSC • BPSSC • BSSC — Complete Bihar Job Tracker | बिहार भर्ती 2026</p>
+        <p style={{ color: '#ffe8de', fontSize: '14px', margin: '0 0 16px 0', maxWidth: '700px', marginLeft: 'auto', marginRight: 'auto' }}>
+          Bihar is one of India's largest employers — BPSC CCE alone sees 5+ lakh aspirants every year. This page tracks every BPSC, Bihar Police SI, BTSC, BSSC, and BPSSC recruitment notification in real time. Bookmark it and check daily for the latest Bihar bharti 2026 updates.
+        </p>
         <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
           {[
             { label: 'Active Jobs', value: stateJobsList.length + '+' },
