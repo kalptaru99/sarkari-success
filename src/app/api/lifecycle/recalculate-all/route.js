@@ -83,7 +83,7 @@ export async function GET(request) {
         try {
           const events = eventsMap[job.id] || [];
           const { status } = calculateLifecycleStatus(job, events);
-          const oldStatus = job.lifecycle_status || 'NEW';
+          const oldStatus = job.lifecycle_status || 'OPEN';
 
           if (status !== oldStatus) {
             updates.push({ id: job.id, status, oldStatus, isNew: status === 'NEW' });

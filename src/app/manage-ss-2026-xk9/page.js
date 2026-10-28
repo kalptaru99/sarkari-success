@@ -661,13 +661,13 @@ function LifecyclePanel() {
   };
 
   const filteredJobs = jobs.filter(j => {
-    const matchStatus = filter === 'ALL' || (j.lifecycle_status || 'NEW') === filter;
+    const matchStatus = filter === 'ALL' || (j.lifecycle_status || 'OPEN') === filter;
     const matchSearch = !search || j.title.toLowerCase().includes(search.toLowerCase()) || j.org.toLowerCase().includes(search.toLowerCase());
     return matchStatus && matchSearch;
   });
 
   const counts = jobs.reduce((acc, j) => {
-    const s = j.lifecycle_status || 'NEW';
+    const s = j.lifecycle_status || 'OPEN';
     acc[s] = (acc[s] || 0) + 1;
     return acc;
   }, {});
@@ -723,7 +723,7 @@ function LifecyclePanel() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {filteredJobs.length === 0 && <p style={{ color: '#999', textAlign: 'center', padding: '40px' }}>No jobs match this filter.</p>}
           {filteredJobs.map((job, i) => {
-            const status = job.lifecycle_status || 'NEW';
+            const status = job.lifecycle_status || 'OPEN';
             const badge = statusColors[status] || statusColors.OPEN;
             return (
               <div key={i} style={{ backgroundColor: 'white', borderRadius: '10px', padding: '14px 18px', boxShadow: '0 1px 4px rgba(0,0,0,0.06)', display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
