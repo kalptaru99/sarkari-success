@@ -5,6 +5,22 @@ export const metadata = {
   title: 'State PSC Jobs 2026 — Latest State Public Service Commission Recruitment | Sarkari Success',
   description: 'Get latest BPSC, UPPSC, MPPSC, RPSC, TNPSC, Kerala PSC, KPSC recruitment notifications 2026. Check vacancies, eligibility and apply online for all State PSC jobs.',
   keywords: 'State PSC jobs 2026, BPSC 2026, UPPSC 2026, MPPSC 2026, RPSC 2026, TNPSC 2026, Kerala PSC 2026, state government jobs',
+  alternates: { canonical: 'https://sarkarisuccess.com/state-psc' },
+  openGraph: {
+    title: 'State PSC Jobs 2026 — Latest State Public Service Commission Recruitment | Sarkari Success',
+    description: 'Get latest BPSC, UPPSC, MPPSC, RPSC, TNPSC, Kerala PSC, KPSC recruitment notifications 2026. Check vacancies, eligibility and apply online for all State PSC jobs.',
+    url: 'https://sarkarisuccess.com/state-psc',
+    siteName: 'Sarkari Success',
+    images: [{ url: 'https://sarkarisuccess.com/api/og', width: 1200, height: 630 }],
+    locale: 'en_IN',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'State PSC Jobs 2026 — Latest State Public Service Commission Recruitment | Sarkari Success',
+    description: 'Get latest BPSC, UPPSC, MPPSC, RPSC, TNPSC, Kerala PSC, KPSC recruitment notifications 2026. Check vacancies, eligibility and apply online for all State PSC jobs.',
+    images: ['https://sarkarisuccess.com/api/og'],
+  },
 };
 
 export default async function StatePSCPage() {

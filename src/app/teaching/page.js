@@ -5,6 +5,22 @@ export const metadata = {
   title: 'Teaching Jobs 2026 — Latest Teacher Recruitment Notifications | Sarkari Success',
   description: 'Get latest CTET, DSSSB, KVS, NVS, TGT, PGT, Primary Teacher recruitment notifications 2026. Check vacancies, eligibility and apply online for all Teaching jobs.',
   keywords: 'Teaching jobs 2026, CTET 2026, DSSSB teacher 2026, KVS recruitment 2026, NVS recruitment 2026, TGT PGT 2026, government teacher jobs',
+  alternates: { canonical: 'https://sarkarisuccess.com/teaching' },
+  openGraph: {
+    title: 'Teaching Jobs 2026 — Latest Teacher Recruitment Notifications | Sarkari Success',
+    description: 'Get latest CTET, DSSSB, KVS, NVS, TGT, PGT, Primary Teacher recruitment notifications 2026. Check vacancies, eligibility and apply online for all Teaching jobs.',
+    url: 'https://sarkarisuccess.com/teaching',
+    siteName: 'Sarkari Success',
+    images: [{ url: 'https://sarkarisuccess.com/api/og', width: 1200, height: 630 }],
+    locale: 'en_IN',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Teaching Jobs 2026 — Latest Teacher Recruitment Notifications | Sarkari Success',
+    description: 'Get latest CTET, DSSSB, KVS, NVS, TGT, PGT, Primary Teacher recruitment notifications 2026. Check vacancies, eligibility and apply online for all Teaching jobs.',
+    images: ['https://sarkarisuccess.com/api/og'],
+  },
 };
 
 export default async function TeachingPage() {

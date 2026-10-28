@@ -5,6 +5,22 @@ export const metadata = {
   title: 'Defence Jobs 2026 — Latest Army, Navy, Air Force Recruitment | Sarkari Success',
   description: 'Get latest Indian Army, Navy, Air Force, Coast Guard, Agniveer recruitment notifications 2026. Check vacancies, eligibility, last date and apply online.',
   keywords: 'Defence jobs 2026, Indian Army recruitment 2026, Navy recruitment 2026, Air Force recruitment 2026, Agniveer 2026, Coast Guard 2026',
+  alternates: { canonical: 'https://sarkarisuccess.com/defence' },
+  openGraph: {
+    title: 'Defence Jobs 2026 — Latest Army, Navy, Air Force Recruitment | Sarkari Success',
+    description: 'Get latest Indian Army, Navy, Air Force, Coast Guard, Agniveer recruitment notifications 2026. Check vacancies, eligibility, last date and apply online.',
+    url: 'https://sarkarisuccess.com/defence',
+    siteName: 'Sarkari Success',
+    images: [{ url: 'https://sarkarisuccess.com/api/og', width: 1200, height: 630 }],
+    locale: 'en_IN',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Defence Jobs 2026 — Latest Army, Navy, Air Force Recruitment | Sarkari Success',
+    description: 'Get latest Indian Army, Navy, Air Force, Coast Guard, Agniveer recruitment notifications 2026. Check vacancies, eligibility, last date and apply online.',
+    images: ['https://sarkarisuccess.com/api/og'],
+  },
 };
 
 export default async function DefencePage() {

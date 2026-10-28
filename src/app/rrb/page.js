@@ -5,6 +5,22 @@ export const metadata = {
   title: 'RRB Railway Jobs 2026 — Latest Railway Recruitment Notifications | Sarkari Success',
   description: 'Get latest RRB NTPC, Group D, ALP, Technician, JE recruitment notifications 2026. Check vacancies, eligibility, last date and apply online for all Railway jobs.',
   keywords: 'RRB jobs 2026, RRB NTPC 2026, RRB Group D 2026, RRB ALP 2026, Railway recruitment 2026, Indian Railway jobs',
+  alternates: { canonical: 'https://sarkarisuccess.com/rrb' },
+  openGraph: {
+    title: 'RRB Railway Jobs 2026 — Latest Railway Recruitment Notifications | Sarkari Success',
+    description: 'Get latest RRB NTPC, Group D, ALP, Technician, JE recruitment notifications 2026. Check vacancies, eligibility, last date and apply online for all Railway jobs.',
+    url: 'https://sarkarisuccess.com/rrb',
+    siteName: 'Sarkari Success',
+    images: [{ url: 'https://sarkarisuccess.com/api/og', width: 1200, height: 630 }],
+    locale: 'en_IN',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'RRB Railway Jobs 2026 — Latest Railway Recruitment Notifications | Sarkari Success',
+    description: 'Get latest RRB NTPC, Group D, ALP, Technician, JE recruitment notifications 2026. Check vacancies, eligibility, last date and apply online for all Railway jobs.',
+    images: ['https://sarkarisuccess.com/api/og'],
+  },
 };
 
 export default async function RRBPage() {

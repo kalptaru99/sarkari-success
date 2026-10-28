@@ -5,6 +5,22 @@ export const metadata = {
   title: 'UPSC Jobs 2026 — Latest UPSC Recruitment Notifications | Sarkari Success',
   description: 'Get latest UPSC Civil Services, CDS, NDA, CAPF, Engineering Services recruitment notifications 2026. Check vacancies, eligibility, last date and apply online.',
   keywords: 'UPSC jobs 2026, UPSC Civil Services 2026, UPSC CDS 2026, UPSC NDA 2026, UPSC CAPF 2026, IAS IPS IFS recruitment',
+  alternates: { canonical: 'https://sarkarisuccess.com/upsc' },
+  openGraph: {
+    title: 'UPSC Jobs 2026 — Latest UPSC Recruitment Notifications | Sarkari Success',
+    description: 'Get latest UPSC Civil Services, CDS, NDA, CAPF, Engineering Services recruitment notifications 2026. Check vacancies, eligibility, last date and apply online.',
+    url: 'https://sarkarisuccess.com/upsc',
+    siteName: 'Sarkari Success',
+    images: [{ url: 'https://sarkarisuccess.com/api/og', width: 1200, height: 630 }],
+    locale: 'en_IN',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'UPSC Jobs 2026 — Latest UPSC Recruitment Notifications | Sarkari Success',
+    description: 'Get latest UPSC Civil Services, CDS, NDA, CAPF, Engineering Services recruitment notifications 2026. Check vacancies, eligibility, last date and apply online.',
+    images: ['https://sarkarisuccess.com/api/og'],
+  },
 };
 
 export default async function UPSCPage() {

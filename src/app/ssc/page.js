@@ -5,6 +5,22 @@ export const metadata = {
   title: 'SSC Jobs 2026 — Latest SSC Recruitment Notifications | Sarkari Success',
   description: 'Get latest SSC CGL, CHSL, MTS, GD, CPO, JE recruitment notifications 2026. Check vacancies, eligibility, last date and apply online for all SSC jobs.',
   keywords: 'SSC jobs 2026, SSC CGL 2026, SSC CHSL 2026, SSC MTS 2026, SSC GD 2026, SSC CPO 2026, SSC recruitment',
+  alternates: { canonical: 'https://sarkarisuccess.com/ssc' },
+  openGraph: {
+    title: 'SSC Jobs 2026 — Latest SSC Recruitment Notifications | Sarkari Success',
+    description: 'Get latest SSC CGL, CHSL, MTS, GD, CPO, JE recruitment notifications 2026. Check vacancies, eligibility, last date and apply online for all SSC jobs.',
+    url: 'https://sarkarisuccess.com/ssc',
+    siteName: 'Sarkari Success',
+    images: [{ url: 'https://sarkarisuccess.com/api/og', width: 1200, height: 630 }],
+    locale: 'en_IN',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'SSC Jobs 2026 — Latest SSC Recruitment Notifications | Sarkari Success',
+    description: 'Get latest SSC CGL, CHSL, MTS, GD, CPO, JE recruitment notifications 2026. Check vacancies, eligibility, last date and apply online for all SSC jobs.',
+    images: ['https://sarkarisuccess.com/api/og'],
+  },
 };
 
 export default async function SSCPage() {

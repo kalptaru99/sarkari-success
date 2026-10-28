@@ -5,6 +5,22 @@ export const metadata = {
   title: 'Banking Jobs 2026 — Latest Bank Recruitment Notifications | Sarkari Success',
   description: 'Get latest IBPS PO, Clerk, SBI PO, SBI Clerk, RBI recruitment notifications 2026. Check vacancies, eligibility, last date and apply online for all Banking jobs.',
   keywords: 'Banking jobs 2026, IBPS PO 2026, IBPS Clerk 2026, SBI PO 2026, SBI Clerk 2026, RBI 2026, bank recruitment',
+  alternates: { canonical: 'https://sarkarisuccess.com/banking' },
+  openGraph: {
+    title: 'Banking Jobs 2026 — Latest Bank Recruitment Notifications | Sarkari Success',
+    description: 'Get latest IBPS PO, Clerk, SBI PO, SBI Clerk, RBI recruitment notifications 2026. Check vacancies, eligibility, last date and apply online for all Banking jobs.',
+    url: 'https://sarkarisuccess.com/banking',
+    siteName: 'Sarkari Success',
+    images: [{ url: 'https://sarkarisuccess.com/api/og', width: 1200, height: 630 }],
+    locale: 'en_IN',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Banking Jobs 2026 — Latest Bank Recruitment Notifications | Sarkari Success',
+    description: 'Get latest IBPS PO, Clerk, SBI PO, SBI Clerk, RBI recruitment notifications 2026. Check vacancies, eligibility, last date and apply online for all Banking jobs.',
+    images: ['https://sarkarisuccess.com/api/og'],
+  },
 };
 
 export default async function BankingPage() {
