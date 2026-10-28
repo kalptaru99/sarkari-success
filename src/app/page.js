@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 const examCalendar = [
   { exam: "SSC CGL Tier 1", date: "August 2026", daysLeft: 30 },
@@ -118,6 +119,7 @@ function AlertSubscribeWidget() {
 }
 
 export default function Home() {
+  const { data: session } = useSession();
   const [searchQuery, setSearchQuery] = useState("");
   const [jobs, setJobs] = useState([]);
   const [results, setResults] = useState([]);
@@ -154,9 +156,18 @@ export default function Home() {
           </div>
           <p style={{ color: '#374151', fontSize: '12px', margin: '2px 0 0 0' }}>AI-Powered Government Jobs, Results and Exam Updates</p>
         </div>
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <a href="/login" style={{ padding: '8px 16px', border: '2px solid #1e3a8a', borderRadius: '6px', color: '#1e3a8a', textDecoration: 'none', fontSize: '13px', fontWeight: 'bold' }}>Login</a>
-          <a href="/register" style={{ padding: '8px 16px', backgroundColor: '#1e3a8a', borderRadius: '6px', color: 'white', textDecoration: 'none', fontSize: '13px', fontWeight: 'bold' }}>Register Free</a>
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          {session?.user ? (
+            <>
+              <a href="/dashboard" style={{ padding: '8px 16px', border: '2px solid #1e3a8a', borderRadius: '6px', color: '#1e3a8a', textDecoration: 'none', fontSize: '13px', fontWeight: 'bold' }}>🔖 Saved Jobs</a>
+              <a href="/dashboard" style={{ padding: '8px 16px', backgroundColor: '#1e3a8a', borderRadius: '6px', color: 'white', textDecoration: 'none', fontSize: '13px', fontWeight: 'bold' }}>My Dashboard</a>
+            </>
+          ) : (
+            <>
+              <a href="/login" style={{ padding: '8px 16px', border: '2px solid #1e3a8a', borderRadius: '6px', color: '#1e3a8a', textDecoration: 'none', fontSize: '13px', fontWeight: 'bold' }}>Login</a>
+              <a href="/register" style={{ padding: '8px 16px', backgroundColor: '#1e3a8a', borderRadius: '6px', color: 'white', textDecoration: 'none', fontSize: '13px', fontWeight: 'bold' }}>Register Free</a>
+            </>
+          )}
         </div>
       </header>
 

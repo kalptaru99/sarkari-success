@@ -1,5 +1,150 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+
+const STATUS_CONFIG = {
+  NEW:          { label: '🟢 New',          bg: '#dcfce7', color: '#15803d', border: '#86efac' },
+  OPEN:         { label: '🔵 Open',         bg: '#dbeafe', color: '#1d4ed8', border: '#93c5fd' },
+  CLOSING_SOON: { label: '🟡 Closing Soon', bg: '#fef9c3', color: '#a16207', border: '#fde047' },
+  CLOSED:       { label: '🔴 Closed',       bg: '#fee2e2', color: '#b91c1c', border: '#fca5a5' },
+  RESULT_OUT:   { label: '🏆 Result Out',   bg: '#f3e8ff', color: '#7e22ce', border: '#d8b4fe' },
+};
+
+const EVENT_LABELS = {
+  STATUS_CHANGE:   { icon: '🔄', label: 'Status Changed' },
+  DEADLINE_CHANGE: { icon: '📅', label: 'Deadline Updated' },
+  NEW_JOB:         { icon: '🆕', label: 'Job Listed' },
+  VACANCY_CHANGE:  { icon: '👥', label: 'Vacancy Updated' },
+  NOTIFY_SENT:     { icon: '📧', label: 'Notifications Sent' },
+};
+
+function SaveButton({ slug }) {
+  const { data: session } = useSession();
+  const [saved, setSaved] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!session?.user) { setLoading(false); return; }
+    fetch(`/api/jobs/save?slug=${slug}`)
+      .then(r => r.json())
+      .then(d => { setSaved(!!d.saved); setLoading(false); })
+      .catch(() => setLoading(false));
+  }, [session, slug]);
+
+  const toggle = async () => {
+    if (!session?.user) {
+      window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname);
+      return;
+    }
+    setLoading(true);
+    try {
+      if (saved) {
+        await fetch(`/api/jobs/save?slug=${slug}`, { method: 'DELETE' });
+        setSaved(false);
+      } else {
+        await fetch('/api/jobs/save', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ slug }),
+        });
+        setSaved(true);
+      }
+    } catch (e) {
+      console.error('Save toggle error:', e);
+    }
+    setLoading(false);
+  };
+
+  if (!session?.user) {
+    return (
+      <a
+        href={'/login?redirect=' + encodeURIComponent(typeof window !== 'undefined' ? window.location.pathname : '')}
+        style={{ backgroundColor: '#f8fafc', color: '#6b7280', border: '1px solid #d1d5db', padding: '10px 18px', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold', fontSize: '13px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+      >
+        🔖 Save Job
+      </a>
+    );
+  }
+
+  return (
+    <button
+      onClick={toggle}
+      disabled={loading}
+      style={{
+        backgroundColor: saved ? '#fef3c7' : '#f8fafc',
+        color: saved ? '#92400e' : '#374151',
+        border: `1px solid ${saved ? '#fcd34d' : '#d1d5db'}`,
+        padding: '10px 18px',
+        borderRadius: '8px',
+        fontWeight: 'bold',
+        fontSize: '13px',
+        cursor: loading ? 'wait' : 'pointer',
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '6px',
+        transition: 'all 0.2s',
+      }}
+    >
+      {loading ? '...' : saved ? '⭐ Saved' : '🔖 Save Job'}
+    </button>
+  );
+}
+
+function JobTimeline({ slug }) {
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`/api/jobs/events?slug=${slug}`)
+      .then(r => r.json())
+      .then(d => { setEvents(d.events || []); setLoading(false); })
+      .catch(() => setLoading(false));
+  }, [slug]);
+
+  if (loading) return null;
+  if (!events.length) return null;
+
+  return (
+    <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '20px' }}>
+      <h3 style={{ color: '#1e3a8a', margin: '0 0 16px 0', fontSize: '16px', fontWeight: '800' }}>📋 Status Timeline</h3>
+      <div style={{ position: 'relative', paddingLeft: '20px' }}>
+        {/* Vertical line */}
+        <div style={{ position: 'absolute', left: '7px', top: '8px', bottom: '8px', width: '2px', backgroundColor: '#e5e7eb' }} />
+        {events.map((ev, i) => {
+          const cfg = EVENT_LABELS[ev.event_type] || { icon: '•', label: ev.event_type };
+          const date = new Date(ev.happened_at);
+          const dateStr = date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+          return (
+            <div key={i} style={{ display: 'flex', gap: '12px', marginBottom: i < events.length - 1 ? '16px' : '0', alignItems: 'flex-start' }}>
+              <div style={{ width: '16px', height: '16px', borderRadius: '50%', backgroundColor: '#1e3a8a', flexShrink: 0, marginTop: '2px', position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '8px' }}>
+                ●
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '4px' }}>
+                  <span style={{ fontWeight: '600', color: '#1e3a8a', fontSize: '13px' }}>{cfg.icon} {cfg.label}</span>
+                  <span style={{ color: '#9ca3af', fontSize: '12px' }}>{dateStr}</span>
+                </div>
+                {ev.event_type === 'STATUS_CHANGE' && (
+                  <p style={{ margin: '2px 0 0', color: '#374151', fontSize: '12px' }}>
+                    {ev.old_value || '—'} → <strong>{ev.new_value}</strong>
+                  </p>
+                )}
+                {ev.event_type === 'DEADLINE_CHANGE' && (
+                  <p style={{ margin: '2px 0 0', color: '#374151', fontSize: '12px' }}>
+                    Last date: {ev.old_value || '—'} → <strong>{ev.new_value}</strong>
+                  </p>
+                )}
+                {(ev.event_type === 'NEW_JOB' || ev.event_type === 'VACANCY_CHANGE') && (
+                  <p style={{ margin: '2px 0 0', color: '#374151', fontSize: '12px' }}>{ev.new_value}</p>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 export default function JobPageClient({ slug }) {
   const [job, setJob] = useState(null);
@@ -117,6 +262,8 @@ export default function JobPageClient({ slug }) {
     ]
   };
 
+  const s = STATUS_CONFIG[job.lifecycle_status || 'OPEN'] || STATUS_CONFIG.OPEN;
+
   return (
     <main style={{ minHeight: '100vh', backgroundColor: '#f4f6f9', fontFamily: 'Arial, sans-serif' }}>
       <script
@@ -149,23 +296,11 @@ export default function JobPageClient({ slug }) {
         <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '28px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '20px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '10px', marginBottom: '16px' }}>
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px', flexWrap: 'wrap' }}>
                 <h2 style={{ fontSize: '24px', color: '#1e3a8a', margin: 0 }}>{job.title}</h2>
-                {(() => {
-                  const statusConfig = {
-                    NEW:          { label: '🟢 New',          bg: '#dcfce7', color: '#15803d', border: '#86efac' },
-                    OPEN:         { label: '🔵 Open',         bg: '#dbeafe', color: '#1d4ed8', border: '#93c5fd' },
-                    CLOSING_SOON: { label: '🟡 Closing Soon', bg: '#fef9c3', color: '#a16207', border: '#fde047' },
-                    CLOSED:       { label: '🔴 Closed',       bg: '#fee2e2', color: '#b91c1c', border: '#fca5a5' },
-                    RESULT_OUT:   { label: '🏆 Result Out',   bg: '#f3e8ff', color: '#7e22ce', border: '#d8b4fe' },
-                  };
-                  const s = statusConfig[job.lifecycle_status || 'OPEN'] || statusConfig.OPEN;
-                  return (
-                    <span style={{ backgroundColor: s.bg, color: s.color, border: `1px solid ${s.border}`, fontSize: '12px', padding: '4px 12px', borderRadius: '20px', fontWeight: '700', whiteSpace: 'nowrap' }}>
-                      {s.label}
-                    </span>
-                  );
-                })()}
+                <span style={{ backgroundColor: s.bg, color: s.color, border: `1px solid ${s.border}`, fontSize: '12px', padding: '4px 12px', borderRadius: '20px', fontWeight: '700', whiteSpace: 'nowrap' }}>
+                  {s.label}
+                </span>
               </div>
               <p style={{ color: '#666', fontSize: '15px', margin: 0 }}>{job.org}</p>
             </div>
@@ -189,8 +324,8 @@ export default function JobPageClient({ slug }) {
             ))}
           </div>
 
-          {/* Action Buttons */}
-          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+          {/* Action Buttons — Apply + Save */}
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
             {job.apply_link && (
               <a
                 href={job.apply_link}
@@ -211,8 +346,21 @@ export default function JobPageClient({ slug }) {
                 📄 Official Notification
               </a>
             )}
+            {/* Save Job button — auth-aware */}
+            <SaveButton slug={slug} />
           </div>
+
+          {/* Closing Soon warning banner */}
+          {job.lifecycle_status === 'CLOSING_SOON' && (
+            <div style={{ marginTop: '16px', backgroundColor: '#fef9c3', border: '1px solid #fde68a', borderRadius: '8px', padding: '12px 16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '18px' }}>⚡</span>
+              <span style={{ color: '#92400e', fontWeight: '600', fontSize: '14px' }}>Closing Soon — Apply before the last date passes!</span>
+            </div>
+          )}
         </div>
+
+        {/* Status Timeline */}
+        <JobTimeline slug={slug} />
 
         {/* AI Generated Rich Content */}
         {job.seo_content && (

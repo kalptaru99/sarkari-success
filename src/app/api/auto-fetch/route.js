@@ -193,15 +193,16 @@ async function saveToDatabase(data, type) {
         return { saved: false, reason: 'invalid title' };
       }
 
-      await pool.query(
+      const jobInsert = await pool.query(
         `INSERT INTO jobs (title, org, vacancies, last_date, apply_link, notification_link, exam_date, salary, eligibility, description, category, slug, is_new)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, true)`,
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, true)
+         RETURNING id`,
         [data.title, data.org, data.vacancies || 'TBA', data.last_date || 'See notification',
          data.apply_link || '', data.notification_link || '', data.exam_date || '',
          data.salary || '', data.eligibility || '', data.description || '',
          data.category || 'Other', data.slug]
       );
-      return { saved: true, type: 'job', title: data.title };
+      return { saved: true, type: 'job', title: data.title, id: jobInsert.rows[0]?.id };
     }
 
     if (type === 'result') {
@@ -279,6 +280,26 @@ export async function GET(request) {
           if (searchQuery.type === 'job') {
             results._newJobs = results._newJobs || [];
             results._newJobs.push(extracted);
+
+            // Log NEW_JOB event for timeline
+            try {
+              const siteUrl = process.env.NEXTAUTH_URL || 'https://sarkarisuccess.com';
+              await fetch(`${siteUrl}/api/jobs/events`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${process.env.CRON_SECRET || 'sarkari_success_cron_secret_2026'}`,
+                },
+                body: JSON.stringify({
+                  job_id: saved.id,
+                  event_type: 'NEW_JOB',
+                  new_value: `Listed — ${extracted.vacancies || 'vacancies TBA'}, last date ${extracted.last_date || 'TBA'}`,
+                  source: 'auto-fetch',
+                }),
+              });
+            } catch (e) {
+              console.error('NEW_JOB event log failed:', e.message);
+            }
           }
 
           try {

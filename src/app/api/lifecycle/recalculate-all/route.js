@@ -123,18 +123,61 @@ export async function GET(request) {
       }
     }
 
-    // Write audit entries for changes
+    // Write audit entries + opportunity_events for changes
     if (auditRows.length > 0) {
+      // Ensure opportunity_events table exists
       try {
-        for (const [jobId, oldStatus, newStatus] of auditRows) {
+        await pool.query(`
+          CREATE TABLE IF NOT EXISTS opportunity_events (
+            id SERIAL PRIMARY KEY,
+            job_id INTEGER NOT NULL REFERENCES jobs(id) ON DELETE CASCADE,
+            event_type TEXT NOT NULL CHECK (event_type IN ('STATUS_CHANGE','DEADLINE_CHANGE','NEW_JOB','VACANCY_CHANGE','NOTIFY_SENT')),
+            old_value TEXT,
+            new_value TEXT NOT NULL,
+            happened_at TIMESTAMPTZ DEFAULT NOW(),
+            source TEXT DEFAULT 'system'
+          )
+        `);
+      } catch { /* already exists */ }
+
+      for (const [jobId, oldStatus, newStatus] of auditRows) {
+        // Log to opportunity_events
+        try {
+          await pool.query(
+            `INSERT INTO opportunity_events (job_id, event_type, old_value, new_value, source)
+             VALUES ($1, 'STATUS_CHANGE', $2, $3, 'cron:lifecycle')`,
+            [jobId, oldStatus, newStatus]
+          );
+        } catch (e) {
+          console.error('opportunity_events insert error:', e.message);
+        }
+
+        // Legacy audit_log
+        try {
           await pool.query(
             `INSERT INTO audit_log (table_name, record_id, action, field_name, old_value, new_value, changed_by, change_reason)
              VALUES ('jobs', $1, 'UPDATE', 'lifecycle_status', $2, $3, 'cron:recalculate-all', 'Nightly lifecycle recalculation')`,
             [jobId, oldStatus, newStatus]
           );
+        } catch {
+          // audit_log may not exist yet
         }
-      } catch {
-        // audit_log may not exist yet
+      }
+
+      // Notify saved-job followers whose jobs changed status
+      try {
+        const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sarkarisuccess.com';
+        const changedJobIds = auditRows.map(r => r[0]);
+        await fetch(`${siteUrl}/api/alerts/lifecycle-notify`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${process.env.CRON_SECRET || 'sarkari_success_cron_secret_2026'}`,
+          },
+          body: JSON.stringify({ changedJobIds, changes: auditRows.map(([id, old, nw]) => ({ job_id: id, old_status: old, new_status: nw })) }),
+        });
+      } catch (e) {
+        console.error('lifecycle-notify call error:', e.message);
       }
     }
 
