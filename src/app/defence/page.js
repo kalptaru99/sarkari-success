@@ -9,7 +9,7 @@ export const metadata = {
 
 export default async function DefencePage() {
   const result = await pool.query(
-    `SELECT * FROM jobs WHERE category = 'Defence' ORDER BY created_at DESC`
+    `SELECT * FROM jobs WHERE category = 'Defence' AND (lifecycle_status != 'CLOSED' OR lifecycle_status IS NULL) ORDER BY created_at DESC`
   );
   const jobs = result.rows;
 

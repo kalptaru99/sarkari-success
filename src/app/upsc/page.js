@@ -9,7 +9,7 @@ export const metadata = {
 
 export default async function UPSCPage() {
   const result = await pool.query(
-    `SELECT * FROM jobs WHERE category = 'UPSC' ORDER BY created_at DESC`
+    `SELECT * FROM jobs WHERE category = 'UPSC' AND (lifecycle_status != 'CLOSED' OR lifecycle_status IS NULL) ORDER BY created_at DESC`
   );
   const jobs = result.rows;
 

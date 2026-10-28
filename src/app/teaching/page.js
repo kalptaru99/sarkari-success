@@ -9,7 +9,7 @@ export const metadata = {
 
 export default async function TeachingPage() {
   const result = await pool.query(
-    `SELECT * FROM jobs WHERE category = 'Teaching' ORDER BY created_at DESC`
+    `SELECT * FROM jobs WHERE category = 'Teaching' AND (lifecycle_status != 'CLOSED' OR lifecycle_status IS NULL) ORDER BY created_at DESC`
   );
   const jobs = result.rows;
 

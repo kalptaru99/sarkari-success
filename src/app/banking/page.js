@@ -9,7 +9,7 @@ export const metadata = {
 
 export default async function BankingPage() {
   const result = await pool.query(
-    `SELECT * FROM jobs WHERE category = 'Banking' ORDER BY created_at DESC`
+    `SELECT * FROM jobs WHERE category = 'Banking' AND (lifecycle_status != 'CLOSED' OR lifecycle_status IS NULL) ORDER BY created_at DESC`
   );
   const jobs = result.rows;
 

@@ -19,8 +19,10 @@ export async function GET(request) {
       return Response.json({ job: result.rows[0] });
     }
 
-    // Get all jobs
-    let query = 'SELECT * FROM jobs WHERE is_active = true';
+    // Get all jobs — exclude CLOSED unless caller explicitly asks for them
+    const includeClosed = searchParams.get('include_closed') === 'true';
+    const closedFilter = includeClosed ? '' : " AND (lifecycle_status != 'CLOSED' OR lifecycle_status IS NULL)";
+    let query = `SELECT * FROM jobs WHERE is_active = true${closedFilter}`;
     let params = [];
 
    if (category) {
