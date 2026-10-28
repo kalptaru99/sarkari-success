@@ -163,13 +163,15 @@ export function calculateLifecycleStatus(job, events = []) {
     };
   }
 
-  // Created within 7 days AND deadline in future → NEW
+  // Created within 7 days AND deadline is known + in future → NEW
+  // We require a known deadline to avoid marking "Check official website" jobs as NEW
+  // (they may have been imported recently but the posting itself is old)
   const createdAt = job.created_at ? new Date(job.created_at) : null;
   const ageInDays = createdAt
     ? Math.floor((today - createdAt) / (1000 * 60 * 60 * 24))
     : 999;
 
-  if (ageInDays <= 7 && (deadline === null || daysLeft > 0)) {
+  if (ageInDays <= 7 && deadline !== null && daysLeft > 0) {
     return {
       status: 'NEW',
       reason: `Posted ${ageInDays} day(s) ago`,
