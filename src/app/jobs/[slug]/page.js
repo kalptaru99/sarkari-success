@@ -151,7 +151,21 @@ export default function JobPage() {
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
                 <h2 style={{ fontSize: '24px', color: '#1e3a8a', margin: 0 }}>{job.title}</h2>
-                {job.is_new && <span style={{ backgroundColor: '#dc2626', color: 'white', fontSize: '11px', padding: '3px 8px', borderRadius: '4px', fontWeight: 'bold' }}>NEW</span>}
+                {(() => {
+                  const statusConfig = {
+                    NEW:          { label: '🟢 New',          bg: '#dcfce7', color: '#15803d', border: '#86efac' },
+                    OPEN:         { label: '🔵 Open',         bg: '#dbeafe', color: '#1d4ed8', border: '#93c5fd' },
+                    CLOSING_SOON: { label: '🟡 Closing Soon', bg: '#fef9c3', color: '#a16207', border: '#fde047' },
+                    CLOSED:       { label: '🔴 Closed',       bg: '#fee2e2', color: '#b91c1c', border: '#fca5a5' },
+                    RESULT_OUT:   { label: '🏆 Result Out',   bg: '#f3e8ff', color: '#7e22ce', border: '#d8b4fe' },
+                  };
+                  const s = statusConfig[job.lifecycle_status || 'OPEN'] || statusConfig.OPEN;
+                  return (
+                    <span style={{ backgroundColor: s.bg, color: s.color, border: `1px solid ${s.border}`, fontSize: '12px', padding: '4px 12px', borderRadius: '20px', fontWeight: '700', whiteSpace: 'nowrap' }}>
+                      {s.label}
+                    </span>
+                  );
+                })()}
               </div>
               <p style={{ color: '#666', fontSize: '15px', margin: 0 }}>{job.org}</p>
             </div>

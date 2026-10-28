@@ -215,21 +215,34 @@ export default function Home() {
             {filteredJobs.length === 0 && searchQuery !== '' && (
               <div style={{ textAlign: 'center', padding: '40px', color: '#888', backgroundColor: 'white', borderRadius: '8px', gridColumn: '1/-1' }}>No jobs found for "{searchQuery}"</div>
             )}
-            {filteredJobs.map((job, index) => (
-              <a key={index} href={"/jobs/" + job.slug} style={{ backgroundColor: 'white', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '18px', textDecoration: 'none', display: 'flex', flexDirection: 'column', gap: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
-                <div style={{ fontSize: '28px' }}>🏛️</div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
-                  {job.is_new && <span style={{ backgroundColor: '#dc2626', color: 'white', fontSize: '9px', padding: '2px 6px', borderRadius: '4px', fontWeight: 'bold', flexShrink: 0 }}>NEW</span>}
+            {filteredJobs.map((job, index) => {
+              const status = job.lifecycle_status || 'OPEN';
+              const statusConfig = {
+                NEW:          { label: '🟢 New',          bg: '#dcfce7', color: '#15803d', border: '#86efac' },
+                OPEN:         { label: '🔵 Open',         bg: '#dbeafe', color: '#1d4ed8', border: '#93c5fd' },
+                CLOSING_SOON: { label: '🟡 Closing Soon', bg: '#fef9c3', color: '#a16207', border: '#fde047' },
+                CLOSED:       { label: '🔴 Closed',       bg: '#fee2e2', color: '#b91c1c', border: '#fca5a5' },
+                RESULT_OUT:   { label: '🏆 Result Out',   bg: '#f3e8ff', color: '#7e22ce', border: '#d8b4fe' },
+              };
+              const s = statusConfig[status] || statusConfig.OPEN;
+              return (
+                <a key={index} href={"/jobs/" + job.slug} style={{ backgroundColor: 'white', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '18px', textDecoration: 'none', display: 'flex', flexDirection: 'column', gap: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', position: 'relative' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <div style={{ fontSize: '28px' }}>🏛️</div>
+                    <span style={{ backgroundColor: s.bg, color: s.color, border: `1px solid ${s.border}`, fontSize: '10px', padding: '3px 8px', borderRadius: '20px', fontWeight: '700', whiteSpace: 'nowrap' }}>
+                      {s.label}
+                    </span>
+                  </div>
                   <p style={{ color: '#1e3a8a', fontWeight: '700', fontSize: '14px', margin: 0, lineHeight: '1.3' }}>{job.title}</p>
-                </div>
-                <p style={{ color: '#64748b', fontSize: '12px', margin: 0 }}>{job.org}</p>
-                <p style={{ color: '#1e3a8a', fontSize: '12px', fontWeight: '600', margin: 0 }}>Vacancies: {job.vacancies}</p>
-                <p style={{ color: '#dc2626', fontSize: '12px', fontWeight: '600', margin: 0 }}>Last Date: {job.last_date}</p>
-                <span style={{ backgroundColor: '#1e3a8a', color: 'white', padding: '6px 14px', borderRadius: '6px', fontSize: '12px', fontWeight: 'bold', textAlign: 'center', marginTop: 'auto' }}>
-                  View Details
-                </span>
-              </a>
-            ))}
+                  <p style={{ color: '#64748b', fontSize: '12px', margin: 0 }}>{job.org}</p>
+                  <p style={{ color: '#1e3a8a', fontSize: '12px', fontWeight: '600', margin: 0 }}>Vacancies: {job.vacancies}</p>
+                  <p style={{ color: '#dc2626', fontSize: '12px', fontWeight: '600', margin: 0 }}>Last Date: {job.last_date}</p>
+                  <span style={{ backgroundColor: '#1e3a8a', color: 'white', padding: '6px 14px', borderRadius: '6px', fontSize: '12px', fontWeight: 'bold', textAlign: 'center', marginTop: 'auto' }}>
+                    View Details
+                  </span>
+                </a>
+              );
+            })}
           </div>
         </div>
 
