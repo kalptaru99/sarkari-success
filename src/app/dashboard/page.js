@@ -69,6 +69,7 @@ export default function DashboardPage() {
           Sarkari <span style={{ color: '#fca5a5' }}>Success</span>
         </a>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <a href="/profile" style={{ color: '#93c5fd', fontSize: '13px', textDecoration: 'none' }}>🎯 My Profile</a>
           <span style={{ color: '#93c5fd', fontSize: '13px' }}>{session?.user?.name || session?.user?.email}</span>
           <button
             onClick={() => signOut({ callbackUrl: '/' })}

@@ -146,6 +146,97 @@ function JobTimeline({ slug }) {
   );
 }
 
+function EligibilityPanel({ slug }) {
+  const { data: session, status } = useSession();
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (status === 'loading') return;
+    if (!session?.user) { setLoading(false); return; }
+    fetch(`/api/jobs/eligibility?slug=${slug}`)
+      .then(r => r.json())
+      .then(d => { setResult(d); setLoading(false); })
+      .catch(() => setLoading(false));
+  }, [session, status, slug]);
+
+  if (loading) return null;
+
+  // Not logged in
+  if (!session?.user) {
+    return (
+      <div style={{ backgroundColor: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '12px', padding: '18px 20px', marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+        <div>
+          <p style={{ margin: 0, fontWeight: '700', color: '#1e3a8a', fontSize: '15px' }}>🎯 Am I eligible for this job?</p>
+          <p style={{ margin: '2px 0 0', color: '#3b82f6', fontSize: '13px' }}>Login and set up your profile to check eligibility instantly</p>
+        </div>
+        <a href={'/login?redirect=' + encodeURIComponent(typeof window !== 'undefined' ? window.location.pathname : '')}
+          style={{ backgroundColor: '#1e3a8a', color: 'white', padding: '9px 18px', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold', fontSize: '13px', whiteSpace: 'nowrap' }}>
+          Login to Check →
+        </a>
+      </div>
+    );
+  }
+
+  // No profile set up
+  if (!result || result.eligible === 'no_profile') {
+    return (
+      <div style={{ backgroundColor: '#fef9c3', border: '1px solid #fde047', borderRadius: '12px', padding: '18px 20px', marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+        <div>
+          <p style={{ margin: 0, fontWeight: '700', color: '#854d0e', fontSize: '15px' }}>🎯 Am I eligible for this job?</p>
+          <p style={{ margin: '2px 0 0', color: '#92400e', fontSize: '13px' }}>Complete your profile to check eligibility (age, education, category)</p>
+        </div>
+        <a href="/profile" style={{ backgroundColor: '#854d0e', color: 'white', padding: '9px 18px', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold', fontSize: '13px', whiteSpace: 'nowrap' }}>
+          Set Up Profile →
+        </a>
+      </div>
+    );
+  }
+
+  const verdictConfig = {
+    yes:   { bg: '#dcfce7', border: '#86efac', headerBg: '#15803d', icon: '✅', label: 'You are Eligible!', textColor: '#14532d' },
+    no:    { bg: '#fee2e2', border: '#fca5a5', headerBg: '#b91c1c', icon: '❌', label: 'Not Eligible', textColor: '#7f1d1d' },
+    maybe: { bg: '#fef9c3', border: '#fde047', headerBg: '#854d0e', icon: '⚠️', label: 'Check Required', textColor: '#78350f' },
+  };
+  const vc = verdictConfig[result.eligible] || verdictConfig.maybe;
+  const statusIcon = { yes: '✅', no: '❌', maybe: '⚠️' };
+
+  return (
+    <div style={{ backgroundColor: vc.bg, border: `1px solid ${vc.border}`, borderRadius: '12px', marginBottom: '20px', overflow: 'hidden' }}>
+      <div style={{ backgroundColor: vc.headerBg, padding: '12px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span style={{ color: 'white', fontWeight: '800', fontSize: '15px' }}>{vc.icon} {vc.label}</span>
+        {result.score > 0 && (
+          <span style={{ color: 'white', fontSize: '13px', opacity: 0.9 }}>{result.score}% match</span>
+        )}
+      </div>
+      {result.checks && result.checks.length > 0 && (
+        <div style={{ padding: '16px 20px' }}>
+          {result.checks.map((check, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: i < result.checks.length - 1 ? '10px' : '0', fontSize: '14px', color: vc.textColor }}>
+              <span style={{ fontSize: '16px' }}>{statusIcon[check.status] || '•'}</span>
+              <div>
+                <span style={{ fontWeight: '700' }}>{check.label}:</span>
+                <span style={{ marginLeft: '6px' }}>{check.detail}</span>
+              </div>
+            </div>
+          ))}
+          <a href="/profile" style={{ display: 'inline-block', marginTop: '12px', color: vc.headerBg, fontSize: '12px', textDecoration: 'underline' }}>
+            Edit profile →
+          </a>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function trackClick(slug, clickType) {
+  fetch('/api/jobs/track-click', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ slug, click_type: clickType }),
+  }).catch(() => {});
+}
+
 export default function JobPageClient({ slug }) {
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -331,6 +422,7 @@ export default function JobPageClient({ slug }) {
                 href={job.apply_link}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackClick(slug, 'apply')}
                 style={{ backgroundColor: '#dc2626', color: 'white', padding: '12px 24px', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold', fontSize: '14px' }}
               >
                 Apply Online →
@@ -341,6 +433,7 @@ export default function JobPageClient({ slug }) {
                 href={job.notification_link}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackClick(slug, 'notification')}
                 style={{ backgroundColor: '#1e3a8a', color: 'white', padding: '12px 24px', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold', fontSize: '14px' }}
               >
                 📄 Official Notification
@@ -358,6 +451,9 @@ export default function JobPageClient({ slug }) {
             </div>
           )}
         </div>
+
+        {/* Eligibility Panel */}
+        <EligibilityPanel slug={slug} />
 
         {/* Status Timeline */}
         <JobTimeline slug={slug} />

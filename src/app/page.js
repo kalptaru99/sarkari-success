@@ -159,6 +159,7 @@ export default function Home() {
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
           {session?.user ? (
             <>
+              <a href="/profile" style={{ padding: '8px 16px', border: '2px solid #1e3a8a', borderRadius: '6px', color: '#1e3a8a', textDecoration: 'none', fontSize: '13px', fontWeight: 'bold' }}>🎯 My Profile</a>
               <a href="/dashboard" style={{ padding: '8px 16px', border: '2px solid #1e3a8a', borderRadius: '6px', color: '#1e3a8a', textDecoration: 'none', fontSize: '13px', fontWeight: 'bold' }}>🔖 Saved Jobs</a>
               <a href="/dashboard" style={{ padding: '8px 16px', backgroundColor: '#1e3a8a', borderRadius: '6px', color: 'white', textDecoration: 'none', fontSize: '13px', fontWeight: 'bold' }}>My Dashboard</a>
             </>

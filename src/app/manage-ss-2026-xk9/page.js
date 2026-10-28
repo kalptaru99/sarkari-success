@@ -878,6 +878,121 @@ function DeduplicatePanel() {
   );
 }
 
+function AnalyticsPanel() {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/admin/analytics')
+      .then(r => r.json())
+      .then(d => { setData(d); setLoading(false); })
+      .catch(() => setLoading(false));
+  }, []);
+
+  if (loading) return <p style={{ color: '#6b7280' }}>Loading analytics...</p>;
+  if (!data) return <p style={{ color: '#dc2626' }}>Failed to load analytics.</p>;
+
+  return (
+    <div>
+      <h2 style={{ color: '#1e3a8a', margin: '0 0 24px 0' }}>📊 Engagement Analytics</h2>
+
+      {/* Summary stats */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '14px', marginBottom: '28px' }}>
+        {[
+          { label: 'Total Saves', value: data.summary?.total_saves || 0, icon: '🔖', color: '#1e3a8a' },
+          { label: 'Unique Savers', value: data.summary?.unique_savers || 0, icon: '👥', color: '#15803d' },
+          { label: 'Apply Clicks (7d)', value: data.summary?.apply_clicks_7d || 0, icon: '🖱️', color: '#7e22ce' },
+          { label: 'Profiles Created', value: data.summary?.profiles_count || 0, icon: '🎯', color: '#0369a1' },
+        ].map((s, i) => (
+          <div key={i} style={{ backgroundColor: '#f8fafc', borderRadius: '10px', padding: '16px', border: '1px solid #e5e7eb', textAlign: 'center' }}>
+            <div style={{ fontSize: '22px', marginBottom: '4px' }}>{s.icon}</div>
+            <div style={{ fontSize: '24px', fontWeight: '800', color: s.color }}>{s.value}</div>
+            <div style={{ fontSize: '12px', color: '#6b7280' }}>{s.label}</div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+        {/* Top saved jobs */}
+        <div>
+          <h3 style={{ color: '#1e3a8a', fontSize: '15px', margin: '0 0 12px', fontWeight: '800' }}>🔖 Most Saved Jobs</h3>
+          {(data.top_saved || []).length === 0 ? (
+            <p style={{ color: '#9ca3af', fontSize: '13px' }}>No saves yet</p>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {(data.top_saved || []).map((job, i) => (
+                <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 14px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
+                  <a href={`/jobs/${job.slug}`} target="_blank" rel="noreferrer" style={{ color: '#1e3a8a', fontWeight: '600', fontSize: '13px', textDecoration: 'none', flex: 1, marginRight: '8px' }}>
+                    {i + 1}. {job.title}
+                  </a>
+                  <span style={{ backgroundColor: '#dbeafe', color: '#1d4ed8', padding: '2px 10px', borderRadius: '12px', fontSize: '12px', fontWeight: '700', whiteSpace: 'nowrap' }}>
+                    {job.save_count} saves
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Top clicked jobs */}
+        <div>
+          <h3 style={{ color: '#1e3a8a', fontSize: '15px', margin: '0 0 12px', fontWeight: '800' }}>🖱️ Most Apply Clicks (7 days)</h3>
+          {(data.top_clicks || []).length === 0 ? (
+            <p style={{ color: '#9ca3af', fontSize: '13px' }}>No clicks tracked yet — clicks are logged from job pages</p>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {(data.top_clicks || []).map((job, i) => (
+                <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 14px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
+                  <a href={`/jobs/${job.slug}`} target="_blank" rel="noreferrer" style={{ color: '#1e3a8a', fontWeight: '600', fontSize: '13px', textDecoration: 'none', flex: 1, marginRight: '8px' }}>
+                    {i + 1}. {job.slug}
+                  </a>
+                  <span style={{ backgroundColor: '#f3e8ff', color: '#7e22ce', padding: '2px 10px', borderRadius: '12px', fontSize: '12px', fontWeight: '700', whiteSpace: 'nowrap' }}>
+                    {job.click_count} clicks
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Category save breakdown */}
+        <div>
+          <h3 style={{ color: '#1e3a8a', fontSize: '15px', margin: '0 0 12px', fontWeight: '800' }}>📂 Saves by Category</h3>
+          {(data.by_category || []).length === 0 ? (
+            <p style={{ color: '#9ca3af', fontSize: '13px' }}>No category data yet</p>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {(data.by_category || []).map((row, i) => (
+                <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 14px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
+                  <span style={{ color: '#374151', fontSize: '13px', fontWeight: '600' }}>{row.category || 'Unknown'}</span>
+                  <span style={{ color: '#6b7280', fontSize: '13px' }}>{row.count} saves</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Candidate profile distribution */}
+        <div>
+          <h3 style={{ color: '#1e3a8a', fontSize: '15px', margin: '0 0 12px', fontWeight: '800' }}>🎯 Profile Education Distribution</h3>
+          {(data.edu_distribution || []).length === 0 ? (
+            <p style={{ color: '#9ca3af', fontSize: '13px' }}>No profiles yet</p>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {(data.edu_distribution || []).map((row, i) => (
+                <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 14px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
+                  <span style={{ color: '#374151', fontSize: '13px', fontWeight: '600' }}>{row.education || 'Not set'}</span>
+                  <span style={{ color: '#6b7280', fontSize: '13px' }}>{row.count} users</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState("addjob");
   const [authenticated, setAuthenticated] = useState(false);
@@ -1074,6 +1189,7 @@ if (!authenticated) {
           { id: 'autogenerate', label: '🤖 Auto Generate Questions' },
           { id: 'lifecycle', label: '📡 Lifecycle' },
           { id: 'deduplicate', label: '🔁 Deduplicate' },
+          { id: 'analytics', label: '📊 Analytics' },
         ].map((tab) => (
           <button
             key={tab.id}
@@ -1425,6 +1541,11 @@ if (!authenticated) {
         {activeTab === 'deduplicate' && (
           <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '28px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
             <DeduplicatePanel />
+          </div>
+        )}
+        {activeTab === 'analytics' && (
+          <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '28px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
+            <AnalyticsPanel />
           </div>
         )}
        {/* Add Admit Card Tab */}
