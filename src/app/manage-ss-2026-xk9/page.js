@@ -749,6 +749,135 @@ function LifecyclePanel() {
   );
 }
 
+function DeduplicatePanel() {
+  const [clusters, setClusters] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [flagging, setFlagging] = useState(false);
+  const [result, setResult] = useState(null);
+  const [minScore, setMinScore] = useState(0.65);
+  const CRON_SECRET = 'sarkari_success_cron_secret_2026';
+
+  const findDuplicates = async () => {
+    setLoading(true);
+    setResult(null);
+    try {
+      const res = await fetch(`/api/lifecycle/deduplicate?min_score=${minScore}&limit=100`);
+      const data = await res.json();
+      setClusters(data.clusters || []);
+      setResult({ found: data.total_clusters, potential: data.total_potential_duplicates });
+    } catch (e) {
+      setResult({ error: 'Failed to fetch duplicates' });
+    }
+    setLoading(false);
+  };
+
+  const flagAll = async () => {
+    if (!confirm(`Flag ${clusters.reduce((s, c) => s + c.duplicates.length, 0)} jobs as duplicates and hide them?`)) return;
+    setFlagging(true);
+    try {
+      const res = await fetch(`/api/lifecycle/deduplicate?min_score=${minScore}&limit=100&auto_flag=true`, {
+        headers: { Authorization: `Bearer ${CRON_SECRET}` },
+      });
+      const data = await res.json();
+      setResult({ flagged: data.auto_flagged, found: data.total_clusters });
+      setClusters([]);
+    } catch (e) {
+      setResult({ error: 'Failed to flag duplicates' });
+    }
+    setFlagging(false);
+  };
+
+  const flagOne = async (primaryId, dupId, dupTitle) => {
+    if (!confirm(`Mark "${dupTitle}" as duplicate?`)) return;
+    try {
+      const res = await fetch('/api/lifecycle/deduplicate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${CRON_SECRET}` },
+        body: JSON.stringify({ primary_id: primaryId, duplicate_id: dupId }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setClusters(prev => prev.map(c => ({
+          ...c,
+          duplicates: c.duplicates.filter(d => d.id !== dupId),
+        })).filter(c => c.duplicates.length > 0));
+      }
+    } catch {}
+  };
+
+  return (
+    <div>
+      <h2 style={{ color: '#1e3a8a', margin: '0 0 4px 0' }}>🔁 Deduplication</h2>
+      <p style={{ color: '#666', fontSize: '13px', marginBottom: '20px' }}>
+        Find and hide duplicate job listings. Duplicates are hidden from the public site but kept in DB.
+      </p>
+
+      <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap' }}>
+        <label style={{ fontSize: '13px', color: '#444' }}>
+          Min similarity:&nbsp;
+          <select value={minScore} onChange={e => setMinScore(+e.target.value)}
+            style={{ padding: '4px 8px', border: '1px solid #ddd', borderRadius: '4px' }}>
+            <option value={0.5}>50% (catch more)</option>
+            <option value={0.65}>65% (recommended)</option>
+            <option value={0.75}>75% (strict)</option>
+            <option value={0.9}>90% (near-exact)</option>
+          </select>
+        </label>
+        <button onClick={findDuplicates} disabled={loading}
+          style={{ padding: '8px 16px', background: '#2563eb', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }}>
+          {loading ? '🔍 Scanning…' : '🔍 Find Duplicates'}
+        </button>
+        {clusters.length > 0 && (
+          <button onClick={flagAll} disabled={flagging}
+            style={{ padding: '8px 16px', background: '#dc2626', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }}>
+            {flagging ? '⏳ Flagging…' : `🚩 Flag All ${clusters.reduce((s,c) => s+c.duplicates.length,0)} Duplicates`}
+          </button>
+        )}
+      </div>
+
+      {result && (
+        <div style={{ padding: '10px 14px', borderRadius: '6px', marginBottom: '16px',
+          background: result.error ? '#fee2e2' : result.flagged !== undefined ? '#dcfce7' : '#dbeafe',
+          color: result.error ? '#dc2626' : result.flagged !== undefined ? '#16a34a' : '#1e3a8a',
+          fontSize: '14px' }}>
+          {result.error ? `❌ ${result.error}` :
+           result.flagged !== undefined ? `✅ Flagged ${result.flagged} duplicate jobs. They are now hidden from the public site.` :
+           `Found ${result.found} duplicate clusters with ${result.potential} duplicate jobs.`}
+        </div>
+      )}
+
+      {clusters.map((cluster, ci) => (
+        <div key={ci} style={{ border: '1px solid #e5e7eb', borderRadius: '8px', marginBottom: '12px', overflow: 'hidden' }}>
+          <div style={{ background: '#f0f9ff', padding: '10px 14px', borderBottom: '1px solid #e5e7eb' }}>
+            <span style={{ fontWeight: 'bold', fontSize: '13px', color: '#1e3a8a' }}>✅ KEEP: </span>
+            <span style={{ fontSize: '13px' }}>{cluster.primary.title}</span>
+            <span style={{ fontSize: '12px', color: '#888', marginLeft: '8px' }}>#{cluster.primary.id} · {cluster.primary.org}</span>
+          </div>
+          {cluster.duplicates.map((dup, di) => (
+            <div key={di} style={{ padding: '8px 14px', borderBottom: '1px solid #f3f4f6', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <span style={{ fontSize: '12px', background: '#fee2e2', color: '#dc2626', padding: '1px 5px', borderRadius: '3px', marginRight: '6px' }}>
+                  {Math.round((dup.score || 0) * 100)}%
+                </span>
+                <span style={{ fontSize: '13px' }}>{dup.title}</span>
+                <span style={{ fontSize: '12px', color: '#888', marginLeft: '6px' }}>#{dup.id} · {dup.org}</span>
+              </div>
+              <button onClick={() => flagOne(cluster.primary.id, dup.id, dup.title)}
+                style={{ padding: '4px 10px', background: '#dc2626', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '12px', whiteSpace: 'nowrap' }}>
+                🚩 Flag
+              </button>
+            </div>
+          ))}
+        </div>
+      ))}
+
+      {clusters.length === 0 && result && !result.error && result.found === 0 && (
+        <p style={{ color: '#16a34a', fontSize: '14px' }}>✅ No duplicates found at this similarity threshold.</p>
+      )}
+    </div>
+  );
+}
+
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState("addjob");
   const [authenticated, setAuthenticated] = useState(false);
@@ -944,6 +1073,7 @@ if (!authenticated) {
           { id: 'managejobs', label: '🗑️ Manage Jobs' },
           { id: 'autogenerate', label: '🤖 Auto Generate Questions' },
           { id: 'lifecycle', label: '📡 Lifecycle' },
+          { id: 'deduplicate', label: '🔁 Deduplicate' },
         ].map((tab) => (
           <button
             key={tab.id}
@@ -1290,6 +1420,11 @@ if (!authenticated) {
             <h2 style={{ color: '#1e3a8a', margin: '0 0 8px 0' }}>📡 Lifecycle Status Manager</h2>
             <p style={{ color: '#666', fontSize: '13px', margin: '0 0 24px 0' }}>View and fix job status labels. Click "Recalculate All" to refresh every job's status from its deadline date.</p>
             <LifecyclePanel />
+          </div>
+        )}
+        {activeTab === 'deduplicate' && (
+          <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '28px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
+            <DeduplicatePanel />
           </div>
         )}
        {/* Add Admit Card Tab */}

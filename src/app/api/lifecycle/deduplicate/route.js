@@ -135,11 +135,37 @@ export async function GET(request) {
     // Sort by highest score first
     clusters.sort((a, b) => b.max_score - a.max_score);
 
+    // auto_flag=true with auth: mark all duplicates in DB automatically
+    const autoFlag = searchParams.get('auto_flag') === 'true';
+    const authHeader = request.headers.get('authorization');
+    const isAuthed = authHeader === `Bearer ${process.env.CRON_SECRET}`;
+
+    let flagged = 0;
+    if (autoFlag && isAuthed && clusters.length > 0) {
+      for (const cluster of clusters) {
+        for (const dup of cluster.duplicates) {
+          try {
+            await pool.query(
+              `UPDATE jobs
+               SET is_duplicate = TRUE,
+                   duplicate_of_id = $1,
+                   is_active = FALSE,
+                   updated_at = NOW()
+               WHERE id = $2 AND (is_duplicate = FALSE OR is_duplicate IS NULL)`,
+              [cluster.primary.id, dup.id]
+            );
+            flagged++;
+          } catch { /* continue */ }
+        }
+      }
+    }
+
     return Response.json({
       clusters,
       total_clusters: clusters.length,
       total_potential_duplicates: clusters.reduce((sum, c) => sum + c.duplicates.length, 0),
       min_score_used: minScore,
+      auto_flagged: autoFlag && isAuthed ? flagged : undefined,
     });
 
   } catch (error) {

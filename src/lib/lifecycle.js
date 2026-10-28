@@ -17,13 +17,21 @@ export function parseIndianDate(raw) {
 
   const s = raw.trim();
 
+  // Special case: "(Closed)" suffix — try to parse the date part before rejecting
+  const closedMatch = s.match(/^(.+?)\s*\(closed\)/i);
+  if (closedMatch) return parseIndianDate(closedMatch[1].trim());
+
+  // Special case: "(tentative)" suffix — strip it and parse the date
+  const tentativeMatch = s.match(/^(.+?)\s*\(tentative\)/i);
+  if (tentativeMatch) return parseIndianDate(tentativeMatch[1].trim());
+
   // Reject obviously non-date strings
-  if (/check|official|website|tba|n\/a|not|yet|see|notification|extended|closed|tentative/i.test(s)) {
-    // Special case: "(Closed)" suffix — still try to parse the date part
-    const closedMatch = s.match(/^(.+?)\s*\(closed\)/i);
-    if (!closedMatch) return null;
-    return parseIndianDate(closedMatch[1].trim());
+  if (/check|official|website|tba|n\/a|not|yet|see|notification|extended|tentative/i.test(s)) {
+    return null;
   }
+
+  // "Application closed" or "closed" text without a parseable date → signal closed via null
+  // (handled in calculateLifecycleStatus via text check)
 
   const MONTHS = {
     jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
@@ -128,8 +136,8 @@ export function calculateLifecycleStatus(job, events = []) {
     }
   }
 
-  // If last_date text contains "(Closed)" explicitly → CLOSED immediately
-  if (job.last_date && /\(closed\)/i.test(job.last_date)) {
+  // If last_date text contains "(Closed)" or "Application closed" or "closed" explicitly → CLOSED
+  if (job.last_date && /\(closed\)|application closed|already closed/i.test(job.last_date)) {
     return {
       status: 'CLOSED',
       reason: 'Marked closed in notification',
