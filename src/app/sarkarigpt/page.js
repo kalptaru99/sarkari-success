@@ -100,6 +100,51 @@ const suggestedQuestionsByLanguage = {
   ],
 };
 
+/**
+ * Parse assistant message text and render [View full details: URL] patterns
+ * as clickable anchor tags. Returns an array of strings and React elements.
+ */
+function renderWithCitations(text) {
+  if (!text) return null;
+  const pattern = /\[View full details: (https?:\/\/[^\]]+)\]/g;
+  const parts = [];
+  let lastIndex = 0;
+  let match;
+  let key = 0;
+  while ((match = pattern.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(text.slice(lastIndex, match.index));
+    }
+    parts.push(
+      <a
+        key={key++}
+        href={match[1]}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          display: 'inline-block',
+          marginTop: '6px',
+          color: '#1e3a8a',
+          fontWeight: '600',
+          fontSize: '13px',
+          textDecoration: 'none',
+          background: '#eff6ff',
+          padding: '3px 10px',
+          borderRadius: '12px',
+          border: '1px solid #bfdbfe',
+        }}
+      >
+        🔗 View full details →
+      </a>
+    );
+    lastIndex = pattern.lastIndex;
+  }
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex));
+  }
+  return parts;
+}
+
 export default function SarkariGPT() {
   const [preferredLanguage, setPreferredLanguage] = useState("Hindi");
   const [isListening, setIsListening] = useState(false);
@@ -245,7 +290,7 @@ export default function SarkariGPT() {
               </div>
             )}
             <div style={{ maxWidth: '70%', padding: '12px 16px', borderRadius: msg.role === 'user' ? '18px 18px 4px 18px' : '18px 18px 18px 4px', backgroundColor: msg.role === 'user' ? '#1e3a8a' : 'white', color: msg.role === 'user' ? 'white' : '#1a1a1a', fontSize: '14px', lineHeight: '1.6', boxShadow: '0 2px 6px rgba(0,0,0,0.08)', whiteSpace: 'pre-wrap' }}>
-              {msg.content}
+              {msg.role === 'assistant' ? renderWithCitations(msg.content) : msg.content}
             </div>
             {msg.role === 'user' && (
               <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: '#dc2626', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', marginLeft: '10px', flexShrink: 0 }}>
