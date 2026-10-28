@@ -124,13 +124,54 @@ async function extractWithClaude(results, type, org) {
   }
 }
 
+/**
+ * Normalize title for similarity comparison — same logic as deduplicate route
+ */
+function normalizeTitle(s) {
+  if (!s) return '';
+  return s
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .replace(/\b(recruitment|notification|vacancy|vacancies|post|posts|2024|2025|2026|limited|commission|board)\b/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function titleSimilarity(a, b) {
+  const na = normalizeTitle(a);
+  const nb = normalizeTitle(b);
+  if (na === nb) return 1.0;
+  const ta = new Set(na.split(' ').filter(t => t.length > 2));
+  const tb = new Set(nb.split(' ').filter(t => t.length > 2));
+  const intersection = [...ta].filter(t => tb.has(t)).length;
+  const union = new Set([...ta, ...tb]).size;
+  return union === 0 ? 0 : intersection / union;
+}
+
 async function saveToDatabase(data, type) {
   if (!data || !data.found) return { saved: false };
 
   try {
     if (type === 'job') {
+      // 1. Exact slug match
       const existing = await pool.query('SELECT id FROM jobs WHERE slug = $1', [data.slug]);
-      if (existing.rows.length > 0) return { saved: false, reason: 'already exists' };
+      if (existing.rows.length > 0) return { saved: false, reason: 'already exists (slug)' };
+
+      // 2. Fuzzy title+org dedup — check recent jobs from same org
+      const normalizedOrg = (data.org || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+      const recentSameOrg = await pool.query(
+        `SELECT id, title FROM jobs
+         WHERE LOWER(REGEXP_REPLACE(org, '[^a-zA-Z0-9]', '', 'g')) = $1
+           AND is_active = TRUE
+         ORDER BY created_at DESC LIMIT 50`,
+        [normalizedOrg]
+      );
+      for (const row of recentSameOrg.rows) {
+        const score = titleSimilarity(data.title, row.title);
+        if (score >= 0.75) {
+          return { saved: false, reason: `fuzzy duplicate of job #${row.id} (${Math.round(score * 100)}% match)` };
+        }
+      }
 
       if (!data.vacancies || data.vacancies === null || data.vacancies === 'null') {
         return { saved: false, reason: 'no vacancy data' };
