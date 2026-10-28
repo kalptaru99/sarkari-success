@@ -330,22 +330,44 @@ export async function GET(request) {
   delete results._newJobs;
   let alertResult = null;
 
+  let telegramResult = null;
+
   if (newJobs.length > 0) {
+    const siteUrl = process.env.NEXTAUTH_URL || 'https://sarkarisuccess.com';
+    const authHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${process.env.CRON_SECRET || 'sarkari_success_cron_secret_2026'}`,
+    };
+
+    // Email alerts
     try {
-      const siteUrl = process.env.NEXTAUTH_URL || 'https://sarkarisuccess.com';
       const alertResp = await fetch(`${siteUrl}/api/alerts/send`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.CRON_SECRET || 'sarkari_success_cron_secret_2026'}`,
-        },
+        headers: authHeaders,
         body: JSON.stringify({ jobs: newJobs }),
       });
       alertResult = await alertResp.json();
     } catch (e) {
-      console.error('Alert trigger failed:', e);
+      console.error('Email alert trigger failed:', e);
       alertResult = { error: e.message };
     }
+
+    // Telegram alerts (fire-and-forget, non-blocking)
+    fetch(`${siteUrl}/api/alerts/telegram`, {
+      method: 'POST',
+      headers: authHeaders,
+      body: JSON.stringify({ jobs: newJobs }),
+    })
+      .then(r => r.json())
+      .then(d => { telegramResult = d; })
+      .catch(e => console.error('Telegram alert failed:', e));
+
+    // Push notifications
+    fetch(`${siteUrl}/api/push/send`, {
+      method: 'POST',
+      headers: authHeaders,
+      body: JSON.stringify({ jobs: newJobs }),
+    }).catch(e => console.error('Push notification failed:', e));
   }
 
   return Response.json({
@@ -353,5 +375,6 @@ export async function GET(request) {
     timestamp: new Date().toISOString(),
     results,
     alerts: alertResult,
+    telegram: telegramResult,
   });
 }

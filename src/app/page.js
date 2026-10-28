@@ -118,6 +118,78 @@ function AlertSubscribeWidget() {
   );
 }
 
+/**
+ * Browser push notification subscribe button.
+ * Registers the service worker and saves the subscription to /api/push/subscribe.
+ */
+function PushNotifyButton() {
+  const [state, setState] = useState('idle'); // idle | requesting | granted | denied | unsupported
+
+  useEffect(() => {
+    if (!('Notification' in window) || !('serviceWorker' in navigator)) {
+      setState('unsupported');
+      return;
+    }
+    if (Notification.permission === 'granted') setState('granted');
+    else if (Notification.permission === 'denied') setState('denied');
+  }, []);
+
+  const subscribe = async () => {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+      setState('unsupported');
+      return;
+    }
+    setState('requesting');
+    try {
+      const reg = await navigator.serviceWorker.register('/sw.js');
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') { setState('denied'); return; }
+
+      const vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || 'BDacmr2Fvw0QUalVWBvG4kWCYnhHPGIuP8BxZ0ibKWz6g8MT3GS3JwcOPN30YVs_jILJSqtrkRKzPGMmGafNr6Q';
+      const sub = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(vapidKey),
+      });
+
+      await fetch('/api/push/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ subscription: sub.toJSON() }),
+      });
+      setState('granted');
+    } catch (err) {
+      console.error('Push subscribe error:', err);
+      setState('denied');
+    }
+  };
+
+  if (state === 'unsupported') return null;
+
+  return (
+    <button
+      onClick={subscribe}
+      disabled={state === 'granted' || state === 'requesting'}
+      style={{
+        display: 'flex', alignItems: 'center', gap: '8px',
+        padding: '10px 18px',
+        backgroundColor: state === 'granted' ? '#dcfce7' : '#1e3a8a',
+        color: state === 'granted' ? '#15803d' : 'white',
+        border: 'none', borderRadius: '8px', cursor: state === 'granted' ? 'default' : 'pointer',
+        fontSize: '13px', fontWeight: '700', transition: 'all 0.2s',
+      }}
+    >
+      {state === 'granted' ? '🔔 Notifications On' : state === 'requesting' ? '⏳ Enabling...' : state === 'denied' ? '🔕 Blocked in browser' : '🔔 Enable Push Alerts'}
+    </button>
+  );
+}
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = atob(base64);
+  return Uint8Array.from([...rawData].map(c => c.charCodeAt(0)));
+}
+
 export default function Home() {
   const { data: session } = useSession();
   const [searchQuery, setSearchQuery] = useState("");
@@ -328,6 +400,26 @@ export default function Home() {
         </div>
 
         <AlertSubscribeWidget />
+
+        {/* Push + Telegram row */}
+        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center', marginBottom: '24px' }}>
+          <PushNotifyButton />
+          <a
+            href="https://t.me/sarkarisuccess"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'flex', alignItems: 'center', gap: '8px',
+              padding: '10px 18px',
+              backgroundColor: '#0088cc',
+              color: 'white',
+              borderRadius: '8px', textDecoration: 'none',
+              fontSize: '13px', fontWeight: '700',
+            }}
+          >
+            <span style={{ fontSize: '16px' }}>✈️</span> Join Telegram Channel
+          </a>
+        </div>
 
         <div id="jobs" style={{ marginBottom: '40px' }}>
           <h2 style={{ fontSize: '22px', color: '#1e3a8a', margin: '0 0 16px 0' }}>Latest Sarkari Jobs</h2>

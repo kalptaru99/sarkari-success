@@ -134,11 +134,18 @@ export async function POST(request) {
       return Response.json({ sent: 0, message: 'No jobs to send' });
     }
 
-    // Get all active subscribers
+    // Ensure last_sent_at column exists (frequency cap)
+    await pool.query(`
+      ALTER TABLE job_alert_subscribers ADD COLUMN IF NOT EXISTS last_sent_at TIMESTAMPTZ
+    `).catch(() => {});
+
+    // Get active subscribers who haven't received an email in the last 24h (frequency cap)
     let subscribers;
     try {
       const result = await pool.query(
-        `SELECT email, categories, token FROM job_alert_subscribers WHERE is_active = TRUE`
+        `SELECT email, categories, token FROM job_alert_subscribers
+         WHERE is_active = TRUE
+           AND (last_sent_at IS NULL OR last_sent_at < NOW() - INTERVAL '24 hours')`
       );
       subscribers = result.rows;
     } catch (e) {
@@ -181,6 +188,11 @@ export async function POST(request) {
           errors.push({ email: sub.email, error: error.message });
         } else {
           sent++;
+          // Update last_sent_at for frequency cap
+          await pool.query(
+            `UPDATE job_alert_subscribers SET last_sent_at = NOW() WHERE email = $1`,
+            [sub.email]
+          ).catch(() => {});
         }
       } catch (err) {
         failed++;

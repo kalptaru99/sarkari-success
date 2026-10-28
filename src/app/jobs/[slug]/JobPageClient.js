@@ -441,6 +441,15 @@ export default function JobPageClient({ slug }) {
             )}
             {/* Save Job button — auth-aware */}
             <SaveButton slug={slug} />
+            {/* Telegram CTA */}
+            <a
+              href="https://t.me/sarkarisuccess"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '12px 20px', backgroundColor: '#0088cc', color: 'white', borderRadius: '8px', textDecoration: 'none', fontWeight: '700', fontSize: '13px' }}
+            >
+              ✈️ Get Alerts on Telegram
+            </a>
           </div>
 
           {/* Closing Soon warning banner */}

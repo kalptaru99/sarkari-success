@@ -141,12 +141,20 @@ export default function DashboardPage() {
           </>
         )}
 
-        {/* Alert Subscription link */}
-        <div style={{ marginTop: '32px', backgroundColor: '#eff6ff', borderRadius: '12px', padding: '20px', border: '1px solid #bfdbfe', textAlign: 'center' }}>
-          <p style={{ margin: '0 0 10px', color: '#1e40af', fontWeight: '600' }}>📧 Get email alerts for new government jobs</p>
-          <a href="/#subscribe" style={{ backgroundColor: '#1e3a8a', color: 'white', padding: '10px 22px', borderRadius: '8px', textDecoration: 'none', fontSize: '14px', fontWeight: 'bold' }}>
-            Subscribe Free →
-          </a>
+        {/* Alert / Retention row */}
+        <div style={{ marginTop: '32px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
+          <div style={{ backgroundColor: '#eff6ff', borderRadius: '12px', padding: '20px', border: '1px solid #bfdbfe', textAlign: 'center' }}>
+            <p style={{ margin: '0 0 10px', color: '#1e40af', fontWeight: '600', fontSize: '14px' }}>📧 Get email alerts</p>
+            <a href="/#subscribe" style={{ backgroundColor: '#1e3a8a', color: 'white', padding: '8px 18px', borderRadius: '8px', textDecoration: 'none', fontSize: '13px', fontWeight: 'bold' }}>
+              Subscribe Free →
+            </a>
+          </div>
+          <div style={{ backgroundColor: '#e0f2fe', borderRadius: '12px', padding: '20px', border: '1px solid #bae6fd', textAlign: 'center' }}>
+            <p style={{ margin: '0 0 10px', color: '#0369a1', fontWeight: '600', fontSize: '14px' }}>✈️ Join Telegram Channel</p>
+            <a href="https://t.me/sarkarisuccess" target="_blank" rel="noopener noreferrer" style={{ backgroundColor: '#0088cc', color: 'white', padding: '8px 18px', borderRadius: '8px', textDecoration: 'none', fontSize: '13px', fontWeight: 'bold' }}>
+              @sarkarisuccess →
+            </a>
+          </div>
         </div>
       </div>
 
