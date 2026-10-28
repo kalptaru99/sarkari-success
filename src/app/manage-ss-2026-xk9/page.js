@@ -993,6 +993,150 @@ function AnalyticsPanel() {
   );
 }
 
+function HealthPanel() {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/admin/health')
+      .then(r => r.json())
+      .then(d => { setData(d); setLoading(false); })
+      .catch(() => setLoading(false));
+  }, []);
+
+  if (loading) return <p style={{ color: '#6b7280' }}>Loading health data...</p>;
+  if (!data) return <p style={{ color: '#dc2626' }}>Failed to load health data.</p>;
+
+  const slaBg = data.freshness.sla_pct >= 90 ? '#dcfce7' : data.freshness.sla_pct >= 70 ? '#fef9c3' : '#fee2e2';
+  const slaColor = data.freshness.sla_pct >= 90 ? '#15803d' : data.freshness.sla_pct >= 70 ? '#a16207' : '#b91c1c';
+
+  return (
+    <div>
+      <h2 style={{ color: '#1e3a8a', margin: '0 0 24px' }}>🩺 Site Health & Retention</h2>
+
+      {/* Freshness SLA */}
+      <h3 style={{ color: '#374151', margin: '0 0 12px', fontSize: '15px' }}>📡 Data Freshness</h3>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '12px', marginBottom: '28px' }}>
+        {[
+          { label: 'Freshness SLA', value: `${data.freshness.sla_pct}%`, sub: 'updated <24h', bg: slaBg, color: slaColor },
+          { label: 'Fresh (<24h)', value: data.freshness.fresh_24h, sub: 'jobs', bg: '#f0fdf4', color: '#15803d' },
+          { label: 'Stale (>48h)', value: data.freshness.stale, sub: 'jobs need review', bg: data.freshness.stale > 0 ? '#fee2e2' : '#f0fdf4', color: data.freshness.stale > 0 ? '#b91c1c' : '#15803d' },
+          { label: 'Avg Age', value: `${data.freshness.avg_hours_since_update}h`, sub: 'since last update', bg: '#f8fafc', color: '#374151' },
+          { label: 'Total Active', value: data.freshness.total_active, sub: 'jobs tracked', bg: '#eff6ff', color: '#1d4ed8' },
+        ].map((s, i) => (
+          <div key={i} style={{ backgroundColor: s.bg, borderRadius: '10px', padding: '16px', textAlign: 'center' }}>
+            <div style={{ fontSize: '22px', fontWeight: '800', color: s.color }}>{s.value}</div>
+            <div style={{ fontSize: '12px', fontWeight: '700', color: '#374151', marginTop: '2px' }}>{s.label}</div>
+            <div style={{ fontSize: '11px', color: '#9ca3af' }}>{s.sub}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Data Quality */}
+      <h3 style={{ color: '#374151', margin: '0 0 12px', fontSize: '15px' }}>⚠️ Data Quality — Open Jobs Missing Fields</h3>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '12px', marginBottom: '28px' }}>
+        {[
+          { label: 'Missing Last Date', value: data.data_quality.missing_last_date },
+          { label: 'Missing Apply Link', value: data.data_quality.missing_apply_link },
+          { label: 'Missing Vacancies', value: data.data_quality.missing_vacancies },
+          { label: 'Missing Notif Link', value: data.data_quality.missing_notification_link },
+        ].map((q, i) => {
+          const bad = q.value > 0;
+          return (
+            <div key={i} style={{ backgroundColor: bad ? '#fff7ed' : '#f0fdf4', borderRadius: '10px', padding: '16px', textAlign: 'center', border: `1px solid ${bad ? '#fed7aa' : '#bbf7d0'}` }}>
+              <div style={{ fontSize: '22px', fontWeight: '800', color: bad ? '#c2410c' : '#15803d' }}>{q.value}</div>
+              <div style={{ fontSize: '11px', color: '#6b7280', marginTop: '4px' }}>{q.label}</div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Retention metrics */}
+      <h3 style={{ color: '#374151', margin: '0 0 12px', fontSize: '15px' }}>📬 Retention Metrics</h3>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '12px', marginBottom: '28px' }}>
+        {[
+          { label: 'Email Subscribers', value: data.email_subscribers.total, sub: `+${data.email_subscribers.new_7d} this week`, bg: '#eff6ff', color: '#1d4ed8' },
+          { label: 'New (30d)', value: data.email_subscribers.new_30d, sub: 'email sign-ups', bg: '#f0fdf4', color: '#15803d' },
+          { label: 'Ever Emailed', value: data.email_subscribers.ever_sent, sub: 'received ≥1 alert', bg: '#f8fafc', color: '#374151' },
+          { label: 'Push Subscribers', value: data.push_subscribers.total, sub: `+${data.push_subscribers.new_7d} this week`, bg: '#faf5ff', color: '#7c3aed' },
+          { label: 'Push Reached', value: data.push_subscribers.ever_reached, sub: 'received ≥1 push', bg: '#f8fafc', color: '#374151' },
+        ].map((s, i) => (
+          <div key={i} style={{ backgroundColor: s.bg, borderRadius: '10px', padding: '16px', textAlign: 'center' }}>
+            <div style={{ fontSize: '22px', fontWeight: '800', color: s.color }}>{s.value}</div>
+            <div style={{ fontSize: '12px', fontWeight: '700', color: '#374151', marginTop: '2px' }}>{s.label}</div>
+            <div style={{ fontSize: '11px', color: '#9ca3af' }}>{s.sub}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Email opens chart */}
+      {data.open_events_30d.length > 0 && (
+        <div style={{ marginBottom: '28px' }}>
+          <h3 style={{ color: '#374151', margin: '0 0 12px', fontSize: '15px' }}>📈 Email Opens — Last 30 Days</h3>
+          <div style={{ backgroundColor: '#f8fafc', borderRadius: '10px', padding: '16px', overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+              <thead>
+                <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+                  <th style={{ padding: '8px', textAlign: 'left', color: '#6b7280' }}>Date</th>
+                  <th style={{ padding: '8px', textAlign: 'right', color: '#6b7280' }}>Total Opens</th>
+                  <th style={{ padding: '8px', textAlign: 'right', color: '#6b7280' }}>Unique Openers</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.open_events_30d.slice(0, 14).map((row, i) => (
+                  <tr key={i} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                    <td style={{ padding: '8px', color: '#374151' }}>{new Date(row.day).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</td>
+                    <td style={{ padding: '8px', textAlign: 'right', fontWeight: '600', color: '#1e3a8a' }}>{row.total_opens}</td>
+                    <td style={{ padding: '8px', textAlign: 'right', color: '#6b7280' }}>{row.unique_openers}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* Recent email batches */}
+      {data.email_batches.length > 0 && (
+        <div>
+          <h3 style={{ color: '#374151', margin: '0 0 12px', fontSize: '15px' }}>📤 Recent Email Batches</h3>
+          <div style={{ backgroundColor: '#f8fafc', borderRadius: '10px', padding: '16px', overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+              <thead>
+                <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+                  <th style={{ padding: '8px', textAlign: 'left', color: '#6b7280' }}>Sent At</th>
+                  <th style={{ padding: '8px', textAlign: 'right', color: '#6b7280' }}>Recipients</th>
+                  <th style={{ padding: '8px', textAlign: 'right', color: '#6b7280' }}>Jobs</th>
+                  <th style={{ padding: '8px', textAlign: 'right', color: '#6b7280' }}>Opens</th>
+                  <th style={{ padding: '8px', textAlign: 'right', color: '#6b7280' }}>Open Rate</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.email_batches.map((b, i) => {
+                  const openRate = b.recipient_count > 0 ? Math.round((b.opens / b.recipient_count) * 100) : 0;
+                  return (
+                    <tr key={i} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                      <td style={{ padding: '8px', color: '#374151' }}>{new Date(b.sent_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</td>
+                      <td style={{ padding: '8px', textAlign: 'right', color: '#374151' }}>{b.recipient_count}</td>
+                      <td style={{ padding: '8px', textAlign: 'right', color: '#374151' }}>{b.job_count}</td>
+                      <td style={{ padding: '8px', textAlign: 'right', fontWeight: '600', color: '#1e3a8a' }}>{b.opens}</td>
+                      <td style={{ padding: '8px', textAlign: 'right', color: openRate >= 20 ? '#15803d' : openRate >= 10 ? '#a16207' : '#6b7280', fontWeight: '700' }}>{openRate}%</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      <p style={{ margin: '16px 0 0', color: '#9ca3af', fontSize: '12px' }}>
+        Generated at {new Date(data.generated_at).toLocaleString('en-IN', { timeZone: 'Asia/Calcutta' })} IST
+      </p>
+    </div>
+  );
+}
+
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState("addjob");
   const [authenticated, setAuthenticated] = useState(false);
@@ -1190,6 +1334,7 @@ if (!authenticated) {
           { id: 'lifecycle', label: '📡 Lifecycle' },
           { id: 'deduplicate', label: '🔁 Deduplicate' },
           { id: 'analytics', label: '📊 Analytics' },
+          { id: 'health', label: '🩺 Health' },
         ].map((tab) => (
           <button
             key={tab.id}
@@ -1546,6 +1691,11 @@ if (!authenticated) {
         {activeTab === 'analytics' && (
           <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '28px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
             <AnalyticsPanel />
+          </div>
+        )}
+        {activeTab === 'health' && (
+          <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '28px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
+            <HealthPanel />
           </div>
         )}
        {/* Add Admit Card Tab */}

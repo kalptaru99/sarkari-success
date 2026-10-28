@@ -9,6 +9,7 @@
 
 import pool from '@/lib/db.js';
 import { Resend } from 'resend';
+import { createHmac, createHash, randomBytes } from 'crypto';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -17,16 +18,25 @@ const FROM_EMAIL = 'alerts@sarkarisuccess.com';
 const FROM_NAME = 'Sarkari Success Alerts';
 
 function generateUnsubscribeToken(email) {
-  const { createHmac } = require('crypto');
   return createHmac('sha256', process.env.CRON_SECRET || 'sarkari_success_cron_secret_2026')
     .update(email.toLowerCase())
     .digest('hex')
     .substring(0, 32);
 }
 
-function buildEmailHtml(jobs, email) {
+function hashEmail(email) {
+  return createHash('sha256').update(email.toLowerCase()).digest('hex').substring(0, 16);
+}
+
+function generateBatchId() {
+  return `batch_${Date.now()}_${randomBytes(4).toString('hex')}`;
+}
+
+function buildEmailHtml(jobs, email, batchId) {
   const token = generateUnsubscribeToken(email);
+  const emailHash = hashEmail(email);
   const unsubLink = `${SITE_URL}/api/alerts/subscribe?email=${encodeURIComponent(email)}&token=${token}`;
+  const pixelUrl = `${SITE_URL}/api/alerts/track?e=${emailHash}&b=${batchId}`;
 
   const jobCards = jobs.map(job => {
     const statusColors = {
@@ -106,6 +116,9 @@ function buildEmailHtml(jobs, email) {
       </p>
     </div>
 
+    <!-- Tracking pixel (1x1 transparent GIF) -->
+    <img src="${pixelUrl}" width="1" height="1" style="display:block;border:0;" alt="">
+
   </div>
 </body>
 </html>
@@ -157,6 +170,15 @@ export async function POST(request) {
       return Response.json({ sent: 0, message: 'No active subscribers' });
     }
 
+    const batchId = generateBatchId();
+
+    // Log batch start (best-effort)
+    pool.query(
+      `INSERT INTO email_batches (id, recipient_count, job_count) VALUES ($1, $2, $3)
+       ON CONFLICT (id) DO NOTHING`,
+      [batchId, subscribers.length, jobs.length]
+    ).catch(() => {});
+
     let sent = 0;
     let failed = 0;
     const errors = [];
@@ -179,7 +201,7 @@ export async function POST(request) {
           from: `${FROM_NAME} <${FROM_EMAIL}>`,
           to: sub.email,
           subject: `🏛️ ${matchingJobs.length} New Govt Job${matchingJobs.length > 1 ? 's' : ''} Alert - Sarkari Success`,
-          html: buildEmailHtml(matchingJobs, sub.email),
+          html: buildEmailHtml(matchingJobs, sub.email, batchId),
           text: buildEmailText(matchingJobs),
         });
 
