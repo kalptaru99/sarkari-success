@@ -1,4 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
+import pool from "@/lib/db.js";
 
 const rateLimitMap = new Map();
 
@@ -23,6 +24,68 @@ function rateLimit(ip) {
 const client = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
+
+/**
+ * Detect if the question is about current/open jobs and fetch live DB data
+ */
+async function fetchLiveJobs(message) {
+  const jobKeywords = /open|current|latest|new|apply|vacancy|vacancies|abhi|available|kab|last date|deadline|notification|2026|filling|form/i;
+  if (!jobKeywords.test(message)) return null;
+
+  try {
+    // Extract org hints from message
+    const orgMap = {
+      sbi: 'SBI', rbi: 'RBI', rrb: 'RRB', railway: 'RRB',
+      ssc: 'SSC', upsc: 'UPSC', ibps: 'IBPS', drdo: 'DRDO',
+      isro: 'ISRO', hal: 'HAL', army: 'Indian Army', uppsc: 'UPPSC',
+      kpsc: 'KPSC', tnpsc: 'TNPSC', rpsc: 'RPSC', wbpsc: 'WBPSC',
+      'kerala psc': 'Kerala PSC', mppsc: 'MPPSC', gpsc: 'GPSC',
+    };
+    const lowerMsg = message.toLowerCase();
+    const matchedOrg = Object.entries(orgMap).find(([k]) => lowerMsg.includes(k));
+
+    let rows;
+    if (matchedOrg) {
+      const result = await pool.query(
+        `SELECT title, org, vacancies, last_date, lifecycle_status, apply_link
+         FROM jobs
+         WHERE is_active = TRUE
+           AND (is_duplicate = FALSE OR is_duplicate IS NULL)
+           AND LOWER(org) LIKE $1
+           AND (lifecycle_status != 'CLOSED' OR lifecycle_status IS NULL)
+         ORDER BY created_at DESC LIMIT 5`,
+        [`%${matchedOrg[1].toLowerCase()}%`]
+      );
+      rows = result.rows;
+    } else {
+      // General open jobs
+      const result = await pool.query(
+        `SELECT title, org, vacancies, last_date, lifecycle_status, apply_link
+         FROM jobs
+         WHERE is_active = TRUE
+           AND (is_duplicate = FALSE OR is_duplicate IS NULL)
+           AND lifecycle_status IN ('NEW', 'OPEN', 'CLOSING_SOON')
+         ORDER BY
+           CASE lifecycle_status WHEN 'CLOSING_SOON' THEN 0 WHEN 'NEW' THEN 1 ELSE 2 END,
+           created_at DESC
+         LIMIT 10`
+      );
+      rows = result.rows;
+    }
+
+    if (!rows || rows.length === 0) return null;
+
+    const lines = rows.map(r => {
+      const statusEmoji = { NEW: '🟢', OPEN: '🔵', CLOSING_SOON: '🟡' }[r.lifecycle_status] || '🔵';
+      return `${statusEmoji} ${r.title} | ${r.org} | Vacancies: ${r.vacancies} | Last Date: ${r.last_date}`;
+    });
+
+    return `LIVE DATA FROM SARKARISUCCESS.COM DATABASE (as of today):\n${lines.join('\n')}\n\nSource: sarkarisuccess.com`;
+  } catch (err) {
+    console.error('Live DB fetch error:', err);
+    return null;
+  }
+}
 
 async function searchWeb(query) {
   try {
@@ -61,13 +124,21 @@ export async function POST(request) {
       : " Respond in Hindi or English based on what the student uses.";
       
 
-    const searchResults = await searchWeb(message);
+    const [searchResults, liveJobs] = await Promise.all([
+      searchWeb(message),
+      fetchLiveJobs(message),
+    ]);
+
+    let contextBlock = "Latest Web Search Results (use these for current 2026 information):\n" + searchResults;
+    if (liveJobs) {
+      contextBlock = liveJobs + "\n\n" + contextBlock;
+    }
 
     const messages = [
       ...history,
       {
         role: "user",
-        content: "Student Question: " + message + "\n\nLatest Web Search Results (use these for current 2026 information):\n" + searchResults + "\n\nAnswer the student question using both your knowledge and the above search results. Prioritize recent information from search results."
+        content: "Student Question: " + message + "\n\n" + contextBlock + "\n\nAnswer the student question using the live database data first (most accurate), then web search results. Always mention specific last dates and vacancy counts from the live data when available."
       }
     ];
 

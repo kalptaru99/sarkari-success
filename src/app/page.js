@@ -8,6 +8,115 @@ const examCalendar = [
   { exam: "UPSC Mains", date: "21 August 2026", daysLeft: 36 },
 ];
 
+const ALL_CATEGORIES = ['SSC', 'Railway', 'Banking', 'UPSC', 'Defence', 'State PSC', 'PSU', 'Teaching'];
+
+function AlertSubscribeWidget() {
+  const [email, setEmail] = useState('');
+  const [selectedCats, setSelectedCats] = useState(ALL_CATEGORIES);
+  const [status, setStatus] = useState('idle'); // idle | loading | success | error
+  const [message, setMessage] = useState('');
+  const [expanded, setExpanded] = useState(false);
+
+  const toggleCat = (cat) => {
+    setSelectedCats(prev =>
+      prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]
+    );
+  };
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    if (!email.includes('@')) { setMessage('Please enter a valid email.'); setStatus('error'); return; }
+    setStatus('loading');
+    try {
+      const res = await fetch('/api/alerts/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, categories: selectedCats }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setStatus('success');
+        setMessage(data.message || 'Subscribed! You\'ll get alerts when new jobs are posted.');
+      } else {
+        setStatus('error');
+        setMessage(data.error || 'Something went wrong. Please try again.');
+      }
+    } catch {
+      setStatus('error');
+      setMessage('Network error. Please try again.');
+    }
+  };
+
+  if (status === 'success') {
+    return (
+      <div style={{ background: 'linear-gradient(135deg,#16a34a,#15803d)', borderRadius: '12px', padding: '20px 24px', marginBottom: '24px', textAlign: 'center', color: 'white' }}>
+        <div style={{ fontSize: '32px', marginBottom: '8px' }}>✅</div>
+        <h3 style={{ margin: '0 0 6px', fontSize: '16px', fontWeight: '800' }}>You're subscribed!</h3>
+        <p style={{ margin: 0, fontSize: '13px', opacity: 0.9 }}>{message}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ background: 'linear-gradient(135deg,#1e3a8a,#1e40af)', borderRadius: '12px', padding: '20px 24px', marginBottom: '24px', color: 'white' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: expanded ? '16px' : '0' }}>
+        <div>
+          <h3 style={{ margin: '0 0 4px', fontSize: '16px', fontWeight: '800' }}>🔔 Get Free Job Alerts on Email</h3>
+          <p style={{ margin: 0, fontSize: '12px', opacity: 0.8 }}>Be the first to know when new government jobs are posted</p>
+        </div>
+        {!expanded && (
+          <button onClick={() => setExpanded(true)} style={{ padding: '8px 20px', backgroundColor: '#f97316', color: 'white', border: 'none', borderRadius: '8px', fontSize: '13px', fontWeight: '700', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+            Subscribe Free →
+          </button>
+        )}
+      </div>
+
+      {expanded && (
+        <form onSubmit={handleSubscribe}>
+          <div style={{ display: 'flex', gap: '8px', marginBottom: '12px', flexWrap: 'wrap' }}>
+            <input
+              type="email"
+              placeholder="Enter your email address"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              required
+              style={{ flex: 1, minWidth: '200px', padding: '10px 14px', borderRadius: '8px', border: '2px solid rgba(255,255,255,0.3)', fontSize: '14px', backgroundColor: 'rgba(255,255,255,0.1)', color: 'white', outline: 'none' }}
+            />
+            <button type="submit" disabled={status === 'loading'} style={{ padding: '10px 20px', backgroundColor: '#f97316', color: 'white', border: 'none', borderRadius: '8px', fontSize: '14px', fontWeight: '700', cursor: status === 'loading' ? 'wait' : 'pointer' }}>
+              {status === 'loading' ? 'Subscribing...' : 'Get Alerts 🔔'}
+            </button>
+          </div>
+
+          <div style={{ marginBottom: '8px' }}>
+            <p style={{ margin: '0 0 8px', fontSize: '12px', opacity: 0.8 }}>Select categories (all selected by default):</p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+              {ALL_CATEGORIES.map(cat => (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => toggleCat(cat)}
+                  style={{
+                    padding: '4px 12px', borderRadius: '16px', fontSize: '12px', fontWeight: '600', cursor: 'pointer', border: '1px solid rgba(255,255,255,0.4)',
+                    backgroundColor: selectedCats.includes(cat) ? 'rgba(255,255,255,0.25)' : 'transparent',
+                    color: 'white',
+                  }}
+                >
+                  {selectedCats.includes(cat) ? '✓ ' : ''}{cat}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {status === 'error' && (
+            <p style={{ margin: '8px 0 0', fontSize: '12px', color: '#fca5a5' }}>{message}</p>
+          )}
+          <p style={{ margin: '8px 0 0', fontSize: '11px', opacity: 0.6 }}>Free forever · No spam · Unsubscribe anytime</p>
+        </form>
+      )}
+    </div>
+  );
+}
+
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [jobs, setJobs] = useState([]);
@@ -205,6 +314,8 @@ export default function Home() {
             </a>
           </div>
         </div>
+
+        <AlertSubscribeWidget />
 
         <div id="jobs" style={{ marginBottom: '40px' }}>
           <h2 style={{ fontSize: '22px', color: '#1e3a8a', margin: '0 0 16px 0' }}>Latest Sarkari Jobs</h2>

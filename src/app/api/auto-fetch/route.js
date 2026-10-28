@@ -275,6 +275,12 @@ export async function GET(request) {
           results.saved++;
           results.details.push({ status: 'saved', type: searchQuery.type, title: saved.title });
 
+          // Queue job for email alert (collect new jobs, send at end of batch)
+          if (searchQuery.type === 'job') {
+            results._newJobs = results._newJobs || [];
+            results._newJobs.push(extracted);
+          }
+
           try {
             await fetch(`${process.env.NEXTAUTH_URL || 'https://sarkarisuccess.com'}/api/indexnow`, {
               method: 'POST',
@@ -298,9 +304,33 @@ export async function GET(request) {
     }
   }
 
+  // Send email alerts for any new jobs found this batch
+  const newJobs = results._newJobs || [];
+  delete results._newJobs;
+  let alertResult = null;
+
+  if (newJobs.length > 0) {
+    try {
+      const siteUrl = process.env.NEXTAUTH_URL || 'https://sarkarisuccess.com';
+      const alertResp = await fetch(`${siteUrl}/api/alerts/send`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.CRON_SECRET || 'sarkari_success_cron_secret_2026'}`,
+        },
+        body: JSON.stringify({ jobs: newJobs }),
+      });
+      alertResult = await alertResp.json();
+    } catch (e) {
+      console.error('Alert trigger failed:', e);
+      alertResult = { error: e.message };
+    }
+  }
+
   return Response.json({
     success: true,
     timestamp: new Date().toISOString(),
     results,
+    alerts: alertResult,
   });
 }
