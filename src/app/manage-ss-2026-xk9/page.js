@@ -613,6 +613,142 @@ function AdmitCardForm() {
     </div>
   );
 }
+function LifecyclePanel() {
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [recalcLoading, setRecalcLoading] = useState(false);
+  const [recalcResult, setRecalcResult] = useState(null);
+  const [filter, setFilter] = useState('ALL');
+  const [search, setSearch] = useState('');
+  const CRON_SECRET = 'sarkari_success_cron_secret_2026';
+
+  const statusColors = {
+    NEW: { bg: '#dcfce7', color: '#16a34a', label: '🟢 New' },
+    OPEN: { bg: '#dbeafe', color: '#2563eb', label: '🔵 Open' },
+    CLOSING_SOON: { bg: '#fef9c3', color: '#d97706', label: '🟡 Closing Soon' },
+    CLOSED: { bg: '#fee2e2', color: '#dc2626', label: '🔴 Closed' },
+    RESULT_OUT: { bg: '#ede9fe', color: '#7c3aed', label: '🏆 Result Out' },
+  };
+
+  useEffect(() => {
+    loadJobs();
+  }, []);
+
+  const loadJobs = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/jobs?limit=200');
+      const data = await res.json();
+      setJobs(data.jobs || []);
+    } catch { setJobs([]); }
+    setLoading(false);
+  };
+
+  const runRecalculate = async () => {
+    setRecalcLoading(true);
+    setRecalcResult(null);
+    try {
+      const res = await fetch('/api/lifecycle/recalculate-all', {
+        headers: { Authorization: `Bearer ${CRON_SECRET}` },
+      });
+      const data = await res.json();
+      setRecalcResult(data);
+      await loadJobs();
+    } catch (e) {
+      setRecalcResult({ error: 'Failed to recalculate' });
+    }
+    setRecalcLoading(false);
+  };
+
+  const filteredJobs = jobs.filter(j => {
+    const matchStatus = filter === 'ALL' || (j.lifecycle_status || 'NEW') === filter;
+    const matchSearch = !search || j.title.toLowerCase().includes(search.toLowerCase()) || j.org.toLowerCase().includes(search.toLowerCase());
+    return matchStatus && matchSearch;
+  });
+
+  const counts = jobs.reduce((acc, j) => {
+    const s = j.lifecycle_status || 'NEW';
+    acc[s] = (acc[s] || 0) + 1;
+    return acc;
+  }, {});
+
+  return (
+    <div>
+      {/* Stats row */}
+      <div style={{ display: 'flex', gap: '12px', marginBottom: '24px', flexWrap: 'wrap' }}>
+        {Object.entries(statusColors).map(([key, val]) => (
+          <div key={key}
+            onClick={() => setFilter(filter === key ? 'ALL' : key)}
+            style={{ backgroundColor: val.bg, color: val.color, padding: '10px 18px', borderRadius: '10px', cursor: 'pointer', fontWeight: 'bold', fontSize: '14px', border: filter === key ? `2px solid ${val.color}` : '2px solid transparent' }}>
+            {val.label} — {counts[key] || 0}
+          </div>
+        ))}
+        <div onClick={() => setFilter('ALL')}
+          style={{ backgroundColor: '#f1f5f9', color: '#475569', padding: '10px 18px', borderRadius: '10px', cursor: 'pointer', fontWeight: 'bold', fontSize: '14px', border: filter === 'ALL' ? '2px solid #475569' : '2px solid transparent' }}>
+          ALL — {jobs.length}
+        </div>
+      </div>
+
+      {/* Controls */}
+      <div style={{ display: 'flex', gap: '12px', marginBottom: '20px', alignItems: 'center', flexWrap: 'wrap' }}>
+        <input
+          type="text"
+          placeholder="Search jobs..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          style={{ flex: 1, minWidth: '200px', padding: '10px 14px', border: '1px solid #ddd', borderRadius: '8px', fontSize: '14px' }}
+        />
+        <button
+          onClick={runRecalculate}
+          disabled={recalcLoading}
+          style={{ backgroundColor: '#1e3a8a', color: 'white', padding: '10px 20px', borderRadius: '8px', border: 'none', fontWeight: 'bold', fontSize: '14px', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+          {recalcLoading ? '⏳ Running...' : '🔄 Recalculate All Status'}
+        </button>
+        <button onClick={loadJobs} style={{ backgroundColor: '#f1f5f9', color: '#475569', padding: '10px 16px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '14px', cursor: 'pointer' }}>↻ Refresh</button>
+      </div>
+
+      {/* Recalc result */}
+      {recalcResult && (
+        <div style={{ backgroundColor: recalcResult.error ? '#fee2e2' : '#dcfce7', color: recalcResult.error ? '#dc2626' : '#16a34a', padding: '14px 18px', borderRadius: '10px', marginBottom: '20px', fontSize: '14px' }}>
+          {recalcResult.error ? `❌ ${recalcResult.error}` : (
+            <span>✅ Done in {recalcResult.duration_ms}ms — <strong>{recalcResult.stats?.updated || 0} jobs updated</strong>, {recalcResult.stats?.unchanged || 0} unchanged, {recalcResult.stats?.total || 0} total</span>
+          )}
+        </div>
+      )}
+
+      {/* Jobs table */}
+      {loading ? (
+        <p style={{ color: '#666', textAlign: 'center', padding: '40px' }}>Loading jobs...</p>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          {filteredJobs.length === 0 && <p style={{ color: '#999', textAlign: 'center', padding: '40px' }}>No jobs match this filter.</p>}
+          {filteredJobs.map((job, i) => {
+            const status = job.lifecycle_status || 'NEW';
+            const badge = statusColors[status] || statusColors.OPEN;
+            return (
+              <div key={i} style={{ backgroundColor: 'white', borderRadius: '10px', padding: '14px 18px', boxShadow: '0 1px 4px rgba(0,0,0,0.06)', display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
+                <div style={{ flex: 1, minWidth: '200px' }}>
+                  <p style={{ margin: 0, fontWeight: '700', color: '#1e3a8a', fontSize: '14px' }}>{job.title}</p>
+                  <p style={{ margin: '2px 0 0', color: '#666', fontSize: '12px' }}>{job.org} · Last date: {job.last_date || 'N/A'}</p>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+                  <span style={{ backgroundColor: badge.bg, color: badge.color, padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: '700' }}>{badge.label}</span>
+                  {job.human_verified && <span style={{ backgroundColor: '#dcfce7', color: '#16a34a', padding: '4px 10px', borderRadius: '20px', fontSize: '11px', fontWeight: '700' }}>✓ Verified</span>}
+                  {job.is_duplicate && <span style={{ backgroundColor: '#fee2e2', color: '#dc2626', padding: '4px 10px', borderRadius: '20px', fontSize: '11px', fontWeight: '700' }}>Duplicate</span>}
+                  <a href={`/api/lifecycle/status?slug=${job.slug}`} target="_blank" rel="noreferrer"
+                    style={{ backgroundColor: '#f1f5f9', color: '#475569', padding: '4px 10px', borderRadius: '6px', fontSize: '11px', textDecoration: 'none', fontWeight: '600' }}>
+                    JSON ↗
+                  </a>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState("addjob");
   const [authenticated, setAuthenticated] = useState(false);
@@ -807,6 +943,7 @@ if (!authenticated) {
           { id: 'addadmitcard', label: '🪪 Add Admit Card' },
           { id: 'managejobs', label: '🗑️ Manage Jobs' },
           { id: 'autogenerate', label: '🤖 Auto Generate Questions' },
+          { id: 'lifecycle', label: '📡 Lifecycle' },
         ].map((tab) => (
           <button
             key={tab.id}
@@ -1147,6 +1284,13 @@ if (!authenticated) {
         )}
         {activeTab === 'managejobs' && (
           <ManageJobs />
+        )}
+        {activeTab === 'lifecycle' && (
+          <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '28px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
+            <h2 style={{ color: '#1e3a8a', margin: '0 0 8px 0' }}>📡 Lifecycle Status Manager</h2>
+            <p style={{ color: '#666', fontSize: '13px', margin: '0 0 24px 0' }}>View and fix job status labels. Click "Recalculate All" to refresh every job's status from its deadline date.</p>
+            <LifecyclePanel />
+          </div>
         )}
        {/* Add Admit Card Tab */}
         {activeTab === 'addadmitcard' && (
