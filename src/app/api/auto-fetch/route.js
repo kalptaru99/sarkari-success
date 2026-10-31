@@ -362,13 +362,20 @@ export async function GET(request) {
       .then(d => { telegramResult = d; })
       .catch(e => console.error('Telegram alert failed:', e));
 
-    // Push notifications
+    // Push notifications (fire-and-forget)
     fetch(`${siteUrl}/api/push/send`, {
       method: 'POST',
       headers: authHeaders,
       body: JSON.stringify({ jobs: newJobs }),
     }).catch(e => console.error('Push notification failed:', e));
   }
+
+  // Always recalculate lifecycle statuses after every fetch (fire-and-forget)
+  // This ensures jobs get marked CLOSED even if the nightly cron misfires
+  const siteUrl2 = process.env.NEXTAUTH_URL || 'https://sarkarisuccess.com';
+  fetch(`${siteUrl2}/api/lifecycle/recalculate-all`, {
+    headers: { Authorization: `Bearer ${process.env.CRON_SECRET || 'sarkari_success_cron_secret_2026'}` },
+  }).catch(e => console.error('Lifecycle recalc failed:', e));
 
   return Response.json({
     success: true,

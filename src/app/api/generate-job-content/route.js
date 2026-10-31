@@ -7,8 +7,16 @@ export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const secret = searchParams.get('secret');
   const jobId = searchParams.get('id');
+  const cronHeader = request.headers.get('x-vercel-cron');
+  const authHeader = request.headers.get('authorization');
+  const cronSecret = process.env.CRON_SECRET || 'sarkari_success_cron_secret_2026';
 
-  if (secret !== process.env.CRON_SECRET) {
+  const isAuthed =
+    cronHeader === '1' ||
+    secret === cronSecret ||
+    authHeader === `Bearer ${cronSecret}`;
+
+  if (!isAuthed) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
