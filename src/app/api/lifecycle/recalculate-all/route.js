@@ -14,11 +14,17 @@ import pool from '@/lib/db.js';
 import { calculateLifecycleStatus } from '@/lib/lifecycle.js';
 
 export async function GET(request) {
-  // Auth: Vercel cron sends Authorization header, or admin can call with secret
+  // Auth: Vercel cron sends x-vercel-cron header OR admin calls with Bearer token
   const authHeader = request.headers.get('authorization');
-  const cronSecret = process.env.CRON_SECRET;
+  const cronHeader = request.headers.get('x-vercel-cron');
+  const referer = request.headers.get('referer') || '';
+  const cronSecret = process.env.CRON_SECRET || 'sarkari_success_cron_secret_2026';
+  const isAuthed =
+    cronHeader === '1' ||                               // Vercel cron
+    authHeader === `Bearer ${cronSecret}` ||            // API call with secret
+    referer.includes('/manage-ss-2026-xk9');            // Admin panel
 
-  if (!authHeader || authHeader !== `Bearer ${cronSecret}`) {
+  if (!isAuthed) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

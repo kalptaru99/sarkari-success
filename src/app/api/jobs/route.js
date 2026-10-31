@@ -25,11 +25,11 @@ export async function GET(request) {
     let query = `SELECT * FROM jobs WHERE is_active = true${closedFilter}`;
     let params = [];
 
-   if (category) {
-      query += ' AND category = $1 ORDER BY CASE WHEN vacancies != \'TBA\' AND vacancies != \'See notification\' THEN 0 ELSE 1 END, CAST(REPLACE(REPLACE(vacancies, \',\', \'\'), \'+\', \'\') AS INTEGER) DESC NULLIF(vacancies, \'TBA\'), created_at DESC LIMIT $2';
+    if (category) {
+      query += ' AND category = $1 ORDER BY created_at DESC LIMIT $2';
       params = [category, limit];
     } else {
-      query += ' ORDER BY CASE WHEN vacancies != \'TBA\' AND vacancies != \'See notification\' THEN 0 ELSE 1 END, created_at DESC LIMIT $1';
+      query += ' ORDER BY created_at DESC LIMIT $1';
       params = [limit];
     }
 
