@@ -11,7 +11,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.111.0",
     "bcryptjs": "^3.0.3",
-    "next": "15.3.3",
+    "next": "15.3.9",
     "next-auth": "^4.24.14",
     "pg": "^8.23.1",
     "react": "19.0.0",
@@ -22,7 +22,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "eslint": "^9",
-    "eslint-config-next": "15.3.3",
+    "eslint-config-next": "15.3.9",
     "tailwindcss": "^4"
   }
 }
