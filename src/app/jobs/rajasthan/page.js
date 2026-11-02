@@ -1,4 +1,6 @@
 import pool from '@/lib/db.js';
+
+export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Rajasthan Government Jobs 2026 — RPSC, Rajasthan Police Recruitment | Sarkari Success', description: 'Latest Rajasthan government job notifications 2026. RPSC, Rajasthan Police, RSMSSB recruitment.', keywords: 'Rajasthan government jobs 2026, RPSC 2026, Rajasthan Police 2026' };
 export default async function RajasthanJobsPage() {
   const stateJobs = await pool.query(`SELECT * FROM state_jobs WHERE state_code = 'RJ' AND is_active = true ORDER BY created_at DESC`);

@@ -1,4 +1,6 @@
 import pool from '@/lib/db.js';
+
+export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Gujarat Government Jobs 2026 — GPSC, Gujarat Police Recruitment | Sarkari Success', description: 'Latest Gujarat government job notifications 2026. GPSC, Gujarat Police, GPSC Class 1/2 recruitment.' };
 export default async function GujaratJobsPage() {
   const stateJobs = await pool.query(`SELECT * FROM state_jobs WHERE state_code = 'GJ' AND is_active = true ORDER BY created_at DESC`);

@@ -11,7 +11,12 @@ import pool from '@/lib/db.js';
 import { Resend } from 'resend';
 import { createHmac, createHash, randomBytes } from 'crypto';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Lazy init — avoid crashing at build time when env var is not set
+let _resend = null;
+function getResend() {
+  if (!_resend) _resend = new Resend(process.env.RESEND_API_KEY);
+  return _resend;
+}
 
 const SITE_URL = 'https://sarkarisuccess.com';
 const FROM_EMAIL = 'alerts@sarkarisuccess.com';
@@ -197,7 +202,7 @@ export async function POST(request) {
       if (matchingJobs.length === 0) continue;
 
       try {
-        const { error } = await resend.emails.send({
+        const { error } = await getResend().emails.send({
           from: `${FROM_NAME} <${FROM_EMAIL}>`,
           to: sub.email,
           subject: `🏛️ ${matchingJobs.length} New Govt Job${matchingJobs.length > 1 ? 's' : ''} Alert - Sarkari Success`,

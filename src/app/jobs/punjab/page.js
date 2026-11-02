@@ -1,4 +1,6 @@
 import pool from '@/lib/db.js';
+
+export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Punjab Government Jobs 2026 — PPSC, Punjab Police Recruitment | Sarkari Success', description: 'Latest Punjab government job notifications 2026. PPSC, Punjab Police, PSSSB recruitment.' };
 export default async function PunjabJobsPage() {
   const stateJobs = await pool.query(`SELECT * FROM state_jobs WHERE state_code = 'PB' AND is_active = true ORDER BY created_at DESC`);

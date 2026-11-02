@@ -1,4 +1,6 @@
 import pool from '@/lib/db.js';
+
+export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Odisha Government Jobs 2026 — OPSC, Odisha Police Recruitment | Sarkari Success', description: 'Latest Odisha government job notifications 2026. OPSC, Odisha Police, OSSSC recruitment.' };
 export default async function ODJobsPage() {
   const stateJobs = await pool.query(`SELECT * FROM state_jobs WHERE state_code = 'OD' AND is_active = true ORDER BY created_at DESC`);

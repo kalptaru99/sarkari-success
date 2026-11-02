@@ -1,5 +1,7 @@
 // Server component — handles generateMetadata for SEO, renders client child
 import pool from '@/lib/db.js';
+
+export const dynamic = 'force-dynamic';
 import JobPageClient from './JobPageClient';
 
 const SITE_URL = 'https://sarkarisuccess.com';

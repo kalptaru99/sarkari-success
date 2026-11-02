@@ -1,4 +1,6 @@
 import pool from '@/lib/db.js';
+
+export const dynamic = 'force-dynamic';
 export const metadata = { title: 'West Bengal Government Jobs 2026 — WBPSC, WB Police, WBCS Recruitment | Sarkari Success', description: 'Latest West Bengal government job notifications 2026. WBPSC, WB Police, WBCS, WBSSC recruitment.' };
 export default async function WBJobsPage() {
   const stateJobs = await pool.query(`SELECT * FROM state_jobs WHERE state_code = 'WB' AND is_active = true ORDER BY created_at DESC`);

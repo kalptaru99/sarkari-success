@@ -1,5 +1,7 @@
 import pool from '@/lib/db.js';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Uttar Pradesh Government Jobs 2026 — Latest UPPSC, UP Police, UPSSSC Recruitment | Sarkari Success',
   description: 'Get latest UP government job notifications 2026. UPPSC, UP Police, UPSSSC, UP TET recruitment. Check vacancies, eligibility and apply online.',

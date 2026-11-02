@@ -1,4 +1,6 @@
 import pool from '@/lib/db.js';
+
+export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Maharashtra Government Jobs 2026 — MPSC, Maharashtra Police Recruitment | Sarkari Success', description: 'Latest Maharashtra government job notifications 2026. MPSC, Maharashtra Police, MHADA recruitment.' };
 export default async function MHJobsPage() {
   const stateJobs = await pool.query(`SELECT * FROM state_jobs WHERE state_code = 'MH' AND is_active = true ORDER BY created_at DESC`);

@@ -1,4 +1,6 @@
 import pool from '@/lib/db.js';
+
+export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Karnataka Government Jobs 2026 — KPSC, Karnataka Police Recruitment | Sarkari Success', description: 'Latest Karnataka government job notifications 2026. KPSC, Karnataka Police, KPSC FDA/SDA recruitment.' };
 export default async function KAJobsPage() {
   const stateJobs = await pool.query(`SELECT * FROM state_jobs WHERE state_code = 'KA' AND is_active = true ORDER BY created_at DESC`);

@@ -1,5 +1,7 @@
 import pool from '@/lib/db.js';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Bihar Government Jobs 2026 — Latest BPSC, Bihar Police, BTSC Recruitment | Sarkari Success',
   description: 'Get latest Bihar government job notifications 2026. BPSC, Bihar Police, BTSC, BPSSC recruitment. Check vacancies, eligibility, last date and apply online.',

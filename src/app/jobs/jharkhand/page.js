@@ -1,4 +1,6 @@
 import pool from '@/lib/db.js';
+
+export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Jharkhand Government Jobs 2026 — JPSC, Jharkhand Police Recruitment | Sarkari Success', description: 'Latest Jharkhand government job notifications 2026. JPSC, Jharkhand Police, JSSC recruitment.' };
 export default async function JHJobsPage() {
   const stateJobs = await pool.query(`SELECT * FROM state_jobs WHERE state_code = 'JH' AND is_active = true ORDER BY created_at DESC`);

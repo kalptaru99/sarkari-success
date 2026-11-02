@@ -1,4 +1,6 @@
 import pool from '@/lib/db.js';
+
+export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Tamil Nadu Government Jobs 2026 — TNPSC, TN Police Recruitment | Sarkari Success', description: 'Latest Tamil Nadu government job notifications 2026. TNPSC Group 1, 2, 4, TN Police recruitment.' };
 export default async function TNJobsPage() {
   const stateJobs = await pool.query(`SELECT * FROM state_jobs WHERE state_code = 'TN' AND is_active = true ORDER BY created_at DESC`);

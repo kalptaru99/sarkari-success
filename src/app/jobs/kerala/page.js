@@ -1,4 +1,6 @@
 import pool from '@/lib/db.js';
+
+export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Kerala Government Jobs 2026 — Kerala PSC, Kerala Police Recruitment | Sarkari Success', description: 'Latest Kerala government job notifications 2026. Kerala PSC, Kerala Police, KPSC LD Clerk recruitment.' };
 export default async function KeralaJobsPage() {
   const stateJobs = await pool.query(`SELECT * FROM state_jobs WHERE state_code = 'KL' AND is_active = true ORDER BY created_at DESC`);

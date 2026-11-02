@@ -1,4 +1,6 @@
 import pool from '@/lib/db.js';
+
+export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Haryana Government Jobs 2026 — HPSC, Haryana Police, HSSC Recruitment | Sarkari Success', description: 'Latest Haryana government job notifications 2026. HPSC, Haryana Police, HSSC CET recruitment.' };
 export default async function HaryanaJobsPage() {
   const stateJobs = await pool.query(`SELECT * FROM state_jobs WHERE state_code = 'HR' AND is_active = true ORDER BY created_at DESC`);

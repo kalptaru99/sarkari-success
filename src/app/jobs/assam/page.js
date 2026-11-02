@@ -1,4 +1,6 @@
 import pool from '@/lib/db.js';
+
+export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Assam Government Jobs 2026 — APSC, Assam Police, SLPRB Recruitment | Sarkari Success', description: 'Latest Assam government job notifications 2026. APSC, Assam Police, SLPRB, Assam TET recruitment.' };
 export default async function AssamJobsPage() {
   const stateJobs = await pool.query(`SELECT * FROM state_jobs WHERE state_code = 'AS' AND is_active = true ORDER BY created_at DESC`);
